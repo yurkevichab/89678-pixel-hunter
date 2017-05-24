@@ -16,20 +16,18 @@ const switchDisplay = (number) => {
 };
 
 document.onkeydown = (e) => {
-    if (e.altKey && e.keyCode == 37) {
+    let key = e.keyCode;
+    if (e.altKey && (key === 37 || key === 39)) {
         e.preventDefault();
-        if (index > 0) {
-            --index;
-            switchDisplay(index);
-
+        if (key === 37) {
+            if (index > 0) {
+                --index;
+            }
+        } else {
+            if (index < displays.length - 1) {
+                ++index;
+            }
         }
-    }
-    if (e.altKey && e.keyCode == 39) {
-        e.preventDefault();
-        if (index < displays.length - 1) {
-            ++index;
-            switchDisplay(index);
-
-        }
+        switchDisplay(index);
     }
 };

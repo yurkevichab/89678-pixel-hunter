@@ -1,7 +1,7 @@
 # Личный проект «Пиксель хантер» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алексей Юркевич](https://up.htmlacademy.ru/ecmascript/2/user/89678).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Червань](https://htmlacademy.ru/profile/dmitriy_chervan).
 
 ---
 

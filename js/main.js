@@ -1,4 +1,4 @@
-﻿const mainBlock = document.querySelector('main.central');
+const mainBlock = document.querySelector('main.central');
 let index = 0;
 const displays = [
   document.getElementById('greeting'),

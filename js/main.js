@@ -1,17 +1,19 @@
 ﻿const mainBlock = document.querySelector(`main.central`);
-const leftBtnKey = 37;
-const rightBtnKey = 39;
-const altBtnKey = 18;
+const LEFT_BTN_KEY = 37;
+const RIGHT_BTN_KEY = 39;
+const MIN_DISPLAY_INDEX = 0;
 const displays = [
   mainBlock.cloneNode(true),
-  document.getElementById(`greeting`).content,
-  document.getElementById(`rules`).content,
-  document.getElementById(`game-1`).content,
-  document.getElementById(`game-2`).content,
-  document.getElementById(`game-3`).content,
-  document.getElementById(`stats`).content
+  ...[
+    document.getElementById(`greeting`),
+    document.getElementById(`rules`),
+    document.getElementById(`game-1`),
+    document.getElementById(`game-2`),
+    document.getElementById(`game-3`),
+    document.getElementById(`stats`)
+  ].map((template) => template.content)
 ];
-let activeElementNumber = 0;
+let activeDisplayIndex = 0;
 
 const switchDisplay = (number) => {
   mainBlock.innerHTML = ``;
@@ -19,29 +21,29 @@ const switchDisplay = (number) => {
   mainBlock.appendChild(display.cloneNode(true));
 };
 
-const prevDisplay = () => {
-  if (activeElementNumber > 0) {
-    --activeElementNumber;
-    switchDisplay(activeElementNumber);
-  }
+const decreaseIndex = (displayIndex, minIndex = 0) => {
+  return Math.max(--displayIndex, minIndex);
 };
 
-const nextDisplay = () => {
-  if (activeElementNumber < displays.length - 1) {
-    ++activeElementNumber;
-    switchDisplay(activeElementNumber);
-  }
+const increaseIndex = (displayIndex, maxIndex) => {
+  return Math.min(++displayIndex, maxIndex);
 };
 
-document.addEventListener(`keydown`,
-    (e) => {
-      const currentkey = e.keyCode;
-      if (altBtnKey && (currentkey === leftBtnKey || currentkey === rightBtnKey)) {
-        e.preventDefault();
-        if (currentkey === leftBtnKey) {
-          prevDisplay();
-        } else {
-          nextDisplay();
-        }
+document.addEventListener(`keydown`, (e) => {
+    if (!e.altKey) {
+      return;
+    }
+    const currentkey = e.keyCode;
+    if (currentkey === LEFT_BTN_KEY || currentkey === RIGHT_BTN_KEY) {
+      e.preventDefault();
+      if (currentkey === LEFT_BTN_KEY) {
+        activeDisplayIndex = decreaseIndex(activeDisplayIndex);
+        switchDisplay(activeDisplayIndex);
       }
-    });
+      if (currentkey === RIGHT_BTN_KEY) {
+        const maxDisplaysIndex = Math.max(displays.length - 1, 0);
+        activeDisplayIndex = increaseIndex(activeDisplayIndex, maxDisplaysIndex);
+        switchDisplay(activeDisplayIndex);
+      }
+    }
+  });

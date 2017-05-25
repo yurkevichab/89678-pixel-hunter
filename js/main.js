@@ -1,33 +1,47 @@
 ﻿const mainBlock = document.querySelector(`main.central`);
-let index = 0;
+const leftBtnKey = 37;
+const rightBtnKey = 39;
+const altBtnKey = 18;
 const displays = [
-  document.getElementById(`greeting`),
-  document.getElementById(`rules`),
-  document.getElementById(`game-1`),
-  document.getElementById(`game-2`),
-  document.getElementById(`game-3`),
-  document.getElementById(`stats`)
+  mainBlock.cloneNode(true),
+  document.getElementById(`greeting`).content,
+  document.getElementById(`rules`).content,
+  document.getElementById(`game-1`).content,
+  document.getElementById(`game-2`).content,
+  document.getElementById(`game-3`).content,
+  document.getElementById(`stats`).content
 ];
+let activeElementNumber = 0;
 
 const switchDisplay = (number) => {
   mainBlock.innerHTML = ``;
-  const display = displays[number].innerHTML;
-  mainBlock.innerHTML = display;
+  const display = displays[number];
+  mainBlock.appendChild(display.cloneNode(true));
 };
 
-document.onkeydown = (e) => {
-  const key = e.keyCode;
-  if (e.altKey && (key === 37 || key === 39)) {
-    e.preventDefault();
-    if (key === 37) {
-      if (index > 0) {
-        --index;
-      }
-    } else {
-      if (index < displays.length - 1) {
-        ++index;
-      }
-    }
-    switchDisplay(index);
+const prevDisplay = () => {
+  if (activeElementNumber > 0) {
+    --activeElementNumber;
+    switchDisplay(activeElementNumber);
   }
 };
+
+const nextDisplay = () => {
+  if (activeElementNumber < displays.length - 1) {
+    ++activeElementNumber;
+    switchDisplay(activeElementNumber);
+  }
+};
+
+document.addEventListener("keydown",
+  (e) => {
+    const currentkey = e.keyCode;
+    if (altBtnKey && (currentkey === leftBtnKey || currentkey === rightBtnKey)) {
+      e.preventDefault();
+      if (currentkey === leftBtnKey) {
+        prevDisplay();
+      } else {
+        nextDisplay();
+      }
+    }
+  });

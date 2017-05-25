@@ -35,13 +35,13 @@ const nextDisplay = () => {
 
 document.addEventListener(`keydown`,
     (e) => {
-    const currentkey = e.keyCode;
-    if (altBtnKey && (currentkey === leftBtnKey || currentkey === rightBtnKey)) {
-      e.preventDefault();
-      if (currentkey === leftBtnKey) {
-        prevDisplay();
-      } else {
-        nextDisplay();
+      const currentkey = e.keyCode;
+      if (altBtnKey && (currentkey === leftBtnKey || currentkey === rightBtnKey)) {
+        e.preventDefault();
+        if (currentkey === leftBtnKey) {
+          prevDisplay();
+        } else {
+          nextDisplay();
+        }
       }
-    }
-  });
+    });

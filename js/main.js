@@ -29,7 +29,8 @@ const increaseIndex = (displayIndex, maxIndex) => {
   return Math.min(++displayIndex, maxIndex);
 };
 
-document.addEventListener(`keydown`, (e) => {
+document.addEventListener(`keydown`,
+  (e) => {
     if (!e.altKey) {
       return;
     }
@@ -37,11 +38,11 @@ document.addEventListener(`keydown`, (e) => {
     if (currentkey === LEFT_BTN_KEY || currentkey === RIGHT_BTN_KEY) {
       e.preventDefault();
       if (currentkey === LEFT_BTN_KEY) {
-        activeDisplayIndex = decreaseIndex(activeDisplayIndex);
+        activeDisplayIndex = decreaseIndex(activeDisplayIndex, MIN_DISPLAY_INDEX);
         switchDisplay(activeDisplayIndex);
       }
       if (currentkey === RIGHT_BTN_KEY) {
-        const maxDisplaysIndex = Math.max(displays.length - 1, 0);
+        const maxDisplaysIndex = Math.max(displays.length - 1, MIN_DISPLAY_INDEX);
         activeDisplayIndex = increaseIndex(activeDisplayIndex, maxDisplaysIndex);
         switchDisplay(activeDisplayIndex);
       }

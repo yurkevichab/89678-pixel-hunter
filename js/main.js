@@ -33,8 +33,8 @@ const nextDisplay = () => {
   }
 };
 
-document.addEventListener("keydown",
-  (e) => {
+document.addEventListener(`keydown`,
+    (e) => {
     const currentkey = e.keyCode;
     if (altBtnKey && (currentkey === leftBtnKey || currentkey === rightBtnKey)) {
       e.preventDefault();

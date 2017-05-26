@@ -21,6 +21,7 @@ const displays = [
     document.getElementById(`stats`)
   ].map((template) => template.content)
 ];
+const maxDisplaysIndex = displays.length - 1;
 let activeDisplayIndex = 0;
 
 const switchDisplay = (number) => {
@@ -43,11 +44,12 @@ const onDocumentKeyDown = (e) => {
   }
   const currentKey = e.keyCode;
   if (currentKey === LEFT_BTN_KEY) {
+    e.preventDefault();
     activeDisplayIndex = decreaseIndex(activeDisplayIndex, MIN_DISPLAY_INDEX);
     switchDisplay(activeDisplayIndex);
   }
   if (currentKey === RIGHT_BTN_KEY) {
-    const maxDisplaysIndex = displays.length - 1;
+    e.preventDefault();
     activeDisplayIndex = increaseIndex(activeDisplayIndex, maxDisplaysIndex);
     switchDisplay(activeDisplayIndex);
   }

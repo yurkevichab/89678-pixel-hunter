@@ -1,16 +1,13 @@
-import createElement from '../createElement';
-import switchDisplay from '../switchDisplay';
+import createElement from '../create-element';
+import switchDisplay from '../switch-display';
 import game1 from './game-1';
 import intro from './intro';
+import footer from './footer';
+import back from './back';
 
-const html = `<header class="header">
-    <div class="header__back">
-      <span class="back">
-        <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-        <img src="img/logo_small.png" width="101" height="44">
-      </span>
-    </div>
-  </header>
+const template = `<header class="header">
+${back}
+</header>
   <div class="rules">
     <h1 class="rules__title">Правила</h1>
     <p class="rules__description">Угадай 10 раз для каждого изображения фото <img
@@ -27,34 +24,24 @@ const html = `<header class="header">
       <button class="rules__button  continue" type="submit" disabled>Go!</button>
     </form>
   </div>
-  <footer class="footer">
-    <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-    <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2016</span>
-    <div class="footer__social-links">
-      <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-      <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-      <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-      <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-    </div>
-  </footer>`;
+  ${footer}`;
 
-const rules = createElement(html);
-const rulesForm = rules.querySelector(`.rules__form`);
-const rulesInput = rules.querySelector(`.rules__input`);
-const rulesButton = rules.querySelector(`.rules__button`);
+const display = createElement(template);
+const rulesInput = display.querySelector(`.rules__input`);
+const rulesButton = display.querySelector(`.rules__button`);
 
 rulesInput.addEventListener(`input`, (e) => {
-  if (e.target.value !== ``) {
-    rulesButton.removeAttribute(`disabled`);
-  } else {
-    rulesButton.setAttribute(`disabled`, true);
-  }
+  rulesButton.disabled = !e.target.value.trim();
 });
 
-rulesForm.addEventListener(`submit`, (e) => {
+rulesButton.addEventListener(`click`, (e) => {
+  e.preventDefault();
   switchDisplay(game1);
 });
-const back = rules.querySelector(`.header__back`);
-back.addEventListener(`click`, () => switchDisplay(intro));
 
-export default rules;
+const backButton = display.querySelector(`.header__back`);
+backButton.addEventListener(`click`, (e) => {
+  switchDisplay(intro);
+});
+
+export default display;

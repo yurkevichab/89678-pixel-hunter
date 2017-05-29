@@ -1,22 +1,12 @@
-import createElement from '../createElement';
-import switchDisplay from '../switchDisplay';
+import createElement from '../create-element';
+import switchDisplay from '../switch-display';
 import game2 from './game-2';
 import intro from './intro';
+import header from './header';
+import footer from './footer';
 
-const game1html = `<header class="header">
-    <div class="header__back">
-      <span class="back">
-        <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-        <img src="img/logo_small.png" width="101" height="44">
-      </span>
-    </div>
-    <h1 class="game__timer">NN</h1>
-    <div class="game__lives">
-      <img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">
-      <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-      <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-    </div>
-  </header>
+const template = `
+${header}
   <div class="game">
     <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
     <form class="game__content">
@@ -58,37 +48,25 @@ const game1html = `<header class="header">
       </ul>
     </div>
   </div>
-  <footer class="footer">
-    <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-    <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2016</span>
-    <div class="footer__social-links">
-      <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-      <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-      <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-      <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-    </div>
-  </footer>`;
+${footer}`;
 
-const game1 = createElement(game1html);
-const form = game1.querySelector(`.game__content`);
+const display = createElement(template);
+const form = display.querySelector(`.game__content`);
 
-const isCheckedRadio = (radioName) =>{
+const isCheckedRadio = (radioName) => {
   const radios = form.querySelectorAll(`input[name=${radioName}]`);
-  for (const radio of radios) {
-    if (radio.checked) {
-      return true;
-    }
-  }
-  return false;
+  return [...radios].some((radio) => {
+    return radio.checked;
+  });
 };
 
-form.addEventListener(`change`, (e) => {
+form.addEventListener(`change`, () => {
   if (isCheckedRadio(`question1`) && isCheckedRadio(`question2`)) {
     switchDisplay(game2);
   }
 });
 
-const back = game1.querySelector(`.header__back`);
-back.addEventListener(`click`, () => switchDisplay(intro));
+const backButton = display.querySelector(`.header__back`);
+backButton.addEventListener(`click`, () => switchDisplay(intro));
 
-export default game1;
+export default display;

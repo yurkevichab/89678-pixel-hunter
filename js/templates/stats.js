@@ -1,15 +1,11 @@
-import createElement from '../createElement';
-import switchDisplay from '../switchDisplay';
+import createElement from '../create-element';
+import switchDisplay from '../switch-display';
 import intro from './intro';
+import footer from './footer';
+import back from './back';
 
-const html = `<header class="header">
-    <div class="header__back">
-      <span class="back">
-        <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-        <img src="img/logo_small.png" width="101" height="44">
-      </span>
-    </div>
-  </header>
+const template = `
+${back}
   <div class="result">
     <h1>Победа!</h1>
     <table class="result__table">
@@ -110,19 +106,11 @@ const html = `<header class="header">
       </tr>
     </table>
   </div>
-  <footer class="footer">
-    <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-    <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2016</span>
-    <div class="footer__social-links">
-      <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-      <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-      <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-      <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-    </div>
-  </footer>`;
-const ststs = createElement(html);
+  ${footer}`;
 
-const back = ststs.querySelector(`.header__back`);
-back.addEventListener(`click`, () => switchDisplay(intro));
+const display = createElement(template);
 
-export default ststs;
+const backButton = display.querySelector(`.header__back`);
+backButton.addEventListener(`click`, () => switchDisplay(intro));
+
+export default display;

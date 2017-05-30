@@ -4,12 +4,9 @@ export default (html) => {
 
   div.innerHTML = html;
   const elements = div.childNodes;
-elements.forEach((el)=>{
-  fragment.appendChild(el);
-})
-  /*while (div.childNodes.length > 0) {
-    fragment.appendChild(elements.childNodes[0]);
-  }*/
-  console.info(fragment);
-  return fragment;
+  elements.forEach((el)=>{
+    fragment.appendChild(el);
+  });
+
+  return fragment.cloneNode(true);
 };

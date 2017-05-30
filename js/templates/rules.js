@@ -1,11 +1,11 @@
 import createElement from '../create-element';
 import switchDisplay from '../switch-display';
-import game1 from './game-1';
-import greeting from './greeting';
+import getGame1 from './game-1';
+import getGreeting from './greeting';
 import footer from './footer';
 import {back} from './header';
 
-export default ()=> {
+export default () => {
   const template = `<header class="header">
 ${back}
 </header>
@@ -37,12 +37,12 @@ ${footer}`;
 
   rulesButton.addEventListener(`click`, (e) => {
     e.preventDefault();
-    switchDisplay(game1());
+    switchDisplay(getGame1());
   });
 
   const backButton = display.querySelector(`.header__back`);
-  backButton.addEventListener(`click`, (e) => {
-    switchDisplay(greeting());
+  backButton.addEventListener(`click`, () => {
+    switchDisplay(getGreeting());
   });
 
   return display;

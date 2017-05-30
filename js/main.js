@@ -1,4 +1,4 @@
 import switchDisplay from './switch-display';
-import intro from './templates/intro';
+import getIntro from './templates/intro';
 
-switchDisplay(intro());
+switchDisplay(getIntro());

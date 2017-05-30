@@ -1,9 +1,9 @@
 import createElement from '../create-element';
 import switchDisplay from '../switch-display';
-import rules from './rules';
+import getRules from './rules';
 import footer from './footer';
 
-export default ()=> {
+export default () => {
   const template = `<div class="greeting central--blur">
     <div class="greeting__logo"><img src="img/logo_big.png" width="201" height="89" alt="Pixel Hunter"></div>
     <h1 class="greeting__asterisk">*</h1>
@@ -23,7 +23,7 @@ export default ()=> {
   const greetingContinue = display.querySelector(`.greeting__continue`);
 
   greetingContinue.addEventListener(`click`, () => {
-    switchDisplay(rules());
+    switchDisplay(getRules());
   });
   return display;
 };

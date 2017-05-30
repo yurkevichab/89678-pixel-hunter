@@ -1,13 +1,13 @@
 import createElement from '../create-element';
 import switchDisplay from '../switch-display';
-import game3 from './game-3';
-import greeting from './greeting';
+import getGame3 from './game-3';
+import getGreeting from './greeting';
 import {header} from './header';
 import footer from './footer';
 
-export default ()=> {
+export default () => {
   const template = `
-${header}
+  ${header}
   <div class="game">
     <p class="game__task">Угадай, фото или рисунок?</p>
     <form class="game__content  game__content--wide">
@@ -38,17 +38,17 @@ ${header}
       </ul>
     </div>
   </div>
- ${footer}`;
+  ${footer}`;
 
   const display = createElement(template);
   const form = display.querySelector(`.game__content`);
 
-  form.addEventListener(`change`, (e) => {
-    switchDisplay(game3());
+  form.addEventListener(`change`, () => {
+    switchDisplay(getGame3());
   });
 
   const backButton = display.querySelector(`.header__back`);
-  backButton.addEventListener(`click`, () => switchDisplay(greeting()));
+  backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
 
   return display;
 };

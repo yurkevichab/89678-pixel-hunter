@@ -27,6 +27,6 @@
     "gulp-sourcemaps": "2.6.0"
   },
   "engines": {
-    "node": "6.10"
+    "node": "7.10"
   }
 }

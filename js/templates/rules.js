@@ -1,11 +1,10 @@
 import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import game1 from './game-1';
-import intro from './intro';
 import footer from './footer';
-import back from './back';
-
-const template = `<header class="header">
+import {back} from './header';
+import intro from './intro';
+const template = `</div><header class="header">
 ${back}
 </header>
   <div class="rules">
@@ -23,8 +22,7 @@ ${back}
       <input class="rules__input" type="text" placeholder="Ваше Имя">
       <button class="rules__button  continue" type="submit" disabled>Go!</button>
     </form>
-  </div>
-  ${footer}`;
+  </div>${footer}`;
 
 const display = createElement(template);
 const rulesInput = display.querySelector(`.rules__input`);

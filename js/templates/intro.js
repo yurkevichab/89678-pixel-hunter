@@ -9,7 +9,7 @@ const template = `<div id="main" class="central__content">
       <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
     </div>
   </div>
-  ${footer}`;
+${footer}`;
 
 const display = createElement(template);
 const introAsterisk = display.querySelector(`.intro__asterisk`);

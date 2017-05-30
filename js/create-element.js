@@ -1,10 +1,15 @@
 export default (html) => {
   const div = document.createElement(`div`);
-  const fragment = document.createDocumentFragment();
+  let fragment = document.createDocumentFragment();
 
   div.innerHTML = html;
-  while (div.childNodes.length > 0) {
-    fragment.appendChild(div.childNodes[0]);
-  }
-  return fragment.cloneNode(true);
+  const elements = div.childNodes;
+elements.forEach((el)=>{
+  fragment.appendChild(el);
+})
+  /*while (div.childNodes.length > 0) {
+    fragment.appendChild(elements.childNodes[0]);
+  }*/
+  console.info(fragment);
+  return fragment;
 };

@@ -2,12 +2,11 @@ import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import stats from './stats';
 import intro from './intro';
-import header from './header';
+import {header} from './header';
 import footer from './footer';
 
-const template = `
-${header}
-  <div class="game">
+const template = `${header}
+<div class="game">
     <p class="game__task">Найдите рисунок среди изображений</p>
     <form class="game__content  game__content--triple">
       <div class="game__option">
@@ -35,7 +34,7 @@ ${header}
       </ul>
     </div>
   </div>
- ${footer}`;
+${footer}`;
 
 const display = createElement(template);
 const form = display.querySelector(`.game__content`);

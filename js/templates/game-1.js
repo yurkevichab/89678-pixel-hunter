@@ -2,12 +2,11 @@ import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import game2 from './game-2';
 import intro from './intro';
-import header from './header';
+import {header} from './header';
 import footer from './footer';
 
-const template = `
-${header}
-  <div class="game">
+const template = `${header}
+<div class="game">
     <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
     <form class="game__content">
       <div class="game__option">

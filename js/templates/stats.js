@@ -2,12 +2,12 @@ import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import getGreeting from './greeting';
 import footer from './footer';
-import {back} from './header';
+import header from './header';
 
 export default () => {
   const template = `
   <header class="header">
-  ${back}
+  ${header()}
   </header>
   <div class="result">
     <h1>Победа!</h1>

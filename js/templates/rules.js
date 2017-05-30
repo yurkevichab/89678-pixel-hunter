@@ -3,11 +3,11 @@ import switchDisplay from '../switch-display';
 import getGame1 from './game-1';
 import getGreeting from './greeting';
 import footer from './footer';
-import {back} from './header';
+import header from './header';
 
 export default () => {
   const template = `<header class="header">
-${back}
+${header()}
 </header>
   <div class="rules">
     <h1 class="rules__title">Правила</h1>

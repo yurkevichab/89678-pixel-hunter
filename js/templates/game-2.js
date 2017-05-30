@@ -2,12 +2,14 @@ import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import getGame3 from './game-3';
 import getGreeting from './greeting';
-import {header} from './header';
+import header from './header';
 import footer from './footer';
+
+const withHearts = true;
 
 export default () => {
   const template = `
-  ${header}
+  ${header(withHearts)}
   <div class="game">
     <p class="game__task">Угадай, фото или рисунок?</p>
     <form class="game__content  game__content--wide">

@@ -1,10 +1,13 @@
 import createElement from '../create-element';
 import switchDisplay from '../switch-display';
-import intro from './intro';
+import greeting from './greeting';
 import footer from './footer';
 import {back} from './header';
 
-const template = `<header class="header">${back}</header>
+export default ()=> {
+  const template = `<header class="header">
+${back}
+</header>
   <div class="result">
     <h1>Победа!</h1>
     <table class="result__table">
@@ -104,11 +107,13 @@ const template = `<header class="header">${back}</header>
         <td colspan="5" class="result__total  result__total--final">950</td>
       </tr>
     </table>
-  </div>${footer}`;
+  </div>
+  ${footer}`;
 
-const display = createElement(template);
+  const display = createElement(template);
 
-const backButton = display.querySelector(`.header__back`);
-backButton.addEventListener(`click`, () => switchDisplay(intro));
+  const backButton = display.querySelector(`.header__back`);
+  backButton.addEventListener(`click`, () => switchDisplay(greeting()));
 
-export default display;
+  return display;
+};

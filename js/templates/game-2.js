@@ -1,12 +1,14 @@
 import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import game3 from './game-3';
-import intro from './intro';
+import greeting from './greeting';
 import {header} from './header';
 import footer from './footer';
 
-const template = `${header}
-<div class="game">
+export default ()=> {
+  const template = `
+${header}
+  <div class="game">
     <p class="game__task">Угадай, фото или рисунок?</p>
     <form class="game__content  game__content--wide">
       <div class="game__option">
@@ -36,16 +38,17 @@ const template = `${header}
       </ul>
     </div>
   </div>
-${footer}`;
+ ${footer}`;
 
-const display = createElement(template);
-const form = display.querySelector(`.game__content`);
+  const display = createElement(template);
+  const form = display.querySelector(`.game__content`);
 
-form.addEventListener(`change`, (e) => {
-  switchDisplay(game3);
-});
+  form.addEventListener(`change`, (e) => {
+    switchDisplay(game3());
+  });
 
-const backButton = display.querySelector(`.header__back`);
-backButton.addEventListener(`click`, () => switchDisplay(intro));
+  const backButton = display.querySelector(`.header__back`);
+  backButton.addEventListener(`click`, () => switchDisplay(greeting()));
 
-export default display;
+  return display;
+};

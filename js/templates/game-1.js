@@ -1,12 +1,14 @@
 import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import game2 from './game-2';
-import intro from './intro';
+import greeting from './greeting';
 import {header} from './header';
 import footer from './footer';
 
-const template = `${header}
-<div class="game">
+export default ()=> {
+  const template = `
+${header}
+  <div class="game">
     <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
     <form class="game__content">
       <div class="game__option">
@@ -49,23 +51,23 @@ const template = `${header}
   </div>
 ${footer}`;
 
-const display = createElement(template);
-const form = display.querySelector(`.game__content`);
+  const display = createElement(template);
+  const form = display.querySelector(`.game__content`);
 
-const isCheckedRadio = (radioName) => {
-  const radios = form.querySelectorAll(`input[name=${radioName}]`);
-  return [...radios].some((radio) => {
-    return radio.checked;
+  const isCheckedRadio = (radioName) => {
+    const radios = form.querySelectorAll(`input[name=${radioName}]`);
+    return [...radios].some((radio) => {
+      return radio.checked;
+    });
+  };
+
+  form.addEventListener(`change`, () => {
+    if (isCheckedRadio(`question1`) && isCheckedRadio(`question2`)) {
+      switchDisplay(game2());
+    }
   });
+
+  const backButton = display.querySelector(`.header__back`);
+  backButton.addEventListener(`click`, () => switchDisplay(greeting()));
+  return display;
 };
-
-form.addEventListener(`change`, () => {
-  if (isCheckedRadio(`question1`) && isCheckedRadio(`question2`)) {
-    switchDisplay(game2);
-  }
-});
-
-const backButton = display.querySelector(`.header__back`);
-backButton.addEventListener(`click`, () => switchDisplay(intro));
-
-export default display;

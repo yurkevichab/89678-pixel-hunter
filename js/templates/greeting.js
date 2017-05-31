@@ -4,7 +4,8 @@ import getRules from './rules';
 import footer from './footer';
 
 export default () => {
-  const template = `<div class="greeting central--blur">
+  const template = `
+  <div class="greeting central--blur">
     <div class="greeting__logo"><img src="img/logo_big.png" width="201" height="89" alt="Pixel Hunter"></div>
     <h1 class="greeting__asterisk">*</h1>
     <div class="greeting__challenge">
@@ -22,9 +23,7 @@ export default () => {
   const display = createElement(template);
   const greetingContinue = display.querySelector(`.greeting__continue`);
 
-  greetingContinue.addEventListener(`click`, () => {
-    switchDisplay(getRules());
-  });
+  greetingContinue.addEventListener(`click`, () => switchDisplay(getRules()));
 
   return display;
 };

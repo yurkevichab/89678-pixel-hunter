@@ -44,12 +44,10 @@ export default () => {
 
   const display = createElement(template);
   const form = display.querySelector(`.game__content`);
-
-  form.addEventListener(`change`, () => {
-    switchDisplay(getGame3());
-  });
-
   const backButton = display.querySelector(`.header__back`);
+
+  form.addEventListener(`change`, () => switchDisplay(getGame3()));
+
   backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
 
   return display;

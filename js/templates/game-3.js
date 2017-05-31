@@ -42,6 +42,7 @@ export default () => {
 
   const display = createElement(template);
   const form = display.querySelector(`.game__content`);
+  const backButton = display.querySelector(`.header__back`);
 
   form.addEventListener(`click`, (e) => {
     if (e.target.className.includes(`game__option`)) {
@@ -49,7 +50,6 @@ export default () => {
     }
   });
 
-  const backButton = display.querySelector(`.header__back`);
   backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
 
   return display;

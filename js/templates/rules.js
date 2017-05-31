@@ -24,11 +24,12 @@ export default () => {
       <button class="rules__button  continue" type="submit" disabled>Go!</button>
     </form>
   </div>
-${footer}`;
+  ${footer}`;
 
   const display = createElement(template);
   const rulesInput = display.querySelector(`.rules__input`);
   const rulesButton = display.querySelector(`.rules__button`);
+  const backButton = display.querySelector(`.header__back`);
 
   rulesInput.addEventListener(`input`, (e) => {
     rulesButton.disabled = !e.target.value.trim();
@@ -39,10 +40,7 @@ ${footer}`;
     switchDisplay(getGame1());
   });
 
-  const backButton = display.querySelector(`.header__back`);
-  backButton.addEventListener(`click`, () => {
-    switchDisplay(getGreeting());
-  });
+  backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
 
   return display;
 };

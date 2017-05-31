@@ -15,9 +15,8 @@ export default () => {
 
   const display = createElement(template);
   const introAsterisk = display.querySelector(`.intro__asterisk`);
-  introAsterisk.addEventListener(`click`, () => {
-    switchDisplay(getGreeting());
-  });
+
+  introAsterisk.addEventListener(`click`, () => switchDisplay(getGreeting()));
 
   return display;
 };

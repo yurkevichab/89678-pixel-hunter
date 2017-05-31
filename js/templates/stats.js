@@ -110,8 +110,8 @@ export default () => {
   ${footer}`;
 
   const display = createElement(template);
-
   const backButton = display.querySelector(`.header__back`);
+
   backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
 
   return display;

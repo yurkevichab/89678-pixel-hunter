@@ -55,6 +55,7 @@ export default () => {
 
   const display = createElement(template);
   const form = display.querySelector(`.game__content`);
+  const backButton = display.querySelector(`.header__back`);
 
   const isRadioChecked = (radioName) => {
     const radios = form.querySelectorAll(`input[name=${radioName}]`);
@@ -68,7 +69,6 @@ export default () => {
     }
   });
 
-  const backButton = display.querySelector(`.header__back`);
   backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
 
   return display;

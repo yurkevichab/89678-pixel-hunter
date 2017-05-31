@@ -2,13 +2,11 @@ import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import getGreeting from './greeting';
 import footer from './footer';
-import header from './header';
+import getHeader from './header';
 
 export default () => {
   const template = `
-  <header class="header">
-  ${header()}
-  </header>
+  ${getHeader()}
   <div class="result">
     <h1>Победа!</h1>
     <table class="result__table">

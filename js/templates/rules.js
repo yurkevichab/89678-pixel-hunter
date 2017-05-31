@@ -3,12 +3,11 @@ import switchDisplay from '../switch-display';
 import getGame1 from './game-1';
 import getGreeting from './greeting';
 import footer from './footer';
-import header from './header';
+import getHeader from './header';
 
 export default () => {
-  const template = `<header class="header">
-${header()}
-</header>
+  const template = `
+  ${getHeader()}
   <div class="rules">
     <h1 class="rules__title">Правила</h1>
     <p class="rules__description">Угадай 10 раз для каждого изображения фото <img

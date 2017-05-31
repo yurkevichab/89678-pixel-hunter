@@ -2,14 +2,14 @@ import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import getGame2 from './game-2';
 import getGreeting from './greeting';
-import header from './header';
+import getHeader from './header';
 import footer from './footer';
 
-const withHearts = true;
+const isGamePage = true;
 
 export default () => {
   const template = `
-  ${header(withHearts)}
+  ${getHeader(isGamePage)}
   <div class="game">
     <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
     <form class="game__content">
@@ -56,18 +56,20 @@ export default () => {
   const display = createElement(template);
   const form = display.querySelector(`.game__content`);
 
-  const isCheckedRadio = (radioName) => {
+  const isRadioChecked = (radioName) => {
     const radios = form.querySelectorAll(`input[name=${radioName}]`);
+
     return [...radios].some((radio) => radio.checked);
   };
 
   form.addEventListener(`change`, () => {
-    if (isCheckedRadio(`question1`) && isCheckedRadio(`question2`)) {
+    if (isRadioChecked(`question1`) && isRadioChecked(`question2`)) {
       switchDisplay(getGame2());
     }
   });
 
   const backButton = display.querySelector(`.header__back`);
   backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
+
   return display;
 };

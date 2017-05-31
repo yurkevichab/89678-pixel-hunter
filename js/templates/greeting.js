@@ -25,5 +25,6 @@ export default () => {
   greetingContinue.addEventListener(`click`, () => {
     switchDisplay(getRules());
   });
+
   return display;
 };

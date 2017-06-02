@@ -1,13 +1,5 @@
-export default (isGamePage = false) => {
-  const gameStats = `
-  <h1 class="game__timer">NN</h1>
-  <div class="game__lives">
-    <img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">
-    <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-    <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-   </div>`;
-
-  const content = isGamePage ? gameStats : ``;
+export default (isGamePage = false, state = null) => {
+  const content = isGamePage ? gameStats(state) : ``;
 
   return `
   <header class="header">
@@ -19,4 +11,21 @@ export default (isGamePage = false) => {
     </div>
     ${content} 
   </header>`;
+};
+
+const createHeart = (count, type) => {
+  return new Array(count)
+    .fill(`<img src="img/${type}.svg" class="game__heart" alt="Life" width="32" height="32">`)
+    .join(` `);
+};
+
+const gameStats = (state) => {
+  const maxLives = 3;
+
+  return `
+    <h1 class="game__timer">${state.timer}</h1>
+    <div class="game__lives">
+      ${createHeart(maxLives - state.lives, `heart__empty`)}
+      ${createHeart(state.lives, `heart__full`)}
+    </div>`;
 };

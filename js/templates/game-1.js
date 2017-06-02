@@ -3,6 +3,7 @@ import switchDisplay from '../switch-display';
 import getGame2 from './game-2';
 import getGreeting from './greeting';
 import createGameTemplate from '../create-game-template';
+import {initialState} from '../data';
 
 export default (game) => {
   const template = createGameTemplate(game);
@@ -19,7 +20,9 @@ export default (game) => {
 
   form.addEventListener(`change`, () => {
     if (isRadioChecked(`question1`) && isRadioChecked(`question2`)) {
-      switchDisplay(getGame2());
+      switchDisplay(getGame2(Object.assign({}, initialState, {
+        'game': `game-2`
+      })));
     }
   });
 

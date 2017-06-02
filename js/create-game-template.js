@@ -16,16 +16,14 @@ const drawGameOptions = (questions) => {
 };
 
 const drawAnswer = (question, index) => {
-  if (question.withAnswers) {
-    return ` 
-      <label class="game__answer game__answer--photo">
-        <input name="question${index}" type="radio" value="photo">
-        <span>Фото</span>
-      </label>
-      <label class="game__answer game__answer--paint">
-        <input name="question${index}" type="radio" value="paint">
-        <span>Рисунок</span>
+  if (question.answers.length > 0) {
+    return question.answers.reduce((prev, current)=>{
+      return prev + `
+      <label class="${current.classes}">
+        <input name="question${index}" type="radio" value="${current.value}">
+        <span>${current.text}</span>
       </label>`;
+    }, ``);
   }
   return ``;
 };

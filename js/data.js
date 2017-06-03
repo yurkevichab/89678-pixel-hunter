@@ -41,8 +41,8 @@ export const games = Object.freeze({
     'stats': [`wrong`, `slow`, `fast`, `correct`, ``, ``, ``, ``, ``, ``]
   },
   'game-2': {
-    description: `Угадай, фото или рисунок?`,
-    questions: [
+    'description': `Угадай, фото или рисунок?`,
+    'questions': [
       {
         'image': `http://i.imgur.com/1KegWPz.jpg`,
         'answers': [
@@ -58,11 +58,11 @@ export const games = Object.freeze({
           }
         ]
       }],
-    stats: [`wrong`, `slow`, `fast`, `correct`, `wrong`, ``, `slow`, ``, `fast`, ``]
+    'stats': [`wrong`, `slow`, `fast`, `correct`, `wrong`, ``, `slow`, ``, `fast`, ``]
   },
   'game-3': {
-    description: `Найдите рисунок среди изображений`,
-    questions: [
+    'description': `Найдите рисунок среди изображений`,
+    'questions': [
       {
         'image': `http://i.imgur.com/1KegWPz.jpg`,
         'answers': []
@@ -76,6 +76,6 @@ export const games = Object.freeze({
         'answers': []
       }
     ],
-    stats: [`wrong`, `slow`, `fast`, `correct`, `wrong`, ``, `slow`, ``, `fast`, ``]
+    'stats': [`wrong`, `slow`, `fast`, `correct`, `wrong`, ``, `slow`, ``, `fast`, ``]
   }
 });

@@ -28,8 +28,8 @@ export default (game) => {
     const parentBlockHeight = parentBlock.clientHeight;
     const parentBlockWidth = parentBlock.clientWidth;
 
-    answerImage.width = parentBlockHeight;
-    answerImage.height = parentBlockWidth;
+    answerImage.setAttribute(`width`, `${parentBlockHeight}`);
+    answerImage.setAttribute(`height`, `${parentBlockWidth}`);
   });
 
 

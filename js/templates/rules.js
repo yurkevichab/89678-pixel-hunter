@@ -1,10 +1,10 @@
 import createElement from '../create-element';
 import switchDisplay from '../switch-display';
-import getGame1 from './game-1';
 import getGreeting from './greeting';
 import footer from './footer';
 import getHeader from './header';
 import {initialState, games} from '../data';
+import {getGameDisplay} from '../create-game-display';
 
 export default () => {
   const template = `
@@ -38,7 +38,8 @@ export default () => {
 
   rulesButton.addEventListener(`click`, (e) => {
     e.preventDefault();
-    switchDisplay(getGame1(games[initialState.game]));
+    const cd = getGameDisplay(games[initialState.game]);
+    switchDisplay(cd);
   });
 
   backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));

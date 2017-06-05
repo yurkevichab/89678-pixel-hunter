@@ -4,28 +4,47 @@ import {initialState} from './data';
 
 const isGamePage = true;
 
-const drawGameOptions = (questions) => {
-  return questions.reduce(function (content, question, index) {
+const drawGameOptions = (game) => {
+  return game.questions.reduce(function (content, question, index) {
     const htmlQuetstion = `
       <div class="game__option">
         <img src="${question.image}" alt="Option 1">
-        ${drawAnswer(question, index + 1)}
+        ${drawAnswer(game.type, index + 1)}
       </div>`;
     return content + htmlQuetstion;
   }, ``);
 };
 
-const drawAnswer = (question, index) => {
-  if (question.answers.length > 0) {
-    return question.answers.reduce((prev, current)=>{
-      return prev + `
-      <label class="${current.classes}">
-        <input name="question${index}" type="radio" value="${current.value}">
-        <span>${current.text}</span>
-      </label>`;
-    }, ``);
+const drawAnswer = (gameType, index) => {
+  switch (gameType) {
+    case `game-1`:
+      return ` 
+        <label class="game__answer game__answer--photo">
+          <input name="question${index}" type="radio" value="photo">
+          <span>Фото</span>
+        </label>
+        <label class="game__answer game__answer--paint">
+          <input name="question${index}" type="radio" value="paint">
+          <span>Рисунок</span>
+        </label>`;
+
+    case `game-2`:
+      return `
+        <label class="game__answer  game__answer--photo">
+          <input name="question${index}" type="radio" value="photo">
+          <span>Фото</span>
+        </label>
+        <label class="game__answer  game__answer--wide  game__answer--paint">
+          <input name="question${index}" type="radio" value="paint">
+          <span>Рисунок</span>
+        </label>`;
+
+    case `game-3`:
+      return ``;
+
+    default:
+      return ``;
   }
-  return ``;
 };
 
 const drawStats = (stats) => {
@@ -39,16 +58,13 @@ const drawStats = (stats) => {
     </div>`;
 };
 
-export default (game) => {
-  return `
+export default (game) => `
   ${getHeader(isGamePage, initialState)}
   <div class="game">
     <p class="game__task">${game.description}</p>
     <form class="game__content">     
-      ${drawGameOptions(game.questions)}
+      ${drawGameOptions(game)}
     </form>
-   ${drawStats(game.stats)}
+   ${drawStats(initialState.stats)}
   </div>
   ${footer}`;
-};
-

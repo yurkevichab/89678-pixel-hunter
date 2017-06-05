@@ -20,12 +20,11 @@ const createHeart = (count, type) => {
 };
 
 const gameStats = (state) => {
-  const maxLives = 3;
 
   return `
     <h1 class="game__timer">${state.timer}</h1>
     <div class="game__lives">
-      ${createHeart(maxLives - state.lives, `heart__empty`)}
+      ${createHeart(state.maxLives - state.lives, `heart__empty`)}
       ${createHeart(state.lives, `heart__full`)}
     </div>`;
 };

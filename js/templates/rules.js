@@ -38,8 +38,8 @@ export default () => {
 
   rulesButton.addEventListener(`click`, (e) => {
     e.preventDefault();
-    const cd = getGameDisplay(games[initialState.game]);
-    switchDisplay(cd);
+    const gameDisplay = getGameDisplay(games[initialState.game]);
+    switchDisplay(gameDisplay);
   });
 
   backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));

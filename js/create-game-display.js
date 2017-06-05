@@ -17,11 +17,16 @@ export const getGameDisplay = (game)=> {
   for (let img of answerImages) {
     img.addEventListener(`load`, ()=> {
       const parentBlock = img.parentNode;
-      const parentBlockHeight = parentBlock.clientHeight;
-      const parentBlockWidth = parentBlock.clientWidth;
 
-      img.setAttribute(`width`, `${parentBlockHeight}`);
-      img.setAttribute(`height`, `${parentBlockWidth}`);
+      const maxWidth = parentBlock.clientWidth;
+      const maxHeight = parentBlock.clientHeight;
+      const width = img.width;
+      const height = img.height;
+
+      const ratio = Math.min(maxWidth / width, maxHeight / height);
+
+      img.setAttribute(`width`, `${width * ratio}`);
+      img.setAttribute(`height`, `${height * ratio }`);
     });
   }
 
@@ -75,25 +80,9 @@ const switchDisplayEventGame2 = (form) => {
 
 const switchDisplayEventGame3 = (form, answerImages) => {
   form.addEventListener(`click`, (e) => {
-    if (e.target.parentNode.className.includes(`game__option`)) {
+    if (e.target.closest(`.game__option`)) {
       switchDisplay(getStats());
     }
   });
-
-  for (let img of answerImages) {
-    img.addEventListener(`mouseover`, (e)=> {
-      const parentElement = e.target.parentNode;
-      answerImages.forEach((item, i, arr) => {
-        const parentImg = item.parentNode;
-        parentImg.classList.remove(`game__option--selected`);
-      });
-      parentElement.className += ` game__option--selected`;
-    });
-
-    img.addEventListener(`mouseout`, (e)=> {
-      const parentElement = e.target.parentNode;
-      parentElement.classList.remove(`game__option--selected`);
-    });
-  }
 };
 

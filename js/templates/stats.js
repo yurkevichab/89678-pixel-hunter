@@ -3,17 +3,7 @@ import switchDisplay from '../switch-display';
 import getGreeting from './greeting';
 import footer from './footer';
 import getHeader from './header';
-
-const drawStats = (stats) => {
-  return ` 
-    <div class="stats">
-      <ul class="stats">
-      ${stats.reduce((prev, current) => {
-        return prev + ` <li class="stats__result stats__result--${current || `unknown`}"></li>`;
-      }, ``)}      
-      </ul>
-    </div>`;
-};
+import createStats from '../create-stats';
 
 const createTableResult = (state)=>{
   return ` 
@@ -22,7 +12,7 @@ const createTableResult = (state)=>{
         <td class="result__number">1.</td>
         <td colspan="2">
           <ul class="stats">
-            ${drawStats(state.stats)}
+            ${createStats(state.stats)}
           </ul>
         </td>
         <td class="result__points">×&nbsp;100</td>

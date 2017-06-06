@@ -2,8 +2,7 @@ export const initialState = Object.freeze({
   game: 0,
   lives: 3,
   timer: 30,
-  maxLives: 3,
-  stats: [`wrong`, `slow`, `fast`, `correct`, `wrong`, ``, `slow`, ``, `fast`, ``]
+  stats: [``, ``, ``, ``, ``, ``, ``, ``, ``, ``]
 });
 
 export const games = Object.freeze([

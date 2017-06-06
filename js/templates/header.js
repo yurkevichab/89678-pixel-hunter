@@ -1,3 +1,5 @@
+import {initialState} from '../data';
+
 export default (isGamePage = false, state = null) => {
   const content = isGamePage ? gameStats(state) : ``;
 
@@ -24,7 +26,7 @@ const gameStats = (state) => {
   return `
     <h1 class="game__timer">${state.timer}</h1>
     <div class="game__lives">
-      ${createHeart(state.maxLives - state.lives, `heart__empty`)}
+      ${createHeart(initialState.lives - state.lives, `heart__empty`)}
       ${createHeart(state.lives, `heart__full`)}
     </div>`;
 };

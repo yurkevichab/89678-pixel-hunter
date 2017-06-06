@@ -5,7 +5,7 @@ import {initialState} from './data';
 const isGamePage = true;
 
 const drawGameOptions = (game) => {
-  return game.questions.reduce(function (content, question, index) {
+  return game.questions.reduce((content, question, index) => {
     const htmlQuetstion = `
       <div class="game__option">
         <img src="${question.image}" alt="Option ${index + 1}">

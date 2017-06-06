@@ -13,9 +13,11 @@ export const games = Object.freeze([
     'questions': [
       {
         'image': `https://k42.kn3.net/CF42609C8.jpg`,
+        'type': `paint`
       },
       {
         'image': `https://k42.kn3.net/D2F0370D6.jpg`,
+        'type': `photo`
       }]
   },
   {
@@ -24,6 +26,7 @@ export const games = Object.freeze([
     'questions': [
       {
         'image': `http://i.imgur.com/1KegWPz.jpg`,
+        'type': `paint`
       }
     ]
   },
@@ -33,15 +36,18 @@ export const games = Object.freeze([
     'questions': [
       {
         'image': `http://i.imgur.com/1KegWPz.jpg`,
-        'right': false
+        'isRight': false,
+        'type': `photo`
       },
       {
         'image': `https://k42.kn3.net/CF42609C8.jpg`,
-        'right': true
+        'isRight': true,
+        'type': `paint`
       },
       {
         'image': `https://k42.kn3.net/D2F0370D6.jpg`,
-        'right': false
+        'isRight': false,
+        'type': `photo`
       }
     ]
   }

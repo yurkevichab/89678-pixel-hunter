@@ -81,7 +81,7 @@ const switchDisplayEventGame2 = (form) => {
 const switchDisplayEventGame3 = (form, answerImages) => {
   form.addEventListener(`click`, (e) => {
     if (e.target.closest(`.game__option`)) {
-      switchDisplay(getStats());
+      switchDisplay(getStats(initialState));
     }
   });
 };

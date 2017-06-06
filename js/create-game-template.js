@@ -2,7 +2,40 @@ import getHeader from './templates/header';
 import footer from './templates/footer';
 import createStats from './create-stats';
 import {initialState} from './data';
-
+const additionGameData = {
+  'game-1': {
+    'formClass': ``,
+    'options': [
+      {
+        'text': `Рисунок`,
+        'type': `paint`,
+        'additionClass': ``
+      },
+      {
+        'text': `Фото`,
+        'type': `photo`,
+        'additionClass': ``
+      }]
+  },
+  'game-2': {
+    'formClass': `game__content--wide`,
+    'options': [
+      {
+        'text': `Рисунок`,
+        'type': `paint`,
+        'additionClass': `game__answer--paint`
+      },
+      {
+        'text': `Фото`,
+        'type': `photo`,
+        'additionClass': ``
+      }]
+  },
+  'game-3': {
+    'formClass': `game__content--triple`,
+    'options': []
+  }
+};
 const isGamePage = true;
 
 const drawGameOptions = (game) => {
@@ -17,8 +50,8 @@ const drawGameOptions = (game) => {
   }, ``);
 };
 
-const createLabels = (answers, index) => {
-  return answers.reduce((prev, current) => {
+const createLabels = (options, index) => {
+  return options.reduce((prev, current) => {
     const label = `
       <label class="game__answer game__answer--${current.type} ${current.additionClass}">
         <input name="question${index}" type="radio" value="${current.type}">
@@ -29,44 +62,13 @@ const createLabels = (answers, index) => {
 };
 
 const drawAnswer = (gameType, index) => {
-  let answers = [
-    {
-      'text': `Фото`,
-      'type': `photo`,
-      'additionClass': ``
-    },
-    {
-      'text': `Рисунок`,
-      'type': `paint`,
-      'additionClass': ``
-    }];
+  const options = additionGameData[gameType].options;
 
-  switch (gameType) {
-    case `game-1`:
-      return createLabels(answers, index);
-
-    case `game-2`:
-      answers[1].additionClass = `game__answer--paint`;
-      return createLabels(answers, index);
-
-    case `game-3`:
-    default:
-      return ``;
-  }
+  return createLabels(options, index);
 };
 
 export default (game) => {
-  let formClass = ``;
-  switch (game.type) {
-    case `game-1`:
-      break;
-    case `game-2`:
-      formClass = `game__content--wide`;
-      break;
-    case `game-3`:
-      formClass = `game__content--triple`;
-      break;
-  }
+  const formClass = additionGameData[game.type].formClass;
   return `
   ${getHeader(isGamePage, initialState)}
   <div class="game">

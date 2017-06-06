@@ -5,7 +5,7 @@ import getGreeting from './templates/greeting';
 import getGameTemplate from './create-game-template';
 import getStats from './templates/stats';
 
-export const getGameDisplay = (game)=> {
+export const getGameDisplay = (game) => {
   const template = getGameTemplate(game);
   const display = createElement(template);
   const form = display.querySelector(`.game__content`);
@@ -15,7 +15,7 @@ export const getGameDisplay = (game)=> {
   backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
 
   for (let img of answerImages) {
-    img.addEventListener(`load`, ()=> {
+    img.addEventListener(`load`, () => {
       const parentBlock = img.parentNode;
 
       const maxWidth = parentBlock.clientWidth;
@@ -40,7 +40,7 @@ export const getGameDisplay = (game)=> {
       break;
 
     case `game-3`:
-      switchDisplayEventGame3(form, answerImages);
+      switchDisplayEventGame3(form);
       break;
 
     default:
@@ -78,7 +78,7 @@ const switchDisplayEventGame2 = (form) => {
 
 };
 
-const switchDisplayEventGame3 = (form, answerImages) => {
+const switchDisplayEventGame3 = (form) => {
   form.addEventListener(`click`, (e) => {
     if (e.target.closest(`.game__option`)) {
       switchDisplay(getStats(initialState));

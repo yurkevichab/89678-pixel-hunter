@@ -34,9 +34,7 @@ const createTableResult = (state, index) => {
       <tr>
         <td class="result__number">${index}.</td>
         <td colspan="2">
-          <ul class="stats">
-            ${createStats(state.stats)}
-          </ul>
+          ${createStats(state.stats)}
         </td>
         <td class="result__points">×&nbsp;100</td>
         <td class="result__total">${totalStatsPoints}</td>

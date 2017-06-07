@@ -1,7 +1,7 @@
 import {initialState} from '../data';
 
-export default (isGamePage = false, state = null) => {
-  const content = isGamePage ? gameStats(state) : ``;
+export default (state = null) => {
+  const content = state ? gameStats(state) : ``;
 
   return `
   <header class="header">
@@ -17,16 +17,15 @@ export default (isGamePage = false, state = null) => {
 
 const createHeart = (count, type) => {
   return new Array(count)
-    .fill(`<img src="img/${type}.svg" class="game__heart" alt="Life" width="32" height="32">`)
+    .fill(`<img src="img/heart__${type}.svg" class="game__heart" alt="Life" width="32" height="32">`)
     .join(` `);
 };
 
 const gameStats = (state) => {
-
   return `
     <h1 class="game__timer">${state.timer}</h1>
     <div class="game__lives">
-      ${createHeart(initialState.lives - state.lives, `heart__empty`)}
-      ${createHeart(state.lives, `heart__full`)}
+      ${createHeart(initialState.lives - state.lives, `empty`)}
+      ${createHeart(state.lives, `full`)}
     </div>`;
 };

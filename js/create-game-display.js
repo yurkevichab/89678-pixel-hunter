@@ -5,8 +5,9 @@ import getGreeting from './templates/greeting';
 import getGameTemplate from './create-game-template';
 import getStats from './templates/stats';
 
-export const getGameDisplay = (game) => {
-  const template = getGameTemplate(game);
+const getGameDisplay = (state) => {
+  const game = games[state.game]
+  const template = getGameTemplate(game, state);
   const display = createElement(template);
   const form = display.querySelector(`.game__content`);
   const backButton = display.querySelector(`.header__back`);
@@ -44,7 +45,7 @@ export const getGameDisplay = (game) => {
       break;
 
     default:
-      switchDisplay(getGameDisplay(initialState.game));
+      switchDisplay(getGameDisplay(initialState));
   }
   return display;
 };
@@ -61,8 +62,7 @@ const switchDisplayEventGame1 = (form) => {
       const newState = Object.assign({}, initialState, {
         'game': 1
       });
-      const nextDisplay = games[newState.game];
-      switchDisplay(getGameDisplay(nextDisplay));
+      switchDisplay(getGameDisplay(newState));
     }
   });
 };
@@ -72,8 +72,7 @@ const switchDisplayEventGame2 = (form) => {
     const newState = Object.assign({}, initialState, {
       'game': `2`
     });
-    const nextDisplay = games[newState.game];
-    switchDisplay(getGameDisplay(nextDisplay));
+    switchDisplay(getGameDisplay(newState));
   });
 
 };
@@ -81,8 +80,11 @@ const switchDisplayEventGame2 = (form) => {
 const switchDisplayEventGame3 = (form) => {
   form.addEventListener(`click`, (e) => {
     if (e.target.closest(`.game__option`)) {
-      switchDisplay(getStats(initialState));
+      const newState = Object.assign({}, initialState, {
+        'lives': 2
+      });
+      switchDisplay(getStats(newState));
     }
   });
 };
-
+export default getGameDisplay;

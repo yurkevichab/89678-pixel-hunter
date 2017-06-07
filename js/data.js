@@ -9,7 +9,7 @@ export const games = Object.freeze([
   {
     'type': `game-1`,
     'description': `Угадайте для каждого изображения фото или рисунок?`,
-    'questions': [
+    'answers': [
       {
         'image': `https://k42.kn3.net/CF42609C8.jpg`,
         'type': `paint`
@@ -22,7 +22,7 @@ export const games = Object.freeze([
   {
     'type': `game-2`,
     'description': `Угадай, фото или рисунок?`,
-    'questions': [
+    'answers': [
       {
         'image': `http://i.imgur.com/1KegWPz.jpg`,
         'type': `paint`
@@ -32,7 +32,7 @@ export const games = Object.freeze([
   {
     'type': `game-3`,
     'description': `Найдите рисунок среди изображений`,
-    'questions': [
+    'answers': [
       {
         'image': `http://i.imgur.com/1KegWPz.jpg`,
         'isRight': false,

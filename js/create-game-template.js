@@ -1,7 +1,7 @@
 import getHeader from './templates/header';
 import footer from './templates/footer';
 import createStats from './create-stats';
-import {initialState} from './data';
+
 const additionGameData = {
   'game-1': {
     'formClass': ``,
@@ -36,27 +36,35 @@ const additionGameData = {
     'options': []
   }
 };
-const isGamePage = true;
 
-const drawGameOptions = (game) => {
-  return game.questions.reduce((content, question, index) => {
-    const gameOptionIndex = index + 1;
-    const htmlQuetstion = `
-      <div class="game__option">
-        <img src="${question.image}" alt="Option ${gameOptionIndex}">
-        ${drawAnswer(game.type, gameOptionIndex)}
-      </div>`;
-    return content + htmlQuetstion;
+const getAnswer = (type, answer, index) => {
+  return `
+    <div class="game__option">
+      <img src="${answer.image}" alt="Option ${index}">
+      ${drawAnswer(type, index)}
+    </div>`;
+};
+
+const getAnswers = (game) => {
+  const gameType = game.type;
+  return game.answers.reduce((content, answer, index) => {
+    const gameAnswerIndex = index + 1;
+    const htmlAnswer = getAnswer(gameType, answer, gameAnswerIndex);
+    return content + htmlAnswer;
   }, ``);
 };
 
-const createLabels = (options, index) => {
-  return options.reduce((prev, current) => {
-    const label = `
-      <label class="game__answer game__answer--${current.type} ${current.additionClass}">
-        <input name="question${index}" type="radio" value="${current.type}">
-        <span>${current.text}</span>
-      </label>`;
+const getOption = (option, index) => {
+  return `
+    <label class="game__answer game__answer--${option.type} ${option.additionClass}">
+      <input name="question${index}" type="radio" value="${option.type}">
+      <span>${option.text}</span>
+    </label>`;
+};
+
+const getOptions = (options, index) => {
+  return options.reduce((prev, option) => {
+    const label = getOption(option, index)
     return prev + label;
   }, ``);
 };
@@ -64,19 +72,21 @@ const createLabels = (options, index) => {
 const drawAnswer = (gameType, index) => {
   const options = additionGameData[gameType].options;
 
-  return createLabels(options, index);
+  return getOptions(options, index);
 };
 
-export default (game) => {
+export default (game, state) => {
   const formClass = additionGameData[game.type].formClass;
   return `
-  ${getHeader(isGamePage, initialState)}
+  ${getHeader(state)}
   <div class="game">
     <p class="game__task">${game.description}</p>
     <form class="game__content ${formClass}">     
-      ${drawGameOptions(game)}
+      ${getAnswers(game)}
     </form>
-   ${createStats(initialState.stats)}
+    <div class="stats">
+      ${createStats(state.stats)}
+    </div>
   </div>
   ${footer}`;
 };

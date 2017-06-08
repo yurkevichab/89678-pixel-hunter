@@ -4,75 +4,51 @@ import getGreeting from './greeting';
 import footer from './footer';
 import getHeader from './header';
 import createStats from '../create-stats';
+import {statInfo} from '../data';
 
-const getCount = (arr, findStat) => {
-  return arr.filter((stat) => {
-    return stat === findStat;
-  }).length;
+const createBonus = (game, bonus) => {
+  return `
+    <tr>
+      <td></td>
+      <td class="result__extra">${bonus.title}</td>
+      <td class="result__extra">${game.result[bonus.type]}&nbsp;<span class="stats__result stats__result--${bonus.type}"></span></td>
+      <td class="result__points">×&nbsp;${bonus.ratio}</td>
+      <td class="result__total">${game.result[bonus.type] * bonus.ratio}</td>
+    </tr>`;
 };
 
-const getCountWithout = (arr, without) => {
-  return arr.filter((stat) => {
-    return stat !== without;
-  }).length;
+const createBonuses = (game) => {
+  return statInfo.bonuses.reduce((content, bonus, index) => {
+    const html = game.result[bonus.type] ? createBonus(game, bonus) : ``;
+    return content + html;
+  }, ``);
 };
 
-const createTableResult = (state, index) => {
-  const slowCount = getCount(state.stats, `slow`);
-  const fastCount = getCount(state.stats, `fast`);
-  const livesCount = state.lives;
-  const statsCount = getCountWithout(state.stats, ``);
-
-  const totalStatsPoints = statsCount * 100;
-  const totalFastPoints = statsCount * 50;
-  const totalLivesPoints = livesCount * 50;
-  const totalSlowPoints = slowCount * -50;
-  const result = totalStatsPoints + totalFastPoints + totalLivesPoints + totalSlowPoints;
-
+const createTableResult = (game, index) => {
   return ` 
     <table class="result__table">
       <tr>
         <td class="result__number">${index}.</td>
         <td colspan="2">
-          ${createStats(state.stats)}
+          ${createStats(game.stats)}
         </td>
-        <td class="result__points">×&nbsp;100</td>
-        <td class="result__total">${totalStatsPoints}</td>
+        <td class="result__points">×&nbsp;${statInfo.ratio}</td>
+        <td class="result__total">${statInfo.ratio * game.stats.length}</td>
       </tr>
+      ${createBonuses(game)}
       <tr>
-        <td></td>
-        <td class="result__extra">Бонус за скорость:</td>
-        <td class="result__extra">${fastCount}&nbsp;<span class="stats__result stats__result--fast"></span></td>
-        <td class="result__points">×&nbsp;50</td>
-        <td class="result__total">${totalFastPoints}</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Бонус за жизни:</td>
-        <td class="result__extra">${livesCount}&nbsp;<span class="stats__result stats__result--heart"></span></td>
-        <td class="result__points">×&nbsp;50</td>
-        <td class="result__total">${totalLivesPoints}</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="result__extra">Штраф за медлительность:</td>
-        <td class="result__extra">${slowCount}&nbsp;<span class="stats__result stats__result--slow"></span></td>
-        <td class="result__points">×&nbsp;50</td>
-        <td class="result__total">${totalSlowPoints}</td>
-      </tr>
-      <tr>
-        <td colspan="5" class="result__total  result__total--final">${result}</td>
+        <td colspan="5" class="result__total  result__total--final">${game.result.finalResult}</td>
       </tr>
     </table>`;
 };
 
-export default (initialState) => {
+export default (lastGames) => {
   const template = `
   ${getHeader()}
   <div class="result">
-    <h1>Победа!</h1>
-    ${[{}, {}, {}].reduce((content, question, index) => {
-      return content + createTableResult(initialState, index + 1);
+    <h1>${statInfo.title}</h1>
+    ${lastGames.reduce((content, game, index) => {
+      return content + createTableResult(game, index + 1);
     }, ``)}
   </div>
   ${footer}`;

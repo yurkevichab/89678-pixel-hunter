@@ -1,4 +1,4 @@
-import {initialState, games} from './data';
+import {initialState, games, lastGames} from './data';
 import createElement from './create-element';
 import switchDisplay from './switch-display';
 import getGreeting from './templates/greeting';
@@ -6,7 +6,7 @@ import getGameTemplate from './create-game-template';
 import getStats from './templates/stats';
 
 const getGameDisplay = (state) => {
-  const game = games[state.game]
+  const game = games[state.game];
   const template = getGameTemplate(game, state);
   const display = createElement(template);
   const form = display.querySelector(`.game__content`);
@@ -81,9 +81,20 @@ const switchDisplayEventGame3 = (form) => {
   form.addEventListener(`click`, (e) => {
     if (e.target.closest(`.game__option`)) {
       const newState = Object.assign({}, initialState, {
-        'lives': 2
+        'lives': 2,
+        'stats': [`fast`, `fast`, `fast`, `fast`, `fast`, `fast`, `fast`, `fast`, `fast`, `fast`]
       });
-      switchDisplay(getStats(newState));
+      const newStatGames = Object.assign([], lastGames);
+      newStatGames.unshift({
+        'stats': newState.stats,
+        'result': {
+          'fast': 2,
+          'heart': 1,
+          'slow': 3,
+          'finalResult': 600
+        }
+      });
+      switchDisplay(getStats(newStatGames));
     }
   });
 };

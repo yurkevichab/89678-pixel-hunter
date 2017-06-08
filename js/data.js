@@ -1,9 +1,69 @@
 export const initialState = Object.freeze({
-  game: 0,
-  lives: 3,
-  timer: 30,
-  stats: [``, ``, ``, ``, ``, ``, ``, ``, ``, ``]
+  'game': 0,
+  'lives': 3,
+  'timer': 30,
+  'stats': [``, ``, ``, ``, ``, ``, ``, ``, ``, ``]
 });
+
+export const statInfo = Object.freeze({
+  'title': `Победа!`,
+  'ratio': 100,
+  'bonuses': [{
+    'title': `Бонус за скорость:`,
+    'type': `fast`,
+    'ratio': 50
+  },
+  {
+    'title': `Бонус за жизни:`,
+    'type': `heart`,
+    'ratio': 50
+  },
+  {
+    'title': `Штраф за медлительность:`,
+    'type': `slow`,
+    'ratio': -50
+  }]
+});
+
+export const lastGames = Object.freeze([
+  {
+    'stats': [
+      `wrong`,
+      `slow`,
+      `fast`,
+      `correct`,
+      `wrong`,
+      `unknown`,
+      `slow`,
+      `unknown`,
+      `fast`,
+      `unknown`
+    ],
+    'result': {
+      'fast': 2,
+      'heart': 1,
+      'slow': 3,
+      'finalResult': 600
+    }
+  },
+  {
+    'stats': [
+      `wrong`,
+      `slow`,
+      `fast`,
+      `correct`,
+      `wrong`,
+      `unknown`,
+      `slow`,
+      `unknown`,
+      `fast`,
+      `unknown`
+    ],
+    'result': {
+      'finalResult': `Fail`
+    }
+  }]
+);
 
 export const games = Object.freeze([
   {

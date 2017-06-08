@@ -33,15 +33,15 @@ const getGameDisplay = (state) => {
 
   switch (game.type) {
     case `game-1`:
-      switchDisplayEventGame1(form);
+      switchDisplayEventGame1(form, state);
       break;
 
     case `game-2`:
-      switchDisplayEventGame2(form);
+      switchDisplayEventGame2(form, state);
       break;
 
     case `game-3`:
-      switchDisplayEventGame3(form);
+      switchDisplayEventGame3(form, state);
       break;
 
     default:
@@ -50,7 +50,7 @@ const getGameDisplay = (state) => {
   return display;
 };
 
-const switchDisplayEventGame1 = (form) => {
+const switchDisplayEventGame1 = (form, state) => {
   const isRadioChecked = (radioName) => {
     const radios = form.querySelectorAll(`input[name=${radioName}]`);
 
@@ -59,7 +59,7 @@ const switchDisplayEventGame1 = (form) => {
 
   form.addEventListener(`change`, () => {
     if (isRadioChecked(`question1`) && isRadioChecked(`question2`)) {
-      const newState = Object.assign({}, initialState, {
+      const newState = Object.assign({}, state, {
         'game': 1
       });
       switchDisplay(getGameDisplay(newState));
@@ -67,9 +67,9 @@ const switchDisplayEventGame1 = (form) => {
   });
 };
 
-const switchDisplayEventGame2 = (form) => {
+const switchDisplayEventGame2 = (form, state) => {
   form.addEventListener(`change`, () => {
-    const newState = Object.assign({}, initialState, {
+    const newState = Object.assign({}, state, {
       'game': `2`
     });
     switchDisplay(getGameDisplay(newState));
@@ -77,10 +77,10 @@ const switchDisplayEventGame2 = (form) => {
 
 };
 
-const switchDisplayEventGame3 = (form) => {
+const switchDisplayEventGame3 = (form, state) => {
   form.addEventListener(`click`, (e) => {
     if (e.target.closest(`.game__option`)) {
-      const newState = Object.assign({}, initialState, {
+      const newState = Object.assign({}, state, {
         'lives': 2,
         'stats': [`fast`, `fast`, `fast`, `fast`, `fast`, `fast`, `fast`, `fast`, `fast`, `fast`]
       });

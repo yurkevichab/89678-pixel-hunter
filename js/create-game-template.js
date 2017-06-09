@@ -1,78 +1,68 @@
-import getHeader from './templates/header';
+import {getHeader} from './templates/header';
 import footer from './templates/footer';
 import createStats from './create-stats';
+
+const options = [
+  {
+    'text': `Рисунок`,
+    'type': `paint`
+  },
+  {
+    'text': `Фото`,
+    'type': `photo`
+  }];
 
 const additionGameData = {
   'game-1': {
     'formClass': ``,
-    'options': [
-      {
-        'text': `Рисунок`,
-        'type': `paint`,
-        'additionClass': ``
-      },
-      {
-        'text': `Фото`,
-        'type': `photo`,
-        'additionClass': ``
-      }]
+    'haveOption': true,
+    'haveAdditionClasses': false
   },
   'game-2': {
     'formClass': `game__content--wide`,
-    'options': [
-      {
-        'text': `Рисунок`,
-        'type': `paint`,
-        'additionClass': `game__answer--paint`
-      },
-      {
-        'text': `Фото`,
-        'type': `photo`,
-        'additionClass': ``
-      }]
+    'haveOption': true,
+    'haveAdditionClasses': true,
+    'additionClasses': {
+      'paint': `game__answer--wide`
+    }
   },
   'game-3': {
     'formClass': `game__content--triple`,
-    'options': []
+    'haveOption': false
   }
 };
 
 const getAnswer = (type, answer, index) => {
+  const {haveOption, haveAdditionClasses, additionClasses} = additionGameData[type];
   return `
     <div class="game__option">
-      <img src="${answer.image}" alt="Option ${index}">
-      ${drawAnswer(type, index)}
+      <img src="${answer.image}" alt="Option ${index}" width="" height="">
+      ${haveOption ? getOptions(haveAdditionClasses, additionClasses, index) : ``}
     </div>`;
 };
 
 const getAnswers = (game) => {
   const gameType = game.type;
   return game.answers.reduce((content, answer, index) => {
-    const gameAnswerIndex = index + 1;
-    const htmlAnswer = getAnswer(gameType, answer, gameAnswerIndex);
+    const htmlAnswer = getAnswer(gameType, answer, index + 1);
     return content + htmlAnswer;
   }, ``);
 };
 
-const getOption = (option, index) => {
+const getOption = ({type, text}, haveAdditionClasses, additionClasses, index) => {
+  const additionClass = haveAdditionClasses ? additionClasses[type] : ``;
   return `
-    <label class="game__answer game__answer--${option.type} ${option.additionClass}">
-      <input name="question${index}" type="radio" value="${option.type}">
-      <span>${option.text}</span>
+    <label class="game__answer game__answer--${type} ${additionClass}">
+      <input name="question${index}" type="radio" value="${type}">
+      <span>${text}</span>
     </label>`;
 };
 
-const getOptions = (options, index) => {
+const getOptions = (haveAdditionClasses, additionClasses, index) => {
   return options.reduce((prev, option) => {
-    const label = getOption(option, index)
+    const label = getOption(option, haveAdditionClasses, additionClasses, index);
     return prev + label;
   }, ``);
-};
-
-const drawAnswer = (gameType, index) => {
-  const options = additionGameData[gameType].options;
-
-  return getOptions(options, index);
 };
 
 export default (game, state) => {

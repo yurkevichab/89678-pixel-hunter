@@ -1,10 +1,9 @@
 import createElement from '../create-element';
 import switchDisplay from '../switch-display';
-import getGreeting from './greeting';
 import footer from './footer';
-import getHeader from './header';
 import {initialState} from '../data';
-import getGameDisplay from '../create-game-display';
+import createGameDisplay from '../create-game-display';
+import {getHeader, addBackButtonEvent} from './header';
 
 export default () => {
   const template = `
@@ -30,7 +29,7 @@ export default () => {
   const display = createElement(template);
   const rulesInput = display.querySelector(`.rules__input`);
   const rulesButton = display.querySelector(`.rules__button`);
-  const backButton = display.querySelector(`.header__back`);
+  addBackButtonEvent(display);
 
   rulesInput.addEventListener(`input`, (e) => {
     rulesButton.disabled = !e.target.value.trim();
@@ -38,11 +37,9 @@ export default () => {
 
   rulesButton.addEventListener(`click`, (e) => {
     e.preventDefault();
-    const gameDisplay = getGameDisplay(initialState);
+    const gameDisplay = createGameDisplay(initialState);
     switchDisplay(gameDisplay);
   });
-
-  backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
 
   return display;
 };

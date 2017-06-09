@@ -1,19 +1,17 @@
 import createElement from '../create-element';
-import switchDisplay from '../switch-display';
-import getGreeting from './greeting';
 import footer from './footer';
-import getHeader from './header';
+import {getHeader, addBackButtonEvent} from './header';
 import createStats from '../create-stats';
 import {statInfo} from '../data';
 
-const createBonus = (game, bonus) => {
+const createBonus = ({result}, {title, type, ratio}) => {
   return `
     <tr>
       <td></td>
-      <td class="result__extra">${bonus.title}</td>
-      <td class="result__extra">${game.result[bonus.type]}&nbsp;<span class="stats__result stats__result--${bonus.type}"></span></td>
-      <td class="result__points">×&nbsp;${bonus.ratio}</td>
-      <td class="result__total">${game.result[bonus.type] * bonus.ratio}</td>
+      <td class="result__extra">${title}</td>
+      <td class="result__extra">${result[type]}&nbsp;<span class="stats__result stats__result--${type}"></span></td>
+      <td class="result__points">×&nbsp;${ratio}</td>
+      <td class="result__total">${result[type] * ratio}</td>
     </tr>`;
 };
 
@@ -54,9 +52,7 @@ export default (lastGames) => {
   ${footer}`;
 
   const display = createElement(template);
-  const backButton = display.querySelector(`.header__back`);
-
-  backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
+  addBackButtonEvent(display);
 
   return display;
 };

@@ -1,6 +1,8 @@
 import {initialState} from '../data';
+import switchDisplay from '../switch-display';
+import getGreeting from './greeting';
 
-export default (state = null) => {
+export const getHeader = (state = null) => {
   const content = state ? gameStats(state) : ``;
 
   return `
@@ -13,6 +15,11 @@ export default (state = null) => {
     </div>
     ${content} 
   </header>`;
+};
+
+export const addBackButtonEvent = (container) =>{
+  const backButton = container.querySelector(`.header__back`);
+  backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
 };
 
 const createHeart = (count, type) => {

@@ -28,8 +28,13 @@ const getGameDisplay = (state) => {
       img.setAttribute(`height`, `${height * ratio }`);
     });
   }
+  gameEventInit(game.type, form, state);
 
-  switch (game.type) {
+  return display;
+};
+
+const gameEventInit = (type, form, state) => {
+  switch (type) {
     case `game-1`:
       switchDisplayEventGame1(form, state);
       break;
@@ -45,7 +50,6 @@ const getGameDisplay = (state) => {
     default:
       switchDisplay(getGameDisplay(initialState));
   }
-  return display;
 };
 
 const switchDisplayEventGame1 = (form, state) => {

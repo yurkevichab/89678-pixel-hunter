@@ -1,13 +1,9 @@
-export default (isGamePage = false) => {
-  const gameStats = `
-  <h1 class="game__timer">NN</h1>
-  <div class="game__lives">
-    <img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">
-    <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-    <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-   </div>`;
+import {initialState} from '../data';
+import switchDisplay from '../switch-display';
+import getGreeting from './greeting';
 
-  const content = isGamePage ? gameStats : ``;
+export const getHeader = (state = null) => {
+  const content = state ? gameStats(state) : ``;
 
   return `
   <header class="header">
@@ -19,4 +15,24 @@ export default (isGamePage = false) => {
     </div>
     ${content} 
   </header>`;
+};
+
+export const addBackButtonEvent = (container) =>{
+  const backButton = container.querySelector(`.header__back`);
+  backButton.addEventListener(`click`, () => switchDisplay(getGreeting()));
+};
+
+const createHeart = (count, type) => {
+  return new Array(count)
+    .fill(`<img src="img/heart__${type}.svg" class="game__heart" alt="Life" width="32" height="32">`)
+    .join(` `);
+};
+
+const gameStats = (state) => {
+  return `
+    <h1 class="game__timer">${state.timer}</h1>
+    <div class="game__lives">
+      ${createHeart(initialState.lives - state.lives, `empty`)}
+      ${createHeart(state.lives, `full`)}
+    </div>`;
 };

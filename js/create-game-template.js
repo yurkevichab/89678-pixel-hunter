@@ -10,34 +10,35 @@ const options = [
   {
     'text': `Фото`,
     'type': `photo`
-  }];
+  }
+];
 
 const additionGameData = {
   'game-1': {
     'formClass': ``,
     'haveOption': true,
-    'haveAdditionClasses': false
+    'additionClasses': ``
   },
   'game-2': {
     'formClass': `game__content--wide`,
     'haveOption': true,
-    'haveAdditionClasses': true,
     'additionClasses': {
       'paint': `game__answer--wide`
     }
   },
   'game-3': {
     'formClass': `game__content--triple`,
-    'haveOption': false
+    'haveOption': false,
+    'additionClasses': ``
   }
 };
 
 const getAnswer = (type, answer, index) => {
-  const {haveOption, haveAdditionClasses, additionClasses} = additionGameData[type];
+  const {haveOption, additionClasses} = additionGameData[type];
   return `
     <div class="game__option">
-      <img src="${answer.image}" alt="Option ${index}" width="" height="">
-      ${haveOption ? getOptions(haveAdditionClasses, additionClasses, index) : ``}
+      <img src="${answer.image}" alt="Option ${index}" width="${answer.width}" height="${answer.height}">
+      ${haveOption ? getOptions(additionClasses, index) : ``}
     </div>`;
 };
 
@@ -49,8 +50,8 @@ const getAnswers = (game) => {
   }, ``);
 };
 
-const getOption = ({type, text}, haveAdditionClasses, additionClasses, index) => {
-  const additionClass = haveAdditionClasses ? additionClasses[type] : ``;
+const getOption = ({type, text}, additionClasses, index) => {
+  const additionClass = additionClasses ? additionClasses[type] : ``;
   return `
     <label class="game__answer game__answer--${type} ${additionClass}">
       <input name="question${index}" type="radio" value="${type}">
@@ -58,9 +59,9 @@ const getOption = ({type, text}, haveAdditionClasses, additionClasses, index) =>
     </label>`;
 };
 
-const getOptions = (haveAdditionClasses, additionClasses, index) => {
+const getOptions = (additionClasses, index) => {
   return options.reduce((prev, option) => {
-    const label = getOption(option, haveAdditionClasses, additionClasses, index);
+    const label = getOption(option, additionClasses, index);
     return prev + label;
   }, ``);
 };

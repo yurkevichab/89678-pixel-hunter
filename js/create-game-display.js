@@ -19,8 +19,8 @@ const getGameDisplay = (state) => {
 
       const maxWidth = parentBlock.clientWidth;
       const maxHeight = parentBlock.clientHeight;
-      const width = img.width;
-      const height = img.height;
+      const width = img.naturalWidth;
+      const height = img.naturalHeight;
 
       const ratio = Math.min(maxWidth / width, maxHeight / height);
 
@@ -28,12 +28,12 @@ const getGameDisplay = (state) => {
       img.setAttribute(`height`, `${height * ratio }`);
     });
   }
-  gameEventInit(game.type, form, state);
+  initGameEvent(game.type, form, state);
 
   return display;
 };
 
-const gameEventInit = (type, form, state) => {
+const initGameEvent = (type, form, state) => {
   switch (type) {
     case `game-1`:
       switchDisplayEventGame1(form, state);
@@ -88,14 +88,11 @@ const switchDisplayEventGame3 = (form, state) => {
       });
       const newStatGames = [{
         'stats': newState.stats,
-        'result': {
-          'fast': 2,
-          'heart': 1,
-          'slow': 3,
-          'finalResult': 600
-        }}, ...lastGames];
+        'lives': newState.lives,
+      },
+        ...lastGames
+      ];
       switchDisplay(getStats(newStatGames));
-
     }
   });
 };

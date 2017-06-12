@@ -43,8 +43,7 @@ const countPoints = ({lives, stats}) => {
   return result;
 };
 
-const createBonuses = (game) => {
-  const points = countPoints(game);
+const createBonuses = (points) => {
   return statInfo.bonuses.reduce((content, bonus, index) => {
     const bonusCount = points.get(bonus.type);
     const html = bonusCount ? createBonus(bonusCount, bonus) : ``;
@@ -75,7 +74,7 @@ const createTableResult = (game, index) => {
         </td>
         ${createStatsResult(points, isNotFail)}
       </tr>
-      ${isNotFail ? createBonuses(game) : ``}
+      ${isNotFail ? createBonuses(points) : ``}
       <tr>
         <td colspan="5" class="result__total  result__total--final">${isNotFail ? getFinalResults(points) : ``}</td>
       </tr>

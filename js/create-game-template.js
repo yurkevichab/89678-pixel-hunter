@@ -17,11 +17,15 @@ const additionGameData = {
   'game-1': {
     'formClass': ``,
     'haveOption': true,
+    'imagesWidth': 468,
+    'imagesHeight': 458,
     'additionClasses': ``
   },
   'game-2': {
     'formClass': `game__content--wide`,
     'haveOption': true,
+    'imagesWidth': 705,
+    'imagesHeight': 455,
     'additionClasses': {
       'paint': `game__answer--wide`
     }
@@ -29,15 +33,17 @@ const additionGameData = {
   'game-3': {
     'formClass': `game__content--triple`,
     'haveOption': false,
+    'imagesWidth': 304,
+    'imagesHeight': 455,
     'additionClasses': ``
   }
 };
 
 const getAnswer = (type, answer, index) => {
-  const {haveOption, additionClasses} = additionGameData[type];
+  const {haveOption, additionClasses, imagesWidth, imagesHeight} = additionGameData[type];
   return `
     <div class="game__option">
-      <img src="${answer.image}" alt="Option ${index}" width="${answer.width}" height="${answer.height}">
+      <img src="${answer.image}" alt="Option ${index}" width="${imagesWidth}" height="${imagesHeight}">
       ${haveOption ? getOptions(additionClasses, index) : ``}
     </div>`;
 };

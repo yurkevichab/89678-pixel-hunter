@@ -10,11 +10,10 @@ export const getNextQuestion = (state) => {
     questionNumber += 1;
     gameNumber = Math.floor(Math.random() * games.length);
   }
-  const newState = Object.assign({}, state,
+  return Object.assign({}, state,
       {
         'game': gameNumber,
         'questionNumber': questionNumber,
         'isLastQuestion': isLastQuestion
       });
-  return newState;
 };

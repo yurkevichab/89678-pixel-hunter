@@ -2,7 +2,7 @@ import {initialState} from '../data';
 const FAST_ANSWER = 10;
 const SLOW_ANSWER = 20;
 export const checkAnswer = (answer, rightAnswer) => {
-  return Object.is(answer, rightAnswer);
+  return answer.type === rightAnswer.type;
 };
 
 export const getAnswerType = (state) => {

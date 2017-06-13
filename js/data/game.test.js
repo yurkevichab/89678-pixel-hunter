@@ -8,27 +8,25 @@ describe(`Game`, () => {
     it(`should check right answer`, () => {
       const answer =
         {
-          'image': `https://k42.kn3.net/CF42609C8.jpg`,
           'type': `paint`
         };
       const rightAnswer =
         {
-          'image': `https://k42.kn3.net/CF42609C8.jpg`,
           'type': `paint`
         };
       assert(checkAnswer(answer, rightAnswer));
     });
 
     it(`should check wrong answer`, () => {
-      const answers = [
+      const answer =
         {
-          'isRight': true
-        },
+          'type': `paint`
+        };
+      const rightAnswer =
         {
-          'isRight': false
-        }
-      ];
-      assert.ifError(checkAnswer(answers));
+          'type': `photo`
+        };
+      assert.ifError(checkAnswer(answer, rightAnswer));
     });
   });
 

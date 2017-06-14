@@ -33,28 +33,28 @@ describe(`Game`, () => {
   describe(`Add point in state`, () => {
     it(`check add correct point to stats`, () => {
       const state = {stats: []};
-      const lastAddPoint = setState(state, `correct`).stats.pop();
-      assert.equal(lastAddPoint, `correct`);
+      const lastAddAnswerType = setState(state, `correct`).stats.pop();
+      assert.equal(lastAddAnswerType, `correct`);
     });
   });
 
   describe(`Changing the timer`, () => {
     it(`should return fast answer point`, () => {
       const state = {'timer': 25};
-      const verifiedPoint = getAnswerType(true, state);
-      assert.equal(verifiedPoint, `fast`);
+      const verifiedAnswerType = getAnswerType(true, state);
+      assert.equal(verifiedAnswerType, `fast`);
     });
 
     it(`should return slow answer type`, () => {
       const state = {'timer': 8};
-      const verifiedPoint = getAnswerType(true, state);
-      assert.equal(verifiedPoint, `slow`);
+      const verifiedAnswerType = getAnswerType(true, state);
+      assert.equal(verifiedAnswerType, `slow`);
     });
 
     it(`should return wrong answer type`, () => {
       const state = {'timer': 8};
-      const verifiedPoint = getAnswerType(false, state);
-      assert.equal(verifiedPoint, `wrong`);
+      const verifiedAnswerType = getAnswerType(false, state);
+      assert.equal(verifiedAnswerType, `wrong`);
     });
 
     it(`should return correct answer type`, () => {

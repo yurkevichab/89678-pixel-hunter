@@ -2,6 +2,7 @@ import assert from 'assert';
 import {checkAnswer, getAnswerType, setState} from './answer';
 import {setLives} from './lives';
 import {getNextQuestion} from './question';
+import {getPointByAnswerType, getPointByLives} from './points';
 
 describe(`Game`, () => {
   describe(`Answers`, () => {
@@ -101,6 +102,27 @@ describe(`Game`, () => {
       const verifiedState = getNextQuestion(state);
       assert.equal(true, verifiedState.isLastQuestion);
       assert.equal(10, verifiedState.questionNumber);
+    });
+  });
+
+  describe(`Bonus points calculation`, () => {
+    it(`should get right total points for lives`, () => {
+      const state = {'lives': 2};
+      const totalPoints = 100;
+      const verifiedTotalPoints = getPointByLives(state.lives, totalPoints);
+      assert.equal(200, verifiedTotalPoints);
+    });
+
+    it(`should get right total points with fast bonus`, () => {
+      const totalPoints = 100;
+      const verifiedTotalPoints = getPointByAnswerType(`fast`, totalPoints);
+      assert.equal(150, verifiedTotalPoints);
+    });
+
+    it(`should get right total points with slow bonus`, () => {
+      const totalPoints = 100;
+      const verifiedTotalPoints = getPointByAnswerType(`slow`, totalPoints);
+      assert.equal(50, verifiedTotalPoints);
     });
   });
 });

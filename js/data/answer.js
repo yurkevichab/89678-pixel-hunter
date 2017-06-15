@@ -1,28 +1,25 @@
-import {initialState} from '../data';
-const FAST_ANSWER = 10;
-const SLOW_ANSWER = 20;
+import {initialState, FAST_ANSWER, SLOW_ANSWER, ANSWER_TYPES} from '../data';
 
 export const checkAnswer = (answer, rightAnswer) => {
-  return answer.type === rightAnswer.type;
+  return answer === rightAnswer;
 };
-
 
 export const getAnswerType = (isCorrect, {timer}) => {
   const differenceTime = initialState.timer - timer;
-  if (!isCorrect) {
-    return `wrong`;
+  if (!isCorrect || timer === 0) {
+    return ANSWER_TYPES.wrong;
   }
   if (differenceTime < FAST_ANSWER) {
-    return `fast`;
+    return ANSWER_TYPES.fast;
   }
   if (differenceTime > SLOW_ANSWER) {
-    return `slow`;
+    return ANSWER_TYPES.slow;
   }
-  return `correct`;
+  return ANSWER_TYPES.correct;
 };
 
 export const setState = (state, point) => {
-  const newState = Object.assign({}, state);
-  newState.stats.push(point);
-  return newState;
+  const newStats = state.stats.slice(0);
+  newStats.push(point);
+  return Object.assign({}, state, {stats: newStats});
 };

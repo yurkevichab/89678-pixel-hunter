@@ -1,4 +1,4 @@
-import {initialState, games, MIN_TIMER_VALUE, ANSWER_TYPES} from './data';
+import {initialState, games, MIN_TIMER_VALUE, ANSWER_TYPES, GAMES_TYPES} from './data';
 import createElement from './create-element';
 import switchDisplay from './switch-display';
 import createGameTemplate from './create-game-template';
@@ -68,15 +68,15 @@ const getGameDisplay = (state) => {
 
 const initGameEvent = (type, form, state, interval) => {
   switch (type) {
-    case `game-1`:
+    case GAMES_TYPES.twoQuestions:
       switchDisplayEventGame1(form, state, interval);
       break;
 
-    case `game-2`:
+    case GAMES_TYPES.oneQuestion:
       switchDisplayEventGame2(form, state, interval);
       break;
 
-    case `game-3`:
+    case GAMES_TYPES.threeQuestions:
       switchDisplayEventGame3(form, state, interval);
       break;
 
@@ -108,7 +108,6 @@ const switchDisplayEventGame2 = (form, state, interval) => {
   form.addEventListener(`change`, () => {
     clearInterval(interval);
     const answer1 = form.querySelector(`input[name="question1"]:checked`).value;
-    state.timer = parseInt(document.querySelector(`.game__timer`).innerHTML, 10);
     const newState = addAnswerResult(state, getTimer(), answer1);
     nextDisplay(newState);
   });
@@ -122,7 +121,6 @@ const switchDisplayEventGame3 = (form, state, interval) => {
     if (e.target.closest(`.game__option`)) {
       const indexImage = [...images].indexOf(e.target);
       const imageType = games[state.game].answers[indexImage].type;
-      state.timer = parseInt(document.querySelector(`.game__timer`).innerHTML, 10);
       const newState = addAnswerResult(state, getTimer(), imageType);
       nextDisplay(newState);
     }

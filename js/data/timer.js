@@ -9,11 +9,6 @@ export const setTimer = (state) => {
   return Object.assign({}, state, {'timer': currentTimer});
 };
 
-export const getTimer = () => {
-  const timer = document.querySelector(`.game__timer`);
-  return timer.innerHTML;
-}
-
 export const cleanTimer = (state) => {
   return Object.assign({}, state, {'timer': initialState.timer});
 };

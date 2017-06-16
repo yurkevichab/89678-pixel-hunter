@@ -21,14 +21,14 @@ describe(`Game`, () => {
     });
 
     it(`should return fast answer point`, () => {
-      const state = {'timer': 25};
-      const verifiedAnswerType = getAnswerType(true, state);
+      const timer = 25;
+      const verifiedAnswerType = getAnswerType(true, timer);
       assert.equal(verifiedAnswerType, `fast`);
     });
 
     it(`should return slow answer type`, () => {
-      const state = {'timer': 8};
-      const verifiedAnswerType = getAnswerType(true, state);
+      const timer = 8;
+      const verifiedAnswerType = getAnswerType(true, timer);
       assert.equal(verifiedAnswerType, `slow`);
     });
 
@@ -46,22 +46,25 @@ describe(`Game`, () => {
 
     it(`should return right state when send with one correct answer`, () => {
       const state = {'timer': 21, "stats": [], 'lives': 2, 'game': 1};
+      const timer = 21;
       const rightResult = {'timer': 21, "stats": [`fast`], 'lives': 2, 'game': 1};
-      const verifiedAnswerResult = addAnswerResult(state, `paint`);
+      const verifiedAnswerResult = addAnswerResult(state, timer, `paint`);
       assert.deepEqual(rightResult, verifiedAnswerResult);
     });
 
     it(`should return right state when send  with one wrong answer`, () => {
       const state = {'timer': 21, "stats": [], 'lives': 2, 'game': 1};
+      const timer = 21;
       const rightResult = {'timer': 21, "stats": [`wrong`], 'lives': 1, 'game': 1};
-      const verifiedAnswerResult = addAnswerResult(state, `photo`);
+      const verifiedAnswerResult = addAnswerResult(state, timer, `photo`);
       assert.deepEqual(rightResult, verifiedAnswerResult);
     });
 
     it(`should return right state when send with two correct answer`, () => {
       const state = {'timer': 8, "stats": [], 'lives': 2, 'game': 0};
+      const timer = 8;
       const rightResult = {'timer': 8, "stats": [`slow`], 'lives': 2, 'game': 0};
-      const verifiedAnswerResult = addAnswerResult(state, `paint`, `photo`);
+      const verifiedAnswerResult = addAnswerResult(state, timer, `paint`, `photo`);
       assert.deepEqual(rightResult, verifiedAnswerResult);
     });
 

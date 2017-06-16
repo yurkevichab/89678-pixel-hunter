@@ -9,6 +9,11 @@ import {addAnswerResult, setState} from './data/answer';
 import {setGame, isLastGame} from './data/game';
 import {isLastLive, setLives} from './data/lives';
 
+const getTimer = () => {
+  const timer = document.querySelector(`.game__timer`);
+  return timer.innerHTML;
+};
+
 const nextDisplay = (state) => {
   let display = ``;
   if (isLastGame(state.game) || isLastLive(state.lives)) {
@@ -93,7 +98,7 @@ const switchDisplayEventGame1 = (form, state, interval) => {
       clearInterval(interval);
       const answer1 = form.querySelector(`input[name="question1"]:checked`).value;
       const answer2 = form.querySelector(`input[name="question2"]:checked`).value;
-      const newState = addAnswerResult(state, answer1, answer2);
+      const newState = addAnswerResult(state, getTimer(), answer1, answer2);
       nextDisplay(newState);
     }
   });
@@ -103,7 +108,8 @@ const switchDisplayEventGame2 = (form, state, interval) => {
   form.addEventListener(`change`, () => {
     clearInterval(interval);
     const answer1 = form.querySelector(`input[name="question1"]:checked`).value;
-    const newState = addAnswerResult(state, answer1);
+    state.timer = parseInt(document.querySelector(`.game__timer`).innerHTML, 10);
+    const newState = addAnswerResult(state, getTimer(), answer1);
     nextDisplay(newState);
   });
 
@@ -116,7 +122,8 @@ const switchDisplayEventGame3 = (form, state, interval) => {
     if (e.target.closest(`.game__option`)) {
       const indexImage = [...images].indexOf(e.target);
       const imageType = games[state.game].answers[indexImage].type;
-      const newState = addAnswerResult(state, imageType);
+      state.timer = parseInt(document.querySelector(`.game__timer`).innerHTML, 10);
+      const newState = addAnswerResult(state, getTimer(), imageType);
       nextDisplay(newState);
     }
   });

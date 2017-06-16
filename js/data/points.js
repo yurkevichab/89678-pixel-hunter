@@ -9,10 +9,20 @@ export const getPointByLives = (lives) => {
   return lives * POINTS.heart;
 };
 
+export const getRightPoints = (stats) => {
+  return stats.filter((stat) => stat !== ANSWER_TYPES.wrong).length * POINTS[ANSWER_TYPES.correct];
+};
+
 export const getTotalPoints = ({lives, stats}) => {
-  const sumAnswerPoint = Object.keys(ANSWER_TYPES).reduce((sum, type) => {
-    return sum + getPointsByAnswerType(ANSWER_TYPES[type], stats);
-  }, 0);
+  const sumFastAswerPoints = getPointsByAnswerType(ANSWER_TYPES.fast, stats);
+  const sumSlowAswerPoints = getPointsByAnswerType(ANSWER_TYPES.slow, stats);
   const sumLivesPoints = getPointByLives(lives);
-  return sumAnswerPoint + sumLivesPoints;
+  const sumRightPoints = getRightPoints(stats);
+  return sumFastAswerPoints + sumSlowAswerPoints + sumLivesPoints + sumRightPoints;
+};
+
+export const getPointCount = (stats, type) => {
+  return stats.filter((s) => {
+    return s === type;
+  }).length;
 };

@@ -9,3 +9,7 @@ export const setLives = (state, lives) => {
   }
   return Object.assign({}, state, {'lives': lives});
 };
+
+export const isLastLive = (lives) => {
+  return lives === MIN_COUNT_LIVES;
+};

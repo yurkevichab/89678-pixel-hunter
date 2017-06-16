@@ -22,11 +22,14 @@ export const initialState = Object.freeze({
   'game': 0,
   'lives': 3,
   'timer': 30,
-  'stats': [``, ``, ``, ``, ``, ``, ``, ``, ``, ``]
+  'stats': []
 });
 
 export const statInfo = Object.freeze({
-  'title': `Победа!`,
+  'title': {
+    'win': `Победа!`,
+    'loss': `Поражение`
+  },
   'ratio': 100,
   'bonuses': [
     {
@@ -81,9 +84,15 @@ export const lastGames = Object.freeze([
 ]
 );
 
+export const GAMES_TYPES = {
+  'twoQuestions': `game-1`,
+  'oneQuestion': `game-2`,
+  'threeQuestions': `game-3`
+};
+
 export const games = Object.freeze([
   {
-    'type': `game-1`,
+    'type': GAMES_TYPES.twoQuestions,
     'description': `Угадайте для каждого изображения фото или рисунок?`,
     'answers': [
       {
@@ -96,7 +105,7 @@ export const games = Object.freeze([
       }]
   },
   {
-    'type': `game-2`,
+    'type': GAMES_TYPES.oneQuestion,
     'description': `Угадай, фото или рисунок?`,
     'answers': [
       {
@@ -106,7 +115,7 @@ export const games = Object.freeze([
     ]
   },
   {
-    'type': `game-3`,
+    'type': GAMES_TYPES.threeQuestions,
     'description': `Найдите рисунок среди изображений`,
     'answers': [
       {
@@ -127,7 +136,7 @@ export const games = Object.freeze([
     ]
   },
   {
-    'type': `game-1`,
+    'type': GAMES_TYPES.twoQuestions,
     'description': `Угадайте для каждого изображения фото или рисунок?`,
     'answers': [
       {
@@ -140,7 +149,7 @@ export const games = Object.freeze([
       }]
   },
   {
-    'type': `game-2`,
+    'type': GAMES_TYPES.oneQuestion,
     'description': `Угадай, фото или рисунок?`,
     'answers': [
       {
@@ -150,7 +159,7 @@ export const games = Object.freeze([
     ]
   },
   {
-    'type': `game-3`,
+    'type': GAMES_TYPES.threeQuestions,
     'description': `Найдите рисунок среди изображений`,
     'answers': [
       {
@@ -171,7 +180,7 @@ export const games = Object.freeze([
     ]
   },
   {
-    'type': `game-1`,
+    'type': GAMES_TYPES.twoQuestions,
     'description': `Угадайте для каждого изображения фото или рисунок?`,
     'answers': [
       {
@@ -184,7 +193,7 @@ export const games = Object.freeze([
       }]
   },
   {
-    'type': `game-2`,
+    'type': GAMES_TYPES.oneQuestion,
     'description': `Угадай, фото или рисунок?`,
     'answers': [
       {
@@ -194,7 +203,7 @@ export const games = Object.freeze([
     ]
   },
   {
-    'type': `game-3`,
+    'type': GAMES_TYPES.threeQuestions,
     'description': `Найдите рисунок среди изображений`,
     'answers': [
       {
@@ -215,12 +224,23 @@ export const games = Object.freeze([
     ]
   },
   {
-    'type': `game-2`,
-    'description': `Угадай, фото или рисунок?`,
+    'type': GAMES_TYPES.threeQuestions,
+    'description': `Найдите рисунок среди изображений`,
     'answers': [
       {
         'image': `http://i.imgur.com/1KegWPz.jpg`,
+        'isRight': false,
+        'type': `photo`
+      },
+      {
+        'image': `https://k42.kn3.net/CF42609C8.jpg`,
+        'isRight': true,
         'type': `paint`
+      },
+      {
+        'image': `https://k42.kn3.net/D2F0370D6.jpg`,
+        'isRight': false,
+        'type': `photo`
       }
     ]
   }

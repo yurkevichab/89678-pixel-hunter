@@ -4,6 +4,7 @@ import {getHeader, addBackButtonEvent} from './header';
 import createStats from '../create-stats';
 import {statInfo, lastGames, ANSWER_TYPES, POINTS} from '../data';
 import {getTotalPoints, getRightPoints, getPointCount} from '../data/points';
+import {isLivesEnded} from '../data/lives';
 
 const createBonus = (bonusCount, {title, type}) => {
   return `
@@ -27,7 +28,7 @@ const countPoints = ({lives, stats}) => {
 };
 
 const createBonuses = (points) => {
-  return statInfo.bonuses.reduce((content, bonus, index) => {
+  return statInfo.bonuses.reduce((content, bonus) => {
     const bonusCount = points.get(bonus.type);
     const html = bonusCount ? createBonus(bonusCount, bonus) : ``;
     return content + html;
@@ -65,15 +66,14 @@ const createTableResult = (game, index) => {
 };
 
 export default (state) => {
-  const isCurrentGameFail = state.lives === 0;
-  const newLastGames = [state,
+  const games = [state,
     ...lastGames
   ];
   const template = `
   ${getHeader()}
   <div class="result">
-    <h1>${isCurrentGameFail ? statInfo.title.loss : statInfo.title.win}</h1>
-    ${newLastGames.reduce((content, game, index) => {
+    <h1>${isLivesEnded(state.lives) ? statInfo.title.loss : statInfo.title.win}</h1>
+    ${games.reduce((content, game, index) => {
       return content + createTableResult(game, index + 1);
     }, ``)}
   </div>

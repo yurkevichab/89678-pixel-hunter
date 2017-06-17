@@ -30,22 +30,22 @@ export const statInfo = Object.freeze({
     'win': `Победа!`,
     'loss': `Поражение`
   },
-  'ratio': 100,
+  'ratio': POINTS[ANSWER_TYPES.correct],
   'bonuses': [
     {
       'title': `Бонус за скорость:`,
       'type': `fast`,
-      'ratio': 50
+      'ratio': POINTS[ANSWER_TYPES.fast]
     },
     {
       'title': `Бонус за жизни:`,
       'type': `heart`,
-      'ratio': 50
+      'ratio': POINTS.heart
     },
     {
       'title': `Штраф за медлительность:`,
       'type': `slow`,
-      'ratio': -50
+      'ratio': POINTS[ANSWER_TYPES.slow]
     }
   ]
 });
@@ -163,18 +163,13 @@ export const games = Object.freeze([
     'description': `Найдите рисунок среди изображений`,
     'answers': [
       {
-        'image': `http://i.imgur.com/1KegWPz.jpg`,
-        'isRight': false,
-        'type': `photo`
+        'image': `http://i.imgur.com/1KegWPz.jpg`
       },
       {
-        'image': `https://k42.kn3.net/CF42609C8.jpg`,
-        'isRight': true,
-        'type': `paint`
+        'image': `https://k42.kn3.net/CF42609C8.jpg`
       },
       {
         'image': `https://k42.kn3.net/D2F0370D6.jpg`,
-        'isRight': false,
         'type': `photo`
       }
     ]

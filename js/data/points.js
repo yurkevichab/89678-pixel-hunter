@@ -21,8 +21,6 @@ export const getTotalPoints = ({lives, stats}) => {
   return sumFastAswerPoints + sumSlowAswerPoints + sumLivesPoints + sumRightPoints;
 };
 
-export const getPointCount = (stats, type) => {
-  return stats.filter((s) => {
-    return s === type;
-  }).length;
-};
+export const getPointCount = (stats, type) => stats.filter((s) => {
+  return s === type;
+}).length;

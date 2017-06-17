@@ -1,9 +1,9 @@
 import assert from 'assert';
-import {checkAnswer, getAnswerType, setState, addAnswerResult} from './answer';
-import {setLives, isLastLive} from './lives';
+import {checkAnswer, getAnswerType, setStats} from './answer';
+import {setLives, isLivesEnded} from './lives';
 import {initialState} from '../data';
 import {setTimer, cleanTimer} from './timer';
-import {setGame} from './game';
+import {changeGame} from './game';
 import {getPointByLives, getPointsByAnswerType, getTotalPoints, getRightPoints, getPointCount} from './points';
 
 describe(`Game`, () => {
@@ -43,49 +43,18 @@ describe(`Game`, () => {
       const verifiedPoint = getAnswerType(true, state);
       assert.equal(verifiedPoint, `correct`);
     });
-
-    it(`should return right state when send with one correct answer`, () => {
-      const state = {'timer': 21, "stats": [], 'lives': 2, 'game': 1};
-      const timer = 21;
-      const rightResult = {'timer': 21, "stats": [`fast`], 'lives': 2, 'game': 1};
-      const verifiedAnswerResult = addAnswerResult(state, timer, `paint`);
-      assert.deepEqual(rightResult, verifiedAnswerResult);
-    });
-
-    it(`should return right state when send  with one wrong answer`, () => {
-      const state = {'timer': 21, "stats": [], 'lives': 2, 'game': 1};
-      const timer = 21;
-      const rightResult = {'timer': 21, "stats": [`wrong`], 'lives': 1, 'game': 1};
-      const verifiedAnswerResult = addAnswerResult(state, timer, `photo`);
-      assert.deepEqual(rightResult, verifiedAnswerResult);
-    });
-
-    it(`should return right state when send with two correct answer`, () => {
-      const state = {'timer': 8, "stats": [], 'lives': 2, 'game': 0};
-      const timer = 8;
-      const rightResult = {'timer': 8, "stats": [`slow`], 'lives': 2, 'game': 0};
-      const verifiedAnswerResult = addAnswerResult(state, timer, `paint`, `photo`);
-      assert.deepEqual(rightResult, verifiedAnswerResult);
-    });
-
-    it(`should return right state when send with two wrong answer`, () => {
-      const state = {'timer': 8, "stats": [], 'lives': 2, 'game': 0};
-      const rightResult = {'timer': 8, "stats": [`wrong`], 'lives': 1, 'game': 0};
-      const verifiedAnswerResult = addAnswerResult(state, `photo`, `photo`);
-      assert.deepEqual(rightResult, verifiedAnswerResult);
-    });
   });
 
   describe(`Add point in state`, () => {
     it(`check add correct point to stats`, () => {
       const state = {stats: []};
-      const lastAddAnswerType = setState(state, `correct`).stats.pop();
+      const lastAddAnswerType = setStats(state, `correct`).stats.pop();
       assert.equal(lastAddAnswerType, `correct`);
     });
   });
 
   describe(`Changing the timer`, () => {
-    it(`should check changes timer`, () => {
+    it(`should decrease timer value`, () => {
       const state = {'timer': 20};
       const verifiedTimer = setTimer(state).timer;
       assert.equal(19, verifiedTimer);
@@ -107,7 +76,7 @@ describe(`Game`, () => {
   });
 
   describe(`Changing the lives`, () => {
-    it(`should check changes lives`, () => {
+    it(` should correct change lives value`, () => {
       const state = {'lives': 3};
       const verifiedLives = setLives(state, 2).lives;
       assert.equal(2, verifiedLives);
@@ -131,7 +100,7 @@ describe(`Game`, () => {
 
     it(`should return true is last live`, () => {
       const state = {'lives': 0};
-      const verifiedLives = isLastLive(state.lives);
+      const verifiedLives = isLivesEnded(state.lives);
       assert.equal(true, verifiedLives);
     });
   });
@@ -139,13 +108,14 @@ describe(`Game`, () => {
   describe(`Changing the game number`, () => {
     it(`should check changes game`, () => {
       const state = {'game': 5};
-      const verifiedQuestion = setGame(state).game;
+      const verifiedQuestion = changeGame(state).game;
       assert.equal(6, verifiedQuestion);
     });
+
     it(`should throw exception if game more than max possible`, () => {
       const state = {'game': 10};
       const maxRangeError = () => {
-        setGame(state);
+        changeGame(state);
       };
       assert.throws(maxRangeError, Error);
     });

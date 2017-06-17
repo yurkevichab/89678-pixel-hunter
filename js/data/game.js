@@ -1,14 +1,12 @@
 import {games} from '../data';
-import {cleanTimer} from './timer';
 
-export const setGame = (state) => {
+export const changeGame = (state) => {
   let game = state.game;
   game++;
   if (game > games.length) {
     throw new RangeError(`Number of games can not be more than ${games.length}`);
   }
-  const timer = cleanTimer(state).timer;
-  return Object.assign({}, state, {'game': game, 'timer': timer});
+  return Object.assign({}, state, {'game': game});
 };
 
 export const isLastGame = (game) => {

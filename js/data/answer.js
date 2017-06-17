@@ -1,5 +1,4 @@
-import {initialState, FAST_ANSWER, SLOW_ANSWER, ANSWER_TYPES, games, GAMES_TYPES} from '../data';
-import {setLives} from './lives';
+import {initialState, FAST_ANSWER, SLOW_ANSWER, ANSWER_TYPES, MIN_TIMER_VALUE} from '../data';
 
 export const checkAnswer = (answer, rightAnswer) => {
   return answer === rightAnswer;
@@ -7,7 +6,7 @@ export const checkAnswer = (answer, rightAnswer) => {
 
 export const getAnswerType = (isCorrect, timer) => {
   const differenceTime = initialState.timer - timer;
-  if (!isCorrect || timer === 0) {
+  if (!isCorrect || timer === MIN_TIMER_VALUE) {
     return ANSWER_TYPES.wrong;
   }
   if (differenceTime < FAST_ANSWER) {
@@ -19,27 +18,8 @@ export const getAnswerType = (isCorrect, timer) => {
   return ANSWER_TYPES.correct;
 };
 
-export const setState = (state, point) => {
+export const setStats = (state, point) => {
   const newStats = state.stats.slice(0);
   newStats.push(point);
   return Object.assign({}, state, {stats: newStats});
-};
-
-export const addAnswerResult = (state, timer, ...answer) => {
-  const game = games[state.game];
-  let answerResult = false;
-  if (game.type === GAMES_TYPES.threeQuestions) {
-    const rightAnswer = game.answers.find((a) => a.isRight);
-    answerResult = rightAnswer.type === answer[0];
-  } else {
-    answerResult = [...answer].every((a, index) => {
-      return checkAnswer(game.answers[index].type, a);
-    });
-  }
-  const point = getAnswerType(answerResult, timer);
-  let newState = setState(state, point);
-  if (!answerResult) {
-    newState = setLives(newState, newState.lives - 1);
-  }
-  return newState;
 };

@@ -4,22 +4,36 @@ import switchDisplay from './switch-display';
 import createGameTemplate from './create-game-template';
 import getStats from './templates/stats';
 import {addBackButtonEvent} from './templates/header';
-import {setTimer} from './data/timer';
-import {addAnswerResult, setState} from './data/answer';
-import {setGame, isLastGame} from './data/game';
-import {isLastLive, setLives} from './data/lives';
+import {setTimer, cleanTimer} from './data/timer';
+import {setStats, checkAnswer, getAnswerType} from './data/answer';
+import {changeGame, isLastGame} from './data/game';
+import {isLivesEnded, setLives} from './data/lives';
 
 const getTimer = () => {
   const timer = document.querySelector(`.game__timer`);
   return timer.innerHTML;
 };
 
+const addAnswerResult = (state, timer, ...answer) => {
+  const game = games[state.game];
+  const answerResult = [...answer].every((a, index) => {
+    return checkAnswer(game.answers[index].type, a);
+  });
+  const point = getAnswerType(answerResult, timer);
+  let newState = setStats(state, point);
+  if (!answerResult) {
+    newState = setLives(newState, newState.lives - 1);
+  }
+  return newState;
+};
+
 const nextDisplay = (state) => {
   let display = ``;
-  if (isLastGame(state.game) || isLastLive(state.lives)) {
+  if (isLastGame(state.game) || isLivesEnded(state.lives)) {
     display = getStats(state);
   } else {
-    const newState = setGame(state);
+    let newState = changeGame(state);
+    newState = cleanTimer(newState);
     display = getGameDisplay(newState);
   }
   switchDisplay(display);
@@ -40,7 +54,7 @@ const getGameDisplay = (state) => {
     timerElement.innerHTML = state.timer;
     if (state.timer === MIN_TIMER_VALUE) {
       clearInterval(interval);
-      let newState = setState(state, ANSWER_TYPES.wrong);
+      let newState = setStats(state, ANSWER_TYPES.wrong);
       newState = setLives(newState, newState.lives - 1);
       nextDisplay(newState);
     }

@@ -16,7 +16,7 @@ const getTimer = () => {
 
 const addAnswerResult = (state, timer, ...answer) => {
   const game = games[state.game];
-  const answerResult = [...answer].every((a, index) => {
+  const answerResult = [...answer].every((a) => {
     return a.type && checkAnswer(game.answers[a.index].type, a.type);
   });
   const point = getAnswerType(answerResult, timer);

@@ -17,7 +17,7 @@ const getTimer = () => {
 const addAnswerResult = (state, timer, ...answer) => {
   const game = games[state.game];
   const answerResult = [...answer].every((a, index) => {
-    return checkAnswer(game.answers[index].type, a);
+    return a.type && checkAnswer(game.answers[a.index].type, a.type);
   });
   const point = getAnswerType(answerResult, timer);
   let newState = setStats(state, point);
@@ -112,7 +112,7 @@ const switchDisplayEventGame1 = (form, state, interval) => {
       clearInterval(interval);
       const answer1 = form.querySelector(`input[name="question1"]:checked`).value;
       const answer2 = form.querySelector(`input[name="question2"]:checked`).value;
-      const newState = addAnswerResult(state, getTimer(), answer1, answer2);
+      const newState = addAnswerResult(state, getTimer(), {index: 0, type: answer1}, {index: 1, type: answer2});
       nextDisplay(newState);
     }
   });
@@ -122,7 +122,7 @@ const switchDisplayEventGame2 = (form, state, interval) => {
   form.addEventListener(`change`, () => {
     clearInterval(interval);
     const answer1 = form.querySelector(`input[name="question1"]:checked`).value;
-    const newState = addAnswerResult(state, getTimer(), answer1);
+    const newState = addAnswerResult(state, getTimer(), {index: 0, type: answer1});
     nextDisplay(newState);
   });
 
@@ -135,7 +135,7 @@ const switchDisplayEventGame3 = (form, state, interval) => {
     if (e.target.closest(`.game__option`)) {
       const indexImage = [...images].indexOf(e.target);
       const imageType = games[state.game].answers[indexImage].type;
-      const newState = addAnswerResult(state, getTimer(), imageType);
+      const newState = addAnswerResult(state, getTimer(), {index: indexImage, type: imageType});
       nextDisplay(newState);
     }
   });

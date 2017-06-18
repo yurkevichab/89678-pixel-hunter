@@ -2,63 +2,46 @@ import createElement from '../create-element';
 import footer from './footer';
 import {getHeader, addBackButtonEvent} from './header';
 import createStats from '../create-stats';
-import {statInfo} from '../data';
+import {statInfo, lastGames, ANSWER_TYPES, POINTS} from '../data';
+import {getTotalPoints, getRightPoints, getPointCount} from '../data/points';
+import {isLivesEnded} from '../data/lives';
 
-const getFinalResults = (points) => {
-  let sum = 0;
-  for (let [key, value] of points) {
-    sum += key === `total` ? value * statInfo.ratio : value * statInfo.bonuses.find((b) => b.type === key).ratio;
-  }
-  return sum;
-};
-
-const createBonus = (bonusCount, {title, type, ratio}) => {
+const createBonus = (bonusCount, {title, type}) => {
   return `
     <tr>
       <td></td>
       <td class="result__extra">${title}</td>
       <td class="result__extra">${bonusCount}&nbsp;<span class="stats__result stats__result--${type}"></span></td>
-      <td class="result__points">×&nbsp;${ratio}</td>
-      <td class="result__total">${bonusCount * ratio}</td>
+      <td class="result__points">×&nbsp;${POINTS[type]}</td>
+      <td class="result__total">${bonusCount * POINTS[type]}</td>
     </tr>`;
-};
-
-const getPointCount = (stats, type) => {
-  return stats.filter((s) => {
-    return s === type;
-  }).length;
 };
 
 const countPoints = ({lives, stats}) => {
   const result = new Map();
   result.set(`heart`, lives);
-  const rightStats = stats.filter((s) => s !== `wrong` && s !== `unknown`);
-  for (let type of rightStats.filter((s) => s !== `correct`)) {
-    if (!result.has(type)) {
-      result.set(type, getPointCount(stats, type));
-    }
+  for (let type of Object.keys(ANSWER_TYPES)) {
+    result.set(type, getPointCount(stats, type));
   }
-  result.set(`total`, rightStats.length);
 
   return result;
 };
 
-const createBonuses = (game) => {
-  const points = countPoints(game);
-  return statInfo.bonuses.reduce((content, bonus, index) => {
+const createBonuses = (points) => {
+  return statInfo.bonuses.reduce((content, bonus) => {
     const bonusCount = points.get(bonus.type);
     const html = bonusCount ? createBonus(bonusCount, bonus) : ``;
     return content + html;
   }, ``);
 };
 
-const createStatsResult = (points, isNotFail) => {
+const createStatsResult = (stats, isNotFail) => {
   const failResult = `
     <td class="result__total"></td>
     <td class="result__total  result__total--final">fail</td>`;
   const statsResultHtml = `
-    <td class="result__points">×&nbsp;${statInfo.ratio}</td>
-    <td class="result__total">${statInfo.ratio * points.get(`total`)}</td>`;
+    <td class="result__points">×&nbsp;${POINTS[ANSWER_TYPES.correct]}</td>
+    <td class="result__total">${getRightPoints(stats)}</td>`;
 
   return isNotFail ? statsResultHtml : failResult;
 };
@@ -73,21 +56,24 @@ const createTableResult = (game, index) => {
         <td colspan="2">
           ${createStats(game.stats)}
         </td>
-        ${createStatsResult(points, isNotFail)}
+        ${createStatsResult(game.stats, isNotFail)}
       </tr>
-      ${isNotFail ? createBonuses(game) : ``}
+      ${isNotFail ? createBonuses(points) : ``}
       <tr>
-        <td colspan="5" class="result__total  result__total--final">${isNotFail ? getFinalResults(points) : ``}</td>
+        <td colspan="5" class="result__total  result__total--final">${isNotFail ? getTotalPoints(game) : ``}</td>
       </tr>
     </table>`;
 };
 
-export default (lastGames) => {
+export default (state) => {
+  const games = [state,
+    ...lastGames
+  ];
   const template = `
   ${getHeader()}
   <div class="result">
-    <h1>${statInfo.title}</h1>
-    ${lastGames.reduce((content, game, index) => {
+    <h1>${isLivesEnded(state.lives) ? statInfo.title.loss : statInfo.title.win}</h1>
+    ${games.reduce((content, game, index) => {
       return content + createTableResult(game, index + 1);
     }, ``)}
   </div>

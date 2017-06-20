@@ -8,6 +8,7 @@ import {setTimer, cleanTimer} from './data/timer';
 import {setStats, checkAnswer, getAnswerType} from './data/answer';
 import {changeGame, isLastGame} from './data/game';
 import {isLivesEnded, setLives} from './data/lives';
+import resizeImage from './data/resizeImage';
 
 const getTimer = () => {
   const timer = document.querySelector(`.game__timer`);
@@ -63,16 +64,18 @@ const getGameDisplay = (state) => {
   for (let img of answerImages) {
     img.addEventListener(`load`, () => {
       const parentBlock = img.parentNode;
+      const frame = {
+        width: parentBlock.clientWidth,
+        height: parentBlock.clientHeight
+      };
+      const correctedSizes = resizeImage(frame,
+          {
+            width: img.naturalWidth,
+            height: img.naturalHeight
+          });
 
-      const maxWidth = parentBlock.clientWidth;
-      const maxHeight = parentBlock.clientHeight;
-      const width = img.naturalWidth;
-      const height = img.naturalHeight;
-
-      const ratio = Math.min(maxWidth / width, maxHeight / height);
-
-      img.setAttribute(`width`, `${width * ratio}`);
-      img.setAttribute(`height`, `${height * ratio }`);
+      img.width = correctedSizes.width;
+      img.height = correctedSizes.height;
     });
   }
   initGameEvent(game.type, form, state, interval);

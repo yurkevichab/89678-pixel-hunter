@@ -68,11 +68,10 @@ const getGameDisplay = (state) => {
         width: parentBlock.clientWidth,
         height: parentBlock.clientHeight
       };
-      const correctedSizes = resizeImage(frame,
-          {
-            width: img.naturalWidth,
-            height: img.naturalHeight
-          });
+      const correctedSizes = resizeImage(frame, {
+        width: img.naturalWidth,
+        height: img.naturalHeight
+      });
 
       img.width = correctedSizes.width;
       img.height = correctedSizes.height;

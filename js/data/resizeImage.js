@@ -1,9 +1,8 @@
-export default (frame, given) =>{
-
+export default (frame, image) =>{
   const maxWidth = frame.width;
   const maxHeight = frame.height;
-  const width = given.width;
-  const height = given.height;
+  const width = image.width;
+  const height = image.height;
 
   const ratio = Math.min(maxWidth / width, maxHeight / height);
 

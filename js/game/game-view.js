@@ -1,7 +1,8 @@
 import AbstractView from '../view';
-import {getHeader} from './templates/header';
-import footer from './templates/footer';
-import createStats from './create-stats';
+import {getHeader, addBackButtonEvent} from '../templates/header';
+import footer from '../templates/footer';
+import createStats from '../create-stats';
+import {GAMES_TYPES} from '../data';
 
 const OPTIONS = [
   {
@@ -41,7 +42,7 @@ const ADDITION_GAME_DATA = {
 };
 
 export default class gameTemplate extends AbstractView {
-  constructor(state, game) {
+  constructor(game, state) {
     super();
     this.state = state;
     this.game = game;
@@ -94,5 +95,36 @@ export default class gameTemplate extends AbstractView {
     </div>
   </div>
   ${footer}`;
+  }
+
+  get timerValue() {
+    const timerElement = this.element.querySelector(`.game__timer`);
+    return timerElement.innerHTML;
+  }
+
+  bind() {
+    const form = this.element.querySelector(`.game__content`);
+    const timerElement = this.element.querySelector(`.game__timer`);
+
+    switch (this.game.type) {
+      case GAMES_TYPES.twoQuestions:
+        this.onAnswerTwoQuestions(form);
+        break;
+
+      case GAMES_TYPES.oneQuestion:
+        this.onAnswerOneQuestion(form);
+        break;
+
+      case GAMES_TYPES.threeQuestions:
+        this.onAnswerThreeQuestions(form);
+        break;
+    }
+    this.onResizeImages(form);
+    this.onBackButtonClick();
+    this.onUpdateTimer(timerElement);
+  }
+
+  onBackButtonClick() {
+    addBackButtonEvent(this.element);
   }
 }

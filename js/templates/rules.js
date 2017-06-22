@@ -2,7 +2,7 @@ import createElement from '../create-element';
 import switchDisplay from '../switch-display';
 import footer from './footer';
 import {initialState} from '../data';
-import createGameDisplay from '../create-game-display';
+import createGameDisplay from '../game/create-game-display';
 import {getHeader, addBackButtonEvent} from './header';
 
 export default () => {

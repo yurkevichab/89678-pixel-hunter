@@ -1,12 +1,12 @@
-import {games, MIN_TIMER_VALUE, ANSWER_TYPES} from './data';
-import switchDisplay from './switch-display';
-import getStats from './templates/stats';
-import {setTimer, cleanTimer} from './data/timer';
-import {setStats, checkAnswer, getAnswerType} from './data/answer';
-import {changeGame, isLastGame} from './data/game';
-import {isLivesEnded, setLives} from './data/lives';
-import resizeImage from './data/resizeImage';
-import GameView from './game/game-view';
+import {games, MIN_TIMER_VALUE, ANSWER_TYPES} from '../data';
+import switchDisplay from '../switch-display';
+import getStats from '../templates/stats';
+import {setTimer, cleanTimer} from '../data/timer';
+import {setStats, checkAnswer, getAnswerType} from '../data/answer';
+import {changeGame, isLastGame} from '../data/game';
+import {isLivesEnded, setLives} from '../data/lives';
+import resizeImage from '../data/resizeImage';
+import GameView from './game-view';
 
 const addAnswerResult = (state, ...answer) => {
   const game = games[state.game];
@@ -34,15 +34,16 @@ const nextDisplay = (state) => {
 };
 
 const getGameDisplay = (state) => {
+  let timer = null;
   const game = games[state.game];
   const gameView = new GameView(game, state);
 
   gameView.onUpdateTimer = (timerElement) => {
-    const interval = setInterval(() => {
+    timer = setInterval(() => {
       state = setTimer(state);
       timerElement.innerHTML = state.timer;
       if (state.timer === MIN_TIMER_VALUE) {
-        clearInterval(interval);
+        clearInterval(timer);
         let newState = setStats(state, ANSWER_TYPES.wrong);
         newState = setLives(newState, newState.lives - 1);
         nextDisplay(newState);
@@ -79,10 +80,10 @@ const getGameDisplay = (state) => {
 
     form.addEventListener(`change`, () => {
       if (isRadioChecked(`question1`) && isRadioChecked(`question2`)) {
-      //  clearInterval(interval);
+        clearInterval(timer);
         const answer1 = form.querySelector(`input[name="question1"]:checked`).value;
         const answer2 = form.querySelector(`input[name="question2"]:checked`).value;
-        const newState = addAnswerResult(state, gameView.timerValue(), {index: 0, type: answer1}, {index: 1, type: answer2});
+        const newState = addAnswerResult(state, {index: 0, type: answer1}, {index: 1, type: answer2});
         nextDisplay(newState);
       }
     });
@@ -90,9 +91,9 @@ const getGameDisplay = (state) => {
 
   gameView.onAnswerOneQuestion = (form) => {
     form.addEventListener(`change`, () => {
-     // clearInterval(interval);
+      clearInterval(timer);
       const answer1 = form.querySelector(`input[name="question1"]:checked`).value;
-      const newState = addAnswerResult(state, gameView.timerValue(), {index: 0, type: answer1});
+      const newState = addAnswerResult(state, {index: 0, type: answer1});
       nextDisplay(newState);
     });
 
@@ -100,7 +101,7 @@ const getGameDisplay = (state) => {
 
   gameView.onAnswerThreeQuestions = (form) => {
     form.addEventListener(`click`, (e) => {
-     // clearInterval(interval);
+      clearInterval(timer);
       const images = form.querySelectorAll(`.game__option`);
       if (e.target.closest(`.game__option`)) {
         const indexImage = [...images].indexOf(e.target);
@@ -110,6 +111,6 @@ const getGameDisplay = (state) => {
       }
     });
   };
-  return gameView.element();
+  return gameView.element;
 };
 export default getGameDisplay;

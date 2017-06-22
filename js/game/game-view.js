@@ -97,11 +97,6 @@ export default class gameTemplate extends AbstractView {
   ${footer}`;
   }
 
-  get timerValue() {
-    const timerElement = this.element.querySelector(`.game__timer`);
-    return timerElement.innerHTML;
-  }
-
   bind() {
     const form = this.element.querySelector(`.game__content`);
     const timerElement = this.element.querySelector(`.game__timer`);

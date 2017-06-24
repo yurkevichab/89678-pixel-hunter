@@ -1,8 +1,9 @@
 import AbstractView from '../view';
-import {getHeader, addBackButtonEvent} from '../templates/header';
-import footer from '../templates/footer';
+import header from '../header/header';
+import footer from '../footer/footer';
 import createStats from '../create-stats';
-import {GAMES_TYPES} from '../data';
+import {GAMES_TYPES, games} from '../data';
+import {checkAnswer} from '../data/answer';
 
 const OPTIONS = [
   {
@@ -40,6 +41,38 @@ const ADDITION_GAME_DATA = {
     'additionClasses': ``
   }
 };
+const getAnswer = (type, answer, index) => {
+  const {haveOption, additionClasses, imagesWidth, imagesHeight} = ADDITION_GAME_DATA[type];
+  return `
+    <div class="game__option">
+      <img src="${answer.image}" alt="Option ${index}" width="${imagesWidth}" height="${imagesHeight}">
+      ${haveOption ? getOptions(additionClasses, index) : ``}
+    </div>`;
+};
+
+const getAnswers = (game) => {
+  const gameType = game.type;
+  return game.answers.reduce((content, answer, index) => {
+    const htmlAnswer = getAnswer(gameType, answer, index + 1);
+    return content + htmlAnswer;
+  }, ``);
+};
+
+const getOption = ({type, text}, additionClasses, index) => {
+  const additionClass = additionClasses ? additionClasses[type] : ``;
+  return `
+    <label class="game__answer game__answer--${type} ${additionClass}">
+      <input name="question${index}" type="radio" value="${type}">
+      <span>${text}</span>
+    </label>`;
+};
+
+const getOptions = (additionClasses, index) => {
+  return OPTIONS.reduce((prev, option) => {
+    const label = getOption(option, additionClasses, index);
+    return prev + label;
+  }, ``);
+};
 
 export default class gameTemplate extends AbstractView {
   constructor(game, state) {
@@ -48,78 +81,75 @@ export default class gameTemplate extends AbstractView {
     this.game = game;
   }
 
-  _getAnswer(type, answer, index) {
-    const {haveOption, additionClasses, imagesWidth, imagesHeight} = ADDITION_GAME_DATA[type];
-    return `
-    <div class="game__option">
-      <img src="${answer.image}" alt="Option ${index}" width="${imagesWidth}" height="${imagesHeight}">
-      ${haveOption ? this._getOptions(additionClasses, index) : ``}
-    </div>`;
-  }
-
-  _getAnswers(game) {
-    const gameType = game.type;
-    return game.answers.reduce((content, answer, index) => {
-      const htmlAnswer = this._getAnswer(gameType, answer, index + 1);
-      return content + htmlAnswer;
-    }, ``);
-  }
-
-  _getOption({type, text}, additionClasses, index) {
-    const additionClass = additionClasses ? additionClasses[type] : ``;
-    return `
-    <label class="game__answer game__answer--${type} ${additionClass}">
-      <input name="question${index}" type="radio" value="${type}">
-      <span>${text}</span>
-    </label>`;
-  }
-
-  _getOptions(additionClasses, index) {
-    return OPTIONS.reduce((prev, option) => {
-      const label = this._getOption(option, additionClasses, index);
-      return prev + label;
-    }, ``);
-  }
-
   get template() {
     const formClass = ADDITION_GAME_DATA[this.game.type].formClass;
     return `
-  ${getHeader(this.state)}
-  <div class="game">
-    <p class="game__task">${this.game.description}</p>
-    <form class="game__content ${formClass}">     
-      ${this._getAnswers(this.game)}
-    </form>
-    <div class="stats">
-      ${createStats(this.state.stats)}
+    ${header(this.state)}
+    <div class="game">
+      <p class="game__task">${this.game.description}</p>
+      <form class="game__content ${formClass}">     
+        ${getAnswers(this.game)}
+      </form>
+      <div class="stats">
+        ${createStats(this.state.stats)}
+      </div>
     </div>
-  </div>
-  ${footer}`;
+    ${footer()}`;
   }
 
   bind() {
     const form = this.element.querySelector(`.game__content`);
     const timerElement = this.element.querySelector(`.game__timer`);
+    const backButton = this.element.querySelector(`.back`);
+    const answerImages = form.querySelectorAll(`.game__option img`);
 
     switch (this.game.type) {
       case GAMES_TYPES.twoQuestions:
-        this.onAnswerTwoQuestions(form);
+        form.addEventListener(`change`, () => {
+          const answer1 = form.querySelector(`input[name="question1"]:checked`);
+          const answer2 = form.querySelector(`input[name="question2"]:checked`);
+          if (answer1 && answer2) {
+            const isCorrectAnswer = checkAnswer(this.game.answers[0].type, answer1.value) &&
+              checkAnswer(this.game.answers[1].type, answer2.value);
+            this.onAnswerTwoQuestions(isCorrectAnswer);
+          }
+        });
         break;
 
       case GAMES_TYPES.oneQuestion:
-        this.onAnswerOneQuestion(form);
+        form.addEventListener(`change`, () => {
+          const answer1 = form.querySelector(`input[name="question1"]:checked`);
+          const isCorrectAnswer = checkAnswer(this.game.answers[0].type, answer1.value);
+          this.onAnswerOneQuestion(isCorrectAnswer);
+        });
         break;
 
       case GAMES_TYPES.threeQuestions:
-        this.onAnswerThreeQuestions(form);
+        form.addEventListener(`click`, (e) => {
+          const images = form.querySelectorAll(`.game__option`);
+          if (e.target.closest(`.game__option`)) {
+            const indexImage = [...images].indexOf(e.target);
+            const isCorrectAnswer = !!games[this.state.game].answers[indexImage].type;
+            this.onAnswerThreeQuestions(isCorrectAnswer);
+          }
+        });
         break;
     }
-    this.onResizeImages(form);
-    this.onBackButtonClick();
-    this.onUpdateTimer(timerElement);
-  }
 
-  onBackButtonClick() {
-    addBackButtonEvent(this.element);
+    backButton.addEventListener(`click`, () => {
+      this.onBackToGreeting();
+    });
+
+    for (let img of answerImages) {
+      img.addEventListener(`load`, (e) => {
+        const correctSizes = this.resizeImages(e.target);
+        e.target.width = correctSizes.width;
+        e.target.height = correctSizes.height;
+      });
+    }
+
+    this.onUpdateTimer((timer) => {
+      timerElement.innerHTML = timer;
+    });
   }
 }

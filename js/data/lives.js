@@ -16,4 +16,4 @@ export const isLivesEnded = (lives) => {
 
 export const reduceLives = (state) => {
   return setLives(state, state.lives - 1);
-}
+};

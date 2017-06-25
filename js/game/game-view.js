@@ -100,7 +100,7 @@ export default class gameTemplate extends AbstractView {
 
   bind() {
     const form = this.element.querySelector(`.game__content`);
-    const timerElement = this.element.querySelector(`.game__timer`);
+    this.timerElement = this.element.querySelector(`.game__timer`);
     const backButton = this.element.querySelector(`.back`);
     const answerImages = form.querySelectorAll(`.game__option img`);
 
@@ -157,9 +157,9 @@ export default class gameTemplate extends AbstractView {
         img.height = correctedSizes.height;
       });
     }
+  }
 
-    this.onUpdateTimer((timer) => {
-      timerElement.innerHTML = timer;
-    });
+  updateTimer(timer) {
+    this.timerElement.innerHTML = timer;
   }
 }

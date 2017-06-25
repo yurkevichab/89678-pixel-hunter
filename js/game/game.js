@@ -30,9 +30,9 @@ const nextDisplay = (state) => {
 };
 
 const getGameDisplay = (state) => {
-  let timer = null;
   const game = games[state.game];
   const gameView = new GameView(game, state);
+  let timer = startTimer(gameView, state);
 
   gameView.onBackToGreeting = () => {
     clearInterval(timer);
@@ -45,18 +45,21 @@ const getGameDisplay = (state) => {
     nextDisplay(newState);
   };
 
-  gameView.onUpdateTimer = (updateTimer) => {
-    timer = setInterval(() => {
-      state = setTimer(state);
-      updateTimer(state.timer);
-      if (state.timer === MIN_TIMER_VALUE) {
-        clearInterval(timer);
-        let newState = setStats(state, ANSWER_TYPES.wrong);
-        newState = reduceLives(newState);
-        nextDisplay(newState);
-      }
-    }, 1000);
-  };
   return gameView;
 };
+
+const startTimer = (gameView, state) => {
+  const timer = setInterval(() => {
+    state = setTimer(state);
+    gameView.updateTimer(state.timer);
+    if (state.timer === MIN_TIMER_VALUE) {
+      clearInterval(timer);
+      let newState = setStats(state, ANSWER_TYPES.wrong);
+      newState = reduceLives(newState);
+      nextDisplay(newState);
+    }
+  }, 1000);
+  return timer;
+};
+
 export default getGameDisplay;

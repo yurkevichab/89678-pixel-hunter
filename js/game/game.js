@@ -4,8 +4,7 @@ import getStats from '../stats/stats';
 import {setTimer, cleanTimer} from '../data/timer';
 import {setStats, getAnswerType} from '../data/answer';
 import {changeGame, isLastGame} from '../data/game';
-import {isLivesEnded, setLives} from '../data/lives';
-import resizeImage from '../data/resizeImage';
+import {isLivesEnded, reduceLives} from '../data/lives';
 import GameView from './game-view';
 import getGreeting from '../greeting/greeting';
 
@@ -13,7 +12,7 @@ const addAnswerResult = (state, isCorrectAnswer) => {
   const point = getAnswerType(isCorrectAnswer, state.timer);
   let newState = setStats(state, point);
   if (!isCorrectAnswer) {
-    newState = setLives(newState, newState.lives - 1);
+    newState = reduceLives(newState);
   }
   return newState;
 };
@@ -40,33 +39,7 @@ const getGameDisplay = (state) => {
     switchDisplay(getGreeting());
   };
 
-  gameView.resizeImages = (img) => {
-    const parentBlock = img.parentNode;
-    const frame = {
-      width: parentBlock.clientWidth,
-      height: parentBlock.clientHeight
-    };
-    const correctedSizes = resizeImage(frame, {
-      width: img.naturalWidth,
-      height: img.naturalHeight
-    });
-
-    return {width: correctedSizes.width, height: correctedSizes.height};
-  };
-
-  gameView.onAnswerTwoQuestions = (isCorrectAnswer) => {
-    clearInterval(timer);
-    const newState = addAnswerResult(state, isCorrectAnswer);
-    nextDisplay(newState);
-  };
-
-  gameView.onAnswerOneQuestion = (isCorrectAnswer) => {
-    clearInterval(timer);
-    const newState = addAnswerResult(state, isCorrectAnswer);
-    nextDisplay(newState);
-  };
-
-  gameView.onAnswerThreeQuestions = (isCorrectAnswer) => {
+  gameView.onAnswerQuestion = (isCorrectAnswer) => {
     clearInterval(timer);
     const newState = addAnswerResult(state, isCorrectAnswer);
     nextDisplay(newState);
@@ -79,11 +52,11 @@ const getGameDisplay = (state) => {
       if (state.timer === MIN_TIMER_VALUE) {
         clearInterval(timer);
         let newState = setStats(state, ANSWER_TYPES.wrong);
-        newState = setLives(newState, newState.lives - 1);
+        newState = reduceLives(newState);
         nextDisplay(newState);
       }
     }, 1000);
   };
-  return gameView.element;
+  return gameView;
 };
 export default getGameDisplay;

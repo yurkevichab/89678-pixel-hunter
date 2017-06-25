@@ -4,6 +4,7 @@ import footer from '../footer/footer';
 import createStats from '../create-stats';
 import {GAMES_TYPES, games} from '../data';
 import {checkAnswer} from '../data/answer';
+import resizeImage from '../data/resizeImage';
 
 const OPTIONS = [
   {
@@ -94,7 +95,7 @@ export default class gameTemplate extends AbstractView {
         ${createStats(this.state.stats)}
       </div>
     </div>
-    ${footer()}`;
+    ${footer}`;
   }
 
   bind() {
@@ -109,9 +110,10 @@ export default class gameTemplate extends AbstractView {
           const answer1 = form.querySelector(`input[name="question1"]:checked`);
           const answer2 = form.querySelector(`input[name="question2"]:checked`);
           if (answer1 && answer2) {
-            const isCorrectAnswer = checkAnswer(this.game.answers[0].type, answer1.value) &&
-              checkAnswer(this.game.answers[1].type, answer2.value);
-            this.onAnswerTwoQuestions(isCorrectAnswer);
+            const isCorrectAnswer = [answer1, answer2].every((answer, index) => {
+              return checkAnswer(this.game.answers[index].type, answer.value);
+            });
+            this.onAnswerQuestion(isCorrectAnswer);
           }
         });
         break;
@@ -119,8 +121,10 @@ export default class gameTemplate extends AbstractView {
       case GAMES_TYPES.oneQuestion:
         form.addEventListener(`change`, () => {
           const answer1 = form.querySelector(`input[name="question1"]:checked`);
-          const isCorrectAnswer = checkAnswer(this.game.answers[0].type, answer1.value);
-          this.onAnswerOneQuestion(isCorrectAnswer);
+          const isCorrectAnswer = [answer1].every((answer, index) => {
+            return checkAnswer(this.game.answers[index].type, answer.value);
+          });
+          this.onAnswerQuestion(isCorrectAnswer);
         });
         break;
 
@@ -130,21 +134,27 @@ export default class gameTemplate extends AbstractView {
           if (e.target.closest(`.game__option`)) {
             const indexImage = [...images].indexOf(e.target);
             const isCorrectAnswer = !!games[this.state.game].answers[indexImage].type;
-            this.onAnswerThreeQuestions(isCorrectAnswer);
+            this.onAnswerQuestion(isCorrectAnswer);
           }
         });
         break;
     }
 
-    backButton.addEventListener(`click`, () => {
-      this.onBackToGreeting();
-    });
+    backButton.addEventListener(`click`, () => this.onBackToGreeting());
 
     for (let img of answerImages) {
       img.addEventListener(`load`, (e) => {
-        const correctSizes = this.resizeImages(e.target);
-        e.target.width = correctSizes.width;
-        e.target.height = correctSizes.height;
+        const parentBlock = img.parentNode;
+        const frame = {
+          width: parentBlock.clientWidth,
+          height: parentBlock.clientHeight
+        };
+        const correctedSizes = resizeImage(frame, {
+          width: img.naturalWidth,
+          height: img.naturalHeight
+        });
+        img.width = correctedSizes.width;
+        img.height = correctedSizes.height;
       });
     }
 

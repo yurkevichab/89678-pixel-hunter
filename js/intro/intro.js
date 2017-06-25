@@ -6,5 +6,5 @@ export default () => {
   const intro = new IntroView();
   intro.onChangeDisplay = () => switchDisplay(getGreeting());
 
-  return intro.element;
+  return intro;
 };

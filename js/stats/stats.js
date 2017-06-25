@@ -6,5 +6,5 @@ export default (state) => {
   const stats = new StatsView(state);
   stats.onBackToGreeting = () => switchDisplay(getGreeting());
 
-  return stats.element;
+  return stats;
 };

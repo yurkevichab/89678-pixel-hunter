@@ -7,15 +7,11 @@ import getGreeting from '../greeting/greeting';
 export default () => {
   const rules = new RulesView();
 
-  rules.onChangeInput = (rulesButton, e) => {
-    rulesButton.disabled = !e.target.value.trim();
-  };
-
   rules.onChangeDisplay = () => {
     const gameDisplay = createGameDisplay(initialState);
     switchDisplay(gameDisplay);
   };
 
   rules.onBackToGreeting = () => switchDisplay(getGreeting());
-  return rules.element;
+  return rules;
 };

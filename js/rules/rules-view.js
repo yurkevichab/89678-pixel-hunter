@@ -22,7 +22,7 @@ export default class rulesView extends AbstractView {
       <button class="rules__button  continue" type="submit" disabled>Go!</button>
     </form>
   </div>
-  ${footer()}`;
+  ${footer}`;
   }
 
   bind() {
@@ -31,7 +31,7 @@ export default class rulesView extends AbstractView {
     const backButton = this.element.querySelector(`.back`);
 
     rulesInput.addEventListener(`input`, (e) => {
-      this.onChangeInput(rulesButton, e);
+      rulesButton.disabled = !e.target.value.trim();
     });
 
     rulesButton.addEventListener(`click`, (e) => {

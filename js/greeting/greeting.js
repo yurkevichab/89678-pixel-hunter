@@ -6,5 +6,5 @@ export default () => {
   const greeting = new GreetingView();
   greeting.onChangeDisplay = () => switchDisplay(getRules());
 
-  return greeting.element;
+  return greeting;
 };

@@ -83,7 +83,7 @@ export default class rulesView extends AbstractView {
         return content + createTableResult(game, index + 1);
       }, ``)}
     </div>
-    ${footer()}`;
+    ${footer}`;
   }
 
   bind() {

@@ -42,7 +42,8 @@ export default class Game {
 
   _nextDisplay(state) {
     if (isLastGame(state) || isLivesEnded(state.lives)) {
-      App.showStats(state);
+      window.gameStats = state;
+      App.showStats();
     } else {
       state = cleanTimer(changeGame(state));
       this._createGameView(state);

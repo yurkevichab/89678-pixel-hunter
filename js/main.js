@@ -31,6 +31,7 @@ class App {
     };
 
     window.onhashchange = () => {
+      const hashValue = location.hash.split(`=`);
       this.changeController(getControllerIdFromHash(location.hash));
     };
   }
@@ -61,8 +62,8 @@ class App {
     location.hash = ControllerId.GAME;
   }
 
-  showStats() {
-    location.hash = ControllerId.STATS;
+  showStats(encodeState) {
+    location.hash = `${ControllerId.STATS}=${encodeState}`;
   }
 }
 

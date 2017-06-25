@@ -3,8 +3,8 @@ import switchDisplay from '../switch-display';
 import App from '../main';
 
 export default class Stats {
-  constructor() {
-    this.state = window.gameStats;
+  constructor(hashState) {
+    this.state = JSON.parse(atob(hashState));
     this.view = new StatsView(this.state);
   }
 

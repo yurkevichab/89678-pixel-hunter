@@ -8,14 +8,14 @@ import Intro from './intro/intro';
 import Greeting from './greeting/greeting';
 import Rules from './rules/rules';
 import Game from './game/game';
-import Stat from './stat/stat';
+import Stats from './stats/stats';
 
 const ControllerId = {
   INTRO: ``,
   GREETING: `greeting`,
   RULES: `rules`,
   GAME: `game`,
-  STAT: `stat`,
+  STATS: `stat`,
 };
 
 const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
@@ -27,7 +27,7 @@ class App {
       [ControllerId.GREETING]: Greeting,
       [ControllerId.RULES]: Rules,
       [ControllerId.GAME]: Game,
-      [ControllerId.STAT]: Stat
+      [ControllerId.STATS]: Stats
     };
 
     window.onhashchange = () => {
@@ -61,8 +61,8 @@ class App {
     location.hash = ControllerId.GAME;
   }
 
-  showStat() {
-    location.hash = ControllerId.STAT;
+  showStats() {
+    location.hash = ControllerId.STATS;
   }
 }
 

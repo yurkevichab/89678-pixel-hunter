@@ -1,17 +1,16 @@
 import switchDisplay from '../switch-display';
-import {initialState} from '../data';
-import createGameDisplay from '../game/game';
 import RulesView from './rules-view';
-import getGreeting from '../greeting/greeting';
+import App from '../main';
 
-export default () => {
-  const rules = new RulesView();
+export default class Rules {
+  constructor() {
+    this.view = new RulesView();
+  }
 
-  rules.onChangeDisplay = () => {
-    const gameDisplay = createGameDisplay(initialState);
-    switchDisplay(gameDisplay);
-  };
+  init() {
+    switchDisplay(this.view);
 
-  rules.onBackToGreeting = () => switchDisplay(getGreeting());
-  return rules;
-};
+    this.view.onChangeDisplay = () => App.showGame();
+    this.view.onBackToGreeting = () => App.showGreeting();
+  }
+}

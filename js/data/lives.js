@@ -13,3 +13,7 @@ export const setLives = (state, lives) => {
 export const isLivesEnded = (lives) => {
   return lives === MIN_COUNT_LIVES;
 };
+
+export const reduceLives = (state) => {
+  return setLives(state, state.lives - 1);
+};

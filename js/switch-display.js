@@ -1,6 +1,6 @@
 const mainBlock = document.querySelector(`main.central`);
 
-export default (display) => {
+export default (view) => {
   mainBlock.innerHTML = ``;
-  mainBlock.appendChild(display);
+  mainBlock.appendChild(view.element);
 };

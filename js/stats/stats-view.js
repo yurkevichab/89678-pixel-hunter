@@ -1,10 +1,10 @@
-import createElement from '../create-element';
-import footer from './footer';
-import {getHeader, addBackButtonEvent} from './header';
-import createStats from '../create-stats';
+import AbstractView from '../view';
+import footer from '../footer/footer';
+import header from '../header/header';
+import {isLivesEnded} from '../data/lives';
 import {statInfo, lastGames, ANSWER_TYPES, POINTS} from '../data';
 import {getTotalPoints, getRightPoints, getPointCount} from '../data/points';
-import {isLivesEnded} from '../data/lives';
+import createStats from '../create-stats';
 
 const createBonus = (bonusCount, {title, type}) => {
   return `
@@ -65,22 +65,32 @@ const createTableResult = (game, index) => {
     </table>`;
 };
 
-export default (state) => {
-  const games = [state,
-    ...lastGames
-  ];
-  const template = `
-  ${getHeader()}
-  <div class="result">
-    <h1>${isLivesEnded(state.lives) ? statInfo.title.loss : statInfo.title.win}</h1>
-    ${games.reduce((content, game, index) => {
-      return content + createTableResult(game, index + 1);
-    }, ``)}
-  </div>
-  ${footer}`;
+export default class rulesView extends AbstractView {
+  constructor(state) {
+    super();
+    this.state = state;
+  }
 
-  const display = createElement(template);
-  addBackButtonEvent(display);
+  get template() {
+    const games = [this.state,
+      ...lastGames
+    ];
+    return `
+    ${header()}
+    <div class="result">
+      <h1>${isLivesEnded(this.state.lives) ? statInfo.title.loss : statInfo.title.win}</h1>
+      ${games.reduce((content, game, index) => {
+        return content + createTableResult(game, index + 1);
+      }, ``)}
+    </div>
+    ${footer}`;
+  }
 
-  return display;
-};
+  bind() {
+    const backButton = this.element.querySelector(`.back`);
+
+    backButton.addEventListener(`click`, () => {
+      this.onBackToGreeting();
+    });
+  }
+}

@@ -1,10 +1,17 @@
 import switchDisplay from '../switch-display';
 import GreetingView from './greeting-view';
-import getRules from '../rules/rules';
+import App from '../main';
 
-export default () => {
-  const greeting = new GreetingView();
-  greeting.onChangeDisplay = () => switchDisplay(getRules());
+export default class Greeting {
+  constructor() {
+    this.view = new GreetingView();
+  }
 
-  return greeting;
-};
+  init() {
+    switchDisplay(this.view);
+
+    this.view.onChangeDisplay = () => {
+      App.showRules();
+    };
+  }
+}

@@ -1,10 +1,15 @@
 import StatsView from './stats-view';
 import switchDisplay from '../switch-display';
-import getGreeting from '../greeting/greeting';
+import App from '../main';
 
-export default (state) => {
-  const stats = new StatsView(state);
-  stats.onBackToGreeting = () => switchDisplay(getGreeting());
+export default class Stats {
+  constructor() {
+    this.state = window.gameStats;
+    this.view = new StatsView(this.state);
+  }
 
-  return stats;
-};
+  init() {
+    switchDisplay(this.view);
+    this.view.onBackToGreeting = () => App.showGreeting();
+  }
+}

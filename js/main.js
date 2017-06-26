@@ -1,9 +1,3 @@
-/*
- import switchDisplay from './switch-display';
- import getIntro from './intro/intro';
-
- switchDisplay(getIntro());
- */
 import Intro from './intro/intro';
 import Greeting from './greeting/greeting';
 import Rules from './rules/rules';
@@ -31,18 +25,26 @@ class App {
     };
 
     window.onhashchange = () => {
-      const hashValue = location.hash.split(`=`);
-      this.changeController(getControllerIdFromHash(location.hash));
+      const {controller, hashValue} = this._parseHashFromUrl();
+      this.changeController(controller, hashValue);
     };
   }
   init() {
-    this.changeController(getControllerIdFromHash(location.hash));
+    const {controller, hashValue} = this._parseHashFromUrl();
+    this.changeController(controller, hashValue);
   }
 
-  changeController(route = ``) {
+  _parseHashFromUrl() {
+    const hash = location.hash.split(`=`);
+    const controller = getControllerIdFromHash(hash[0]);
+    const hashValue = hash[1];
+    return {controller, hashValue};
+  }
+
+  changeController(route = ``, hashValue) {
     const Controller = this.routes[route];
     if (Controller) {
-      new Controller().init();
+      new Controller(hashValue).init();
     }
   }
 

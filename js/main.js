@@ -1,9 +1,3 @@
-/*
- import switchDisplay from './switch-display';
- import getIntro from './intro/intro';
-
- switchDisplay(getIntro());
- */
 import Intro from './intro/intro';
 import Greeting from './greeting/greeting';
 import Rules from './rules/rules';

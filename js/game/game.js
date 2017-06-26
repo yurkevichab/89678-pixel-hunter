@@ -42,8 +42,8 @@ export default class Game {
 
   _nextDisplay(state) {
     if (isLastGame(state.game) || isLivesEnded(state.lives)) {
-      window.gameStats = state;
-      App.showStats();
+      const encodeState = btoa(JSON.stringify(state));
+      App.showStats(encodeState);
     } else {
       state = cleanTimer(changeGame(state));
       this._createGameView(state);

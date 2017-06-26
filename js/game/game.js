@@ -41,7 +41,7 @@ export default class Game {
   }
 
   _nextDisplay(state) {
-    if (isLastGame(state) || isLivesEnded(state.lives)) {
+    if (isLastGame(state.game) || isLivesEnded(state.lives)) {
       window.gameStats = state;
       App.showStats();
     } else {

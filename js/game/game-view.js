@@ -2,51 +2,47 @@ import AbstractView from '../view';
 import header from '../header/header';
 import footer from '../footer/footer';
 import createStats from '../create-stats';
-import {GAMES_TYPES, games} from '../data';
+import {QUESTION_TYPE, ANSWER_TYPE} from '../data';
 import {checkAnswer} from '../data/answer';
 import resizeImage from '../data/resizeImage';
 
 const OPTIONS = [
   {
     'text': `Рисунок`,
-    'type': `paint`
+    'type': `paint`,
+    'value': ANSWER_TYPE.PAINTING
   },
   {
     'text': `Фото`,
-    'type': `photo`
+    'type': `photo`,
+    'value': ANSWER_TYPE.PHOTO
   }
 ];
 
 const ADDITION_GAME_DATA = {
-  'game-1': {
+  [QUESTION_TYPE.TWO_OF_TWO]: {
     'formClass': ``,
     'haveOption': true,
-    'imagesWidth': 468,
-    'imagesHeight': 458,
     'additionClasses': ``
   },
-  'game-2': {
+  [QUESTION_TYPE.TINDER_LIKE]: {
     'formClass': `game__content--wide`,
     'haveOption': true,
-    'imagesWidth': 705,
-    'imagesHeight': 455,
     'additionClasses': {
       'paint': `game__answer--wide`
     }
   },
-  'game-3': {
+  [QUESTION_TYPE.ONE_OF_THREE]: {
     'formClass': `game__content--triple`,
     'haveOption': false,
-    'imagesWidth': 304,
-    'imagesHeight': 455,
     'additionClasses': ``
   }
 };
 const getAnswer = (type, answer, index) => {
-  const {haveOption, additionClasses, imagesWidth, imagesHeight} = ADDITION_GAME_DATA[type];
+  const {haveOption, additionClasses} = ADDITION_GAME_DATA[type];
   return `
     <div class="game__option">
-      <img src="${answer.image}" alt="Option ${index}" width="${imagesWidth}" height="${imagesHeight}">
+      <img src="${answer.image.url}" alt="Option ${index}" width="${answer.image.width}" height="${answer.image.height}">
       ${haveOption ? getOptions(additionClasses, index) : ``}
     </div>`;
 };
@@ -59,11 +55,11 @@ const getAnswers = (game) => {
   }, ``);
 };
 
-const getOption = ({type, text}, additionClasses, index) => {
+const getOption = ({type, text, value}, additionClasses, index) => {
   const additionClass = additionClasses ? additionClasses[type] : ``;
   return `
     <label class="game__answer game__answer--${type} ${additionClass}">
-      <input name="question${index}" type="radio" value="${type}">
+      <input name="question${index}" type="radio" value="${value}">
       <span>${text}</span>
     </label>`;
 };
@@ -87,7 +83,7 @@ export default class gameTemplate extends AbstractView {
     return `
     ${header(this.state)}
     <div class="game">
-      <p class="game__task">${this.game.description}</p>
+      <p class="game__task">${this.game.question}</p>
       <form class="game__content ${formClass}">     
         ${getAnswers(this.game)}
       </form>
@@ -105,7 +101,7 @@ export default class gameTemplate extends AbstractView {
     const answerImages = form.querySelectorAll(`.game__option img`);
 
     switch (this.game.type) {
-      case GAMES_TYPES.twoQuestions:
+      case QUESTION_TYPE.TWO_OF_TWO:
         form.addEventListener(`change`, () => {
           const answer1 = form.querySelector(`input[name="question1"]:checked`);
           const answer2 = form.querySelector(`input[name="question2"]:checked`);
@@ -118,7 +114,7 @@ export default class gameTemplate extends AbstractView {
         });
         break;
 
-      case GAMES_TYPES.oneQuestion:
+      case QUESTION_TYPE.TINDER_LIKE:
         form.addEventListener(`change`, () => {
           const answer1 = form.querySelector(`input[name="question1"]:checked`);
           const isCorrectAnswer = [answer1].every((answer, index) => {
@@ -128,12 +124,12 @@ export default class gameTemplate extends AbstractView {
         });
         break;
 
-      case GAMES_TYPES.threeQuestions:
+      case QUESTION_TYPE.ONE_OF_THREE:
         form.addEventListener(`click`, (e) => {
           const images = form.querySelectorAll(`.game__option`);
           if (e.target.closest(`.game__option`)) {
             const indexImage = [...images].indexOf(e.target);
-            const isCorrectAnswer = !!games[this.state.game].answers[indexImage].type;
+            const isCorrectAnswer = !!this.game.answers[indexImage].type;
             this.onAnswerQuestion(isCorrectAnswer);
           }
         });

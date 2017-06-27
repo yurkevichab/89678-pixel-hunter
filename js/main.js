@@ -3,6 +3,8 @@ import Greeting from './greeting/greeting';
 import Rules from './rules/rules';
 import Game from './game/game';
 import Stats from './stats/stats';
+import gameModel from './game/game-model';
+import GameAdapter from './game/game-adapter';
 
 const ControllerId = {
   INTRO: ``,
@@ -24,6 +26,10 @@ class App {
       [ControllerId.STATS]: Stats
     };
 
+    this.model = gameModel;
+    this.model.load(GameAdapter).then((data) => {
+      this.data = data;
+    }).catch(window.console.error);
     window.onhashchange = () => {
       const {controller, state} = this._parseHashFromUrl();
       this.changeController(controller, state);

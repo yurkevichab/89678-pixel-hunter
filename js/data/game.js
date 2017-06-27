@@ -1,6 +1,4 @@
-import {games} from '../data';
-
-export const changeGame = (state) => {
+export const changeGame = (state, games) => {
   let game = state.game;
   game++;
   if (game > games.length) {
@@ -9,6 +7,6 @@ export const changeGame = (state) => {
   return Object.assign({}, state, {'game': game});
 };
 
-export const isLastGame = (game) => {
+export const isLastGame = (game, games) => {
   return game === games.length - 1;
 };

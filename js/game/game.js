@@ -1,4 +1,4 @@
-import {games, MIN_TIMER_VALUE, ANSWER_TYPES, initialState} from '../data';
+import {MIN_TIMER_VALUE, ANSWER_TYPES, initialState} from '../data';
 import switchDisplay from '../switch-display';
 import {setTimer, cleanTimer} from '../data/timer';
 import {setStats, getAnswerType} from '../data/answer';
@@ -9,6 +9,7 @@ import App from '../main';
 
 export default class Game {
   constructor() {
+    this.games = App.data;
     this._createGameView(initialState);
   }
 
@@ -41,10 +42,10 @@ export default class Game {
   }
 
   _nextDisplay(state) {
-    if (isLastGame(state.game) || isLivesEnded(state.lives)) {
+    if (isLastGame(state.game, this.games) || isLivesEnded(state.lives)) {
       App.showStats(state);
     } else {
-      state = cleanTimer(changeGame(state));
+      state = cleanTimer(changeGame(state, this.games));
       this._createGameView(state);
       this.init();
     }
@@ -61,7 +62,7 @@ export default class Game {
 
   _createGameView(state) {
     this.state = state;
-    this.game = games[state.game];
+    this.game = this.games[state.game];
     this.view = new GameView(this.game, state);
     this.timer = this._startTimer();
   }

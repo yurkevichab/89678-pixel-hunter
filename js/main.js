@@ -39,7 +39,7 @@ class App {
     const [controller, hashValue] = hash;
     return {
       controller: getControllerIdFromHash(controller),
-      state: hashValue ? JSON.parse(atob(hashValue)) : hashValue
+      state: hashValue ? JSON.parse(atob(hashValue)) : null
     };
   }
 

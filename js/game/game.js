@@ -8,8 +8,8 @@ import GameView from './game-view';
 import App from '../main';
 
 export default class Game {
-  constructor(state = initialState) {
-    this._createGameView(state);
+  constructor() {
+    this._createGameView(initialState);
   }
 
   init() {

@@ -1,3 +1,7 @@
-/**
- * Created by Yurkevich.A on 27.06.2017.
- */
+import {DefaultAdapter} from '../model';
+
+export default new class extends DefaultAdapter {
+  preprocess(data) {
+    const preprocessed = {};
+  }
+}();

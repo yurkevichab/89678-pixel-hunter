@@ -6,7 +6,6 @@ import {changeGame, isLastGame} from '../data/game';
 import {isLivesEnded, reduceLives} from '../data/lives';
 import GameView from './game-view';
 import App from '../main';
-import gameModel from './game-model';
 import setUserName from '../data/userName';
 
 export default class Game {

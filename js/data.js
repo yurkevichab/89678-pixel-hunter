@@ -19,6 +19,7 @@ export const POINTS = {
 };
 
 export const initialState = Object.freeze({
+  'userName': ``,
   'game': 0,
   'lives': 3,
   'timer': 30,

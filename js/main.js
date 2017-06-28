@@ -26,15 +26,11 @@ class App {
       [ControllerId.STATS]: Stats
     };
 
-    this.model = gameModel;
-    this.model.load(GameAdapter).then((data) => {
-      this.data = data;
-    }).catch(window.console.error);
-    window.onhashchange = () => {
-      const {controller, state} = this._parseHashFromUrl();
-      this.changeController(controller, state);
-    };
+    gameModel.loadData(GameAdapter).then(() => this.init());
+
+    window.onhashchange = () => this.init();
   }
+
   init() {
     const {controller, state} = this._parseHashFromUrl();
     this.changeController(controller, state);
@@ -45,7 +41,7 @@ class App {
     const [controller, hashValue] = hash;
     return {
       controller: getControllerIdFromHash(controller),
-      state: hashValue ? JSON.parse(atob(hashValue)) : null
+      state: hashValue ? JSON.parse(atob(hashValue)) : hashValue
     };
   }
 
@@ -68,8 +64,9 @@ class App {
     location.hash = ControllerId.RULES;
   }
 
-  showGame() {
-    location.hash = ControllerId.GAME;
+  showGame(state) {
+    const encodeState = btoa(JSON.stringify(state));
+    location.hash = `${ControllerId.GAME}=${encodeState}`;
   }
 
   showStats(state) {
@@ -79,6 +76,5 @@ class App {
 }
 
 const app = new App();
-app.init();
 
 export default app;

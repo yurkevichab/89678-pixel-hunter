@@ -109,7 +109,8 @@ describe(`Game`, () => {
   describe(`Changing the game number`, () => {
     it(`should check changes game`, () => {
       const state = {'game': 5};
-      const verifiedQuestion = changeGame(state).game;
+      const games = [{}, {}, {}, {}, {}, {}, {}];
+      const verifiedQuestion = changeGame(state, games).game;
       assert.equal(6, verifiedQuestion);
     });
 

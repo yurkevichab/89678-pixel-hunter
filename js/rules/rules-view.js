@@ -36,7 +36,8 @@ export default class rulesView extends AbstractView {
 
     rulesButton.addEventListener(`click`, (e) => {
       e.preventDefault();
-      this.onChangeDisplay();
+      const username = rulesInput.value.trim();
+      this.onChangeDisplay(username);
     });
 
     backButton.addEventListener(`click`, () => {

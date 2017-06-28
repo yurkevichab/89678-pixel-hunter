@@ -7,8 +7,7 @@ import gameModel from './game/game-model';
 import GameAdapter from './game/game-adapter';
 
 const ControllerId = {
-  INTRO: ``,
-  GREETING: `greeting`,
+  GREETING: ``,
   RULES: `rules`,
   GAME: `game`,
   STATS: `stat`,
@@ -18,6 +17,8 @@ const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
 
 class App {
   constructor() {
+    new Intro().init();
+
     gameModel.load(GameAdapter)
       .then((games) => this.setup(games))
       .then(() => this.showGreeting())
@@ -26,7 +27,6 @@ class App {
 
   setup(data) {
     this.routes = {
-      [ControllerId.INTRO]: new Intro(),
       [ControllerId.GREETING]: new Greeting(),
       [ControllerId.RULES]: new Rules(),
       [ControllerId.GAME]: new Game(data),
@@ -53,7 +53,7 @@ class App {
   }
 
   changeController(route = ``, value) {
-    this.routes[route].init();
+    this.routes[route].init(value);
   }
 
   showIntro() {

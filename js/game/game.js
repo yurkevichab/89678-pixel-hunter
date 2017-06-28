@@ -18,7 +18,7 @@ export default class Game {
     this.games = gameModel.games;
   }
 
-  init() {
+  init(userName) {
     this._createGameView(setUserName(initialState, userName));
     switchDisplay(this.view);
 

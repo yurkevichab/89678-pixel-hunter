@@ -52,12 +52,8 @@ class App {
     return btoa(JSON.stringify(data));
   }
 
-  changeController(route = ``, value) {
-    this.routes[route].init(value);
-  }
-
-  showIntro() {
-    location.hash = ControllerId.INTRO;
+  changeController({controller, value}) {
+    this.routes[controller].init(value);
   }
 
   showGreeting() {

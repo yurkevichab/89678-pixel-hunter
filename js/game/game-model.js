@@ -12,10 +12,4 @@ export default new class extends Model {
   get urlWrite() {
     return ``;
   }
-
-  loadData(adapter) {
-    return this.load(adapter).then((games) => {
-      this.games = games;
-    }).catch(window.console.error);
-  }
 }();

@@ -16,10 +16,10 @@ export default class Game {
     }
 
     this.games = gameModel.games;
-    this._createGameView(setUserName(initialState, userName));
   }
 
   init() {
+    this._createGameView(setUserName(initialState, userName));
     switchDisplay(this.view);
 
     this.view.onBackToGreeting = () => {

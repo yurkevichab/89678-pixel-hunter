@@ -18,17 +18,21 @@ const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
 
 class App {
   constructor() {
-    this.routes = {
-      [ControllerId.INTRO]: Intro,
-      [ControllerId.GREETING]: Greeting,
-      [ControllerId.RULES]: Rules,
-      [ControllerId.GAME]: Game,
-      [ControllerId.STATS]: Stats
-    };
-    new Intro().init();
+    gameModel.load(GameAdapter)
+      .then((games) => this.setup(games))
+      .then(() => this.showGreeting())
+      .catch(window.console.error);
+  }
 
-    window.onhashchange = () => this.changeController(this._parseHashFromUrl());
-    gameModel.loadData(GameAdapter).then(() => this.changeController(this._parseHashFromUrl()));
+  setup(data) {
+    this.routes = {
+      [ControllerId.INTRO]: new Intro(),
+      [ControllerId.GREETING]: new Greeting(),
+      [ControllerId.RULES]: new Rules(),
+      [ControllerId.GAME]: new Game(data),
+      [ControllerId.STATS]: new Stats(data)
+    };
+    window.onhashchange = () => this.changeController(this._parseHashFromUrl()).catch(window.console.error);
   }
 
   _parseHashFromUrl() {
@@ -36,15 +40,20 @@ class App {
     const [controller, hashValue] = hash;
     return {
       controller: getControllerIdFromHash(controller),
-      value: hashValue ? JSON.parse(atob(hashValue)) : hashValue
+      value: hashValue ? this._encodeData(hashValue) : hashValue
     };
   }
 
-  changeController({controller, value}) {
-    const Controller = this.routes[controller];
-    if (Controller) {
-      new Controller(value).init();
-    }
+  _encodeData(data) {
+    return JSON.parse(atob(data));
+  }
+
+  _decodeData(data) {
+    return btoa(JSON.stringify(data));
+  }
+
+  changeController(route = ``, value) {
+    this.routes[route].init();
   }
 
   showIntro() {
@@ -60,12 +69,12 @@ class App {
   }
 
   showGame(username) {
-    const encodeState = btoa(JSON.stringify(username));
+    const encodeState = this._decodeData(username);
     location.hash = `${ControllerId.GAME}=${encodeState}`;
   }
 
   showStats(state) {
-    const encodeState = btoa(JSON.stringify(state));
+    const encodeState = this._decodeData(state);
     location.hash = `${ControllerId.STATS}=${encodeState}`;
   }
 }

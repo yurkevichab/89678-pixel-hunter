@@ -21,7 +21,7 @@ class App {
 
     gameModel.load(GameAdapter)
       .then((games) => this.setup(games))
-      .then(() => this.showGreeting())
+      .then(() => this.changeController(this._parseHashFromUrl()))
       .catch(window.console.error);
   }
 
@@ -30,9 +30,9 @@ class App {
       [ControllerId.GREETING]: new Greeting(),
       [ControllerId.RULES]: new Rules(),
       [ControllerId.GAME]: new Game(data),
-      [ControllerId.STATS]: new Stats(data)
+      [ControllerId.STATS]: new Stats()
     };
-    window.onhashchange = () => this.changeController(this._parseHashFromUrl()).catch(window.console.error);
+    window.onhashchange = () => this.changeController(this._parseHashFromUrl());
   }
 
   _parseHashFromUrl() {

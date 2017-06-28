@@ -4,10 +4,10 @@ import App from '../main';
 
 export default class Greeting {
   constructor() {
-    this.view = new GreetingView();
   }
 
   init() {
+    this.view = new GreetingView();
     switchDisplay(this.view);
 
     this.view.onChangeDisplay = () => {

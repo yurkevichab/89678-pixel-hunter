@@ -10,16 +10,21 @@ import gameModel from './game-model';
 import setUserName from '../data/userName';
 
 export default class Game {
-  constructor(userName) {
-    if (!userName) {
-      App.showRules();
-    }
-
-    this.games = gameModel.games;
+  constructor(games) {
+    this.games = games;
   }
 
   init(userName) {
-    this._createGameView(setUserName(initialState, userName));
+    if (!userName) {
+      App.showRules();
+    }
+    const state = setUserName(initialState, userName);
+    this.gameInit(state);
+  }
+
+  gameInit(state) {
+    this.timer = this._startTimer();
+    this._createGameView(state);
     switchDisplay(this.view);
 
     this.view.onBackToGreeting = () => {
@@ -53,7 +58,7 @@ export default class Game {
     } else {
       state = cleanTimer(changeGame(state, this.games));
       this._createGameView(state);
-      this.init();
+      this.gameInit(state);
     }
   }
 
@@ -70,6 +75,5 @@ export default class Game {
     this.state = state;
     this.game = this.games[state.game];
     this.view = new GameView(this.game, state);
-    this.timer = this._startTimer();
   }
 }

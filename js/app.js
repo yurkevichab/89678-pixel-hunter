@@ -16,8 +16,7 @@ const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
 
 class App {
   init() {
-    new Intro().init();
-
+    this._showPreloader();
     gameModel.getQuestions()
       .then((games) => this.setup(games))
       .then(() => this.changeController(this._parseHashFromUrl()))
@@ -33,6 +32,10 @@ class App {
     };
     window.onhashchange = () => this.changeController(this._parseHashFromUrl());
 
+  }
+
+  _showPreloader() {
+    new Intro().init();
   }
 
   _parseHashFromUrl() {

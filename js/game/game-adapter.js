@@ -20,13 +20,28 @@ const cleanWrongAnswerTypes = (answers) => {
 
 export default new class extends DefaultAdapter {
 
-  preprocess(data) {
+  preprocessQuestions(data) {
     for (const game of data) {
       if (game.type === QUESTION_TYPE.ONE_OF_THREE) {
         cleanWrongAnswerTypes(game.answers);
       }
     }
     return data;
+  }
+
+  preprocessStats(data) {
+    return data.reverse();
+  }
+
+  postProcessStats(state) {
+    return JSON.stringify({
+      lives: state.lives,
+      stats: state.stats
+    });
+  }
+
+  parseJSON(response) {
+    return response.json();
   }
 }();
 

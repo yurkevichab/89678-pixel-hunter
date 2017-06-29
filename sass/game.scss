@@ -1,13 +1,13 @@
 @import "fonts";
 
 .blink {
-  -webkit-animation: blink2 1s linear infinite;
-  animation: blink2 1s linear infinite;
+  -webkit-animation: blink 1s linear infinite;
+  animation: blink 1s linear infinite;
 }
-@-webkit-keyframes blink2 {
+@-webkit-keyframes blink {
   100% { color: rgba(34, 34, 34, 0); }
 }
-@keyframes blink2 {
+@keyframes blink {
   100% { color: rgba(34, 34, 34, 0); }
 }
 

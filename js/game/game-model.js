@@ -1,4 +1,4 @@
-import QuestionAdapter from './game-adapter';
+import GameAdapter from './game-adapter';
 
 export default new class {
   get serverUrl() {
@@ -8,15 +8,15 @@ export default new class {
   getQuestions() {
     const questionsPath = `${this.serverUrl}/questions`;
     return fetch(questionsPath)
-      .then((response) => response.json())
-      .then(QuestionAdapter.preprocess);
+      .then(GameAdapter.parseJSON)
+      .then(GameAdapter.preprocessQuestions);
   }
 
   getStats(userName) {
     const questionsPath = `${this.serverUrl}/stats/${userName}`;
     return fetch(questionsPath)
-      .then((response) => response.json())
-      .then((data) => this._sortDataByDate(data));
+      .then(GameAdapter.parseJSON)
+      .then(GameAdapter.preprocessStats);
   }
 
   sendStats(state) {
@@ -26,28 +26,7 @@ export default new class {
       headers: {
         'Content-Type': `application/json`
       },
-      body: this._stateToJson(state)
-    });
-  }
-
-  _sortDataByDate(data) {
-    return data.sort((a, b) => {
-      const keyA = new Date(a.date);
-      const keyB = new Date(b.date);
-      if (keyA > keyB) {
-        return -1;
-      }
-      if (keyA < keyB) {
-        return 1;
-      }
-      return 0;
-    });
-  }
-
-  _stateToJson(state) {
-    return JSON.stringify({
-      lives: state.lives,
-      stats: state.stats
+      body: GameAdapter.postProcessStats(state)
     });
   }
 }();

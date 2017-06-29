@@ -8,7 +8,7 @@ export default class Stats {
     gameModel.getStats(username).then((data) => {
       this.stats = data;
       this.statsInit();
-    });
+    }).catch(window.console.error);
   }
 
   statsInit() {

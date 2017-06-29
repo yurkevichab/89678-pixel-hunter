@@ -3,9 +3,6 @@ import RulesView from './rules-view';
 import App from '../app';
 
 export default class Rules {
-  constructor() {
-  }
-
   init() {
     const view = new RulesView();
     switchDisplay(view);

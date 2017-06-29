@@ -66,20 +66,17 @@ const createTableResult = (game, index) => {
 };
 
 export default class rulesView extends AbstractView {
-  constructor(state) {
+  constructor(states) {
     super();
-    this.state = state;
+    this.states = states;
   }
 
   get template() {
-    const games = [this.state,
-      ...lastGames
-    ];
     return `
     ${header()}
     <div class="result">
-      <h1>${isLivesEnded(this.state.lives) ? statInfo.title.loss : statInfo.title.win}</h1>
-      ${games.reduce((content, game, index) => {
+      <h1>${isLivesEnded(this.states[0].lives) ? statInfo.title.loss : statInfo.title.win}</h1>
+      ${this.states.reduce((content, game, index) => {
         return content + createTableResult(game, index + 1);
       }, ``)}
     </div>

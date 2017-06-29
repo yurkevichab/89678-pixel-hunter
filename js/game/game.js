@@ -7,6 +7,7 @@ import {isLivesEnded, reduceLives} from '../data/lives';
 import GameView from './game-view';
 import App from '../app';
 import setUserName from '../data/userName';
+import gameModel from './game-model';
 
 export default class Game {
   constructor(games) {
@@ -53,7 +54,7 @@ export default class Game {
 
   _nextDisplay(state) {
     if (isLastGame(state.game, this.games) || isLivesEnded(state.lives)) {
-      App.showStats(state);
+      gameModel.sendStats(state).then(() => App.showStats(state.userName));
     } else {
       state = cleanTimer(changeGame(state, this.games));
       this._createGameView(state);

@@ -5,7 +5,7 @@ import App from '../app';
 export default class Rules {
   init() {
     this.view = new RulesView();
-    switchDisplay(this.view );
+    switchDisplay(this.view);
 
     this.view .onChangeDisplay = (userName) => {
       App.showGame(userName);

@@ -1,4 +1,4 @@
-import {MIN_TIMER_VALUE, ANSWER_TYPES, initialState} from '../data';
+import {MIN_TIMER_VALUE, Result, initialState} from '../data';
 import switchDisplay from '../switch-display';
 import {setTimer, cleanTimer} from '../data/timer';
 import {setStats, getAnswerType} from '../data/answer';
@@ -45,7 +45,7 @@ export default class Game {
       this.view.updateTimer(this.state.timer);
       if (this.state.timer === MIN_TIMER_VALUE) {
         clearInterval(this.timer);
-        let newState = reduceLives(setStats(this.state, ANSWER_TYPES.wrong));
+        let newState = reduceLives(setStats(this.state, Result.wrong));
         this._nextDisplay(newState);
       }
     }, 1000);

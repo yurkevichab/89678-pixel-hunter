@@ -1,12 +1,12 @@
 import {DefaultAdapter} from '../model';
-import {QUESTION_TYPE, ANSWER_TYPE} from '../data';
+import {QuestionType, AnswerType, MAX_COUNT_LIVES} from '../data';
 
 const getAnswersCountByType = (answers, type) => {
   return answers.filter((answer) => answer.type === type).length;
 };
 
 const getRightAnswerType = (answers) => {
-  return Object.values(ANSWER_TYPE)
+  return Object.values(AnswerType)
     .find((type) => getAnswersCountByType(answers, type) === 1);
 };
 
@@ -22,7 +22,7 @@ export default new class extends DefaultAdapter {
 
   preprocessQuestions(data) {
     for (const game of data) {
-      if (game.type === QUESTION_TYPE.ONE_OF_THREE) {
+      if (game.type === QuestionType.ONE_OF_THREE) {
         cleanWrongAnswerTypes(game.answers);
       }
     }
@@ -36,7 +36,7 @@ export default new class extends DefaultAdapter {
   postProcessStats(state) {
     return JSON.stringify({
       lives: state.lives,
-      stats: state.stats
+      stats: [...state.stats, ...new Array(MAX_COUNT_LIVES - state.stats.length).fill(`unknown`)]
     });
   }
 

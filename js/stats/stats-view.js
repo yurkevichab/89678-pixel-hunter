@@ -2,7 +2,7 @@ import AbstractView from '../view';
 import footer from '../footer/footer';
 import header from '../header/header';
 import {isLivesEnded} from '../data/lives';
-import {statInfo, ANSWER_TYPES, POINTS} from '../data';
+import {statInfo, AnswerType, Points} from '../data';
 import {getTotalPoints, getRightPoints, getPointCount} from '../data/points';
 import createStats from '../create-stats';
 
@@ -12,15 +12,15 @@ const createBonus = (bonusCount, {title, type}) => {
       <td></td>
       <td class="result__extra">${title}</td>
       <td class="result__extra">${bonusCount}&nbsp;<span class="stats__result stats__result--${type}"></span></td>
-      <td class="result__points">×&nbsp;${POINTS[type]}</td>
-      <td class="result__total">${bonusCount * POINTS[type]}</td>
+      <td class="result__points">×&nbsp;${Points[type]}</td>
+      <td class="result__total">${bonusCount * Points[type]}</td>
     </tr>`;
 };
 
 const countPoints = ({lives, stats}) => {
   const result = new Map();
   result.set(`heart`, lives);
-  for (let type of Object.keys(ANSWER_TYPES)) {
+  for (let type of Object.keys(AnswerType)) {
     result.set(type, getPointCount(stats, type));
   }
 
@@ -40,7 +40,7 @@ const createStatsResult = (stats, isNotFail) => {
     <td class="result__total"></td>
     <td class="result__total  result__total--final">fail</td>`;
   const statsResultHtml = `
-    <td class="result__points">×&nbsp;${POINTS[ANSWER_TYPES.correct]}</td>
+    <td class="result__points">×&nbsp;${Points[AnswerType.correct]}</td>
     <td class="result__total">${getRightPoints(stats)}</td>`;
 
   return isNotFail ? statsResultHtml : failResult;

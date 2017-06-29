@@ -2,7 +2,7 @@ import AbstractView from '../view';
 import header from '../header/header';
 import footer from '../footer/footer';
 import createStats from '../create-stats';
-import {QUESTION_TYPE, ANSWER_TYPE} from '../data';
+import {QuestionType, AnswerType} from '../data';
 import {checkAnswer} from '../data/answer';
 import resizeImage from '../data/resizeImage';
 
@@ -10,29 +10,29 @@ const OPTIONS = [
   {
     'text': `Рисунок`,
     'type': `paint`,
-    'value': ANSWER_TYPE.PAINTING
+    'value': AnswerType.PAINTING
   },
   {
     'text': `Фото`,
     'type': `photo`,
-    'value': ANSWER_TYPE.PHOTO
+    'value': AnswerType.PHOTO
   }
 ];
 
 const ADDITION_GAME_DATA = {
-  [QUESTION_TYPE.TWO_OF_TWO]: {
+  [QuestionType.TWO_OF_TWO]: {
     'formClass': ``,
     'haveOption': true,
     'additionClasses': ``
   },
-  [QUESTION_TYPE.TINDER_LIKE]: {
+  [QuestionType.TINDER_LIKE]: {
     'formClass': `game__content--wide`,
     'haveOption': true,
     'additionClasses': {
       'paint': `game__answer--wide`
     }
   },
-  [QUESTION_TYPE.ONE_OF_THREE]: {
+  [QuestionType.ONE_OF_THREE]: {
     'formClass': `game__content--triple`,
     'haveOption': false,
     'additionClasses': ``
@@ -101,10 +101,20 @@ export default class gameTemplate extends AbstractView {
     const answerImages = form.querySelectorAll(`.game__option img`);
 
     switch (this.game.type) {
-      case QUESTION_TYPE.TWO_OF_TWO:
+      case QuestionType.TWO_OF_TWO:
         form.addEventListener(`change`, () => {
           const answer1 = form.querySelector(`input[name="question1"]:checked`);
           const answer2 = form.querySelector(`input[name="question2"]:checked`);
+          if (answer1) {
+            [...form.querySelectorAll(`input[name="question1"]`)].forEach((input) => {
+              input.setAttribute(`disabled`, `disabled`);
+            });
+          }
+          if (answer2) {
+            [...form.querySelectorAll(`input[name="question2"]`)].forEach((input) => {
+              input.setAttribute(`disabled`, `disabled`);
+            });
+          }
           if (answer1 && answer2) {
             const isCorrectAnswer = [answer1, answer2].every((answer, index) => {
               return checkAnswer(this.game.answers[index].type, answer.value);
@@ -114,7 +124,7 @@ export default class gameTemplate extends AbstractView {
         });
         break;
 
-      case QUESTION_TYPE.TINDER_LIKE:
+      case QuestionType.TINDER_LIKE:
         form.addEventListener(`change`, () => {
           const answer1 = form.querySelector(`input[name="question1"]:checked`);
           const isCorrectAnswer = [answer1].every((answer, index) => {
@@ -124,7 +134,7 @@ export default class gameTemplate extends AbstractView {
         });
         break;
 
-      case QUESTION_TYPE.ONE_OF_THREE:
+      case QuestionType.ONE_OF_THREE:
         form.addEventListener(`click`, (e) => {
           const images = form.querySelectorAll(`.game__option`);
           if (e.target.closest(`.game__option`)) {

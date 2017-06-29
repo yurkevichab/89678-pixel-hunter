@@ -1,6 +1,6 @@
 export default (html) => {
-  const template = document.createElement(`template`);
-  template.innerHTML = html;
+  const div = document.createElement(`div`);
+  div.innerHTML = html;
 
-  return template.content;
+  return div;
 };

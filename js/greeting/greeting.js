@@ -3,8 +3,11 @@ import GreetingView from './greeting-view';
 import App from '../app';
 
 export default class Greeting {
-  init() {
+  constructor() {
     this.view = new GreetingView();
+  }
+
+  init() {
     switchDisplay(this.view);
 
     this.view.onChangeDisplay = () => {

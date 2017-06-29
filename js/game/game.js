@@ -54,6 +54,7 @@ export default class Game {
 
   _nextDisplay(state) {
     if (isLastGame(state.game, this.games) || isLivesEnded(state.lives)) {
+      App.showIntro();
       gameModel.sendStats(state)
         .then(() => App.showStats(state.userName))
         .catch(window.console.error);

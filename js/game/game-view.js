@@ -156,6 +156,9 @@ export default class gameTemplate extends AbstractView {
   }
 
   updateTimer(timer) {
+    if (timer === 5) {
+      this.timerElement.classList.add(`blink`);
+    }
     this.timerElement.innerHTML = timer;
   }
 }

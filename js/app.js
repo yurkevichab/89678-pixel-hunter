@@ -4,7 +4,6 @@ import Rules from './rules/rules';
 import Game from './game/game';
 import Stats from './stats/stats';
 import gameModel from './game/game-model';
-import GameAdapter from './game/game-adapter';
 
 const ControllerId = {
   GREETING: ``,
@@ -17,9 +16,8 @@ const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
 
 class App {
   init() {
-    new Intro().init();
-
-    gameModel.load(GameAdapter)
+    this.showIntro();
+    gameModel.getQuestions()
       .then((games) => this.setup(games))
       .then(() => this.changeController(this._parseHashFromUrl()))
       .catch(window.console.error);
@@ -34,6 +32,10 @@ class App {
     };
     window.onhashchange = () => this.changeController(this._parseHashFromUrl());
 
+  }
+
+  showIntro() {
+    Intro.init();
   }
 
   _parseHashFromUrl() {
@@ -68,13 +70,11 @@ class App {
   }
 
   showGame(username) {
-    const encodeState = this._decodeData(username);
-    location.hash = `${ControllerId.GAME}=${encodeState}`;
+    location.hash = `${ControllerId.GAME}=${this._decodeData(username)}`;
   }
 
-  showStats(state) {
-    const encodeState = this._decodeData(state);
-    location.hash = `${ControllerId.STATS}=${encodeState}`;
+  showStats(username) {
+    location.hash = `${ControllerId.STATS}=${this._decodeData(username)}`;
   }
 }
 const app = new App();

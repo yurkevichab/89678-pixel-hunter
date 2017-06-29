@@ -1,7 +1,7 @@
 import switchDisplay from '../switch-display';
 import IntroView from './intro-view';
 
-export default class Intro {
+class Intro {
   constructor() {
     this.view = new IntroView();
   }
@@ -10,3 +10,5 @@ export default class Intro {
     switchDisplay(this.view);
   }
 }
+
+export default new Intro();

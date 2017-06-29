@@ -39,18 +39,18 @@ class App {
   }
 
   _parseHashFromUrl() {
-    const hash = location.hash.split(`?`);
+    const hash = location.hash.split(`=`);
     const [controller, hashValue] = hash;
-    const value = hashValue ? hashValue.split(`=`)[1] : ``;
     return {
       controller: getControllerIdFromHash(controller),
-      value: this._encodeData(value)
+      value: hashValue ? this._encodeData(hashValue) : ``
     };
   }
 
   _encodeData(data) {
     const encode64 = atob(data);
     return encode64 ? JSON.parse(encode64) : null;
+
   }
 
   _decodeData(data) {
@@ -71,12 +71,12 @@ class App {
 
   showGame(username) {
     const encodeState = this._decodeData(username);
-    location.hash = `${ControllerId.GAME}?username=${encodeState}`;
+    location.hash = `${ControllerId.GAME}=${encodeState}`;
   }
 
   showStats(state) {
     const encodeState = this._decodeData(state);
-    location.hash = `${ControllerId.STATS}?state=${encodeState}`;
+    location.hash = `${ControllerId.STATS}=${encodeState}`;
   }
 }
 const app = new App();

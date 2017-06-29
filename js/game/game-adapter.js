@@ -3,7 +3,7 @@ import {QUESTION_TYPE, ANSWER_TYPE} from '../data';
 
 const getAnswersCountByType = (answers, type) => {
   return answers.filter((answer) => answer.type === type).length;
-}
+};
 
 const getRightAnswerType = (game) => {
   return Object.values(ANSWER_TYPE)

@@ -3,14 +3,11 @@ import RulesView from './rules-view';
 import App from '../app';
 
 export default class Rules {
-  constructor() {
-    this.view = new RulesView();
-  }
-
   init() {
+    this.view = new RulesView();
     switchDisplay(this.view);
 
-    this.view.onChangeDisplay = (userName) => {
+    this.view .onChangeDisplay = (userName) => {
       App.showGame(userName);
     };
 

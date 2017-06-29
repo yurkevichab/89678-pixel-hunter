@@ -51,40 +51,6 @@ export const statInfo = Object.freeze({
   ]
 });
 
-export const lastGames = Object.freeze([
-  {
-    'stats': [
-      `wrong`,
-      `slow`,
-      `fast`,
-      `correct`,
-      `wrong`,
-      `unknown`,
-      `slow`,
-      `unknown`,
-      `fast`,
-      `unknown`
-    ],
-    'lives': 0
-  },
-  {
-    'stats': [
-      `wrong`,
-      `slow`,
-      `fast`,
-      `correct`,
-      `wrong`,
-      `unknown`,
-      `slow`,
-      `unknown`,
-      `fast`,
-      `unknown`
-    ],
-    'lives': 1
-  }
-]
-);
-
 export const GAMES_TYPES = {
   'twoQuestions': `game-1`,
   'oneQuestion': `game-2`,

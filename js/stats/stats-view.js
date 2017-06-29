@@ -2,7 +2,7 @@ import AbstractView from '../view';
 import footer from '../footer/footer';
 import header from '../header/header';
 import {isLivesEnded} from '../data/lives';
-import {statInfo, lastGames, ANSWER_TYPES, POINTS} from '../data';
+import {statInfo, ANSWER_TYPES, POINTS} from '../data';
 import {getTotalPoints, getRightPoints, getPointCount} from '../data/points';
 import createStats from '../create-stats';
 
@@ -66,17 +66,17 @@ const createTableResult = (game, index) => {
 };
 
 export default class rulesView extends AbstractView {
-  constructor(states) {
+  constructor(stats) {
     super();
-    this.states = states;
+    this.stats = stats;
   }
 
   get template() {
     return `
     ${header()}
     <div class="result">
-      <h1>${isLivesEnded(this.states[0].lives) ? statInfo.title.loss : statInfo.title.win}</h1>
-      ${this.states.reduce((content, game, index) => {
+      <h1>${isLivesEnded(this.stats[0].lives) ? statInfo.title.loss : statInfo.title.win}</h1>
+      ${this.stats.reduce((content, game, index) => {
         return content + createTableResult(game, index + 1);
       }, ``)}
     </div>

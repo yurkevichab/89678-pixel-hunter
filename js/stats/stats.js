@@ -4,12 +4,15 @@ import App from '../app';
 import gameModel from '../game/game-model';
 
 export default class Stats {
-  constructor() {
+  init(username) {
+    gameModel.getStats(username).then((data) => {
+      this.stats = data;
+      this.statsInit();
+    });
   }
 
-  init(username) {
-    this.states = gameModel.getStats(username);
-    this.view = new StatsView(this.state);
+  statsInit() {
+    this.view = new StatsView(this.stats);
     switchDisplay(this.view);
     this.view.onBackToGreeting = () => App.showGreeting();
   }

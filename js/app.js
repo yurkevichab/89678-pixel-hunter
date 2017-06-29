@@ -37,19 +37,20 @@ class App {
     new Intro().init();
 
   }
-  
+
   _parseHashFromUrl() {
     const hash = location.hash.split(`?`);
     const [controller, hashValue] = hash;
-    const value = hashValue ? hashValue.split(`=`)[1] : hashValue;
+    const value = hashValue ? hashValue.split(`=`)[1] : ``;
     return {
       controller: getControllerIdFromHash(controller),
-      value: value ? this._encodeData(value) : value
+      value: this._encodeData(value)
     };
   }
 
   _encodeData(data) {
-    return JSON.parse(atob(data));
+    const encode64 = atob(data);
+    return encode64 ? JSON.parse(encode64) : null;
   }
 
   _decodeData(data) {

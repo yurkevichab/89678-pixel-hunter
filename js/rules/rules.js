@@ -1,19 +1,19 @@
 import switchDisplay from '../switch-display';
 import RulesView from './rules-view';
-import App from '../main';
+import App from '../app';
 
 export default class Rules {
   constructor() {
+    this.view = new RulesView();
   }
 
   init() {
-    const view = new RulesView();
-    switchDisplay(view);
+    switchDisplay(this.view);
 
-    view.onChangeDisplay = (userName) => {
+    this.view.onChangeDisplay = (userName) => {
       App.showGame(userName);
     };
 
-    view.onBackToGreeting = () => App.showGreeting();
+    this.view.onBackToGreeting = () => App.showGreeting();
   }
 }

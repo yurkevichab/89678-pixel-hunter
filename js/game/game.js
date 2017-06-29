@@ -5,7 +5,7 @@ import {setStats, getAnswerType} from '../data/answer';
 import {changeGame, isLastGame} from '../data/game';
 import {isLivesEnded, reduceLives} from '../data/lives';
 import GameView from './game-view';
-import App from '../main';
+import App from '../app';
 import setUserName from '../data/userName';
 
 export default class Game {

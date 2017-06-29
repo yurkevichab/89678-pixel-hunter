@@ -1,14 +1,19 @@
 import {DefaultAdapter} from '../model';
 import {QUESTION_TYPE, ANSWER_TYPE} from '../data';
 
-const rightAnswerType = (game) => {
+const getAnswersCountByType = (answers, type) => {
+  return answers.filter((answer) => answer.type === type).length;
+}
+
+const getRightAnswerType = (game) => {
   return Object.values(ANSWER_TYPE)
-    .find((type) => game.answers.filter((answer) => answer.type === type).length === 1);
+    .find((type) => getAnswersCountByType(game.answers, type) === 1);
 };
 
-const cleanWronAnswerTypes = (game, type) => {
-  game.answers.map((answer) => {
-    answer.type = answer.type === rightAnswerType(game) ? answer.type : null;
+const cleanWrongAnswerTypes = (game) => {
+  const type = getRightAnswerType(game);
+  game.answers.forEach((answer) => {
+    answer.type = answer.type === type ? answer.type : null;
     return answer;
   });
 };
@@ -18,7 +23,7 @@ export default new class extends DefaultAdapter {
   preprocess(data) {
     for (const game of data) {
       if (game.type === QUESTION_TYPE.ONE_OF_THREE) {
-        cleanWronAnswerTypes(game);
+        cleanWrongAnswerTypes(game);
       }
     }
     return data;

@@ -1,6 +1,6 @@
 import switchDisplay from '../switch-display';
 import GreetingView from './greeting-view';
-import App from '../main';
+import App from '../app';
 
 export default class Greeting {
   constructor() {

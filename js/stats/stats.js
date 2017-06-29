@@ -1,6 +1,6 @@
 import StatsView from './stats-view';
 import switchDisplay from '../switch-display';
-import App from '../main';
+import App from '../app';
 
 export default class Stats {
   constructor() {

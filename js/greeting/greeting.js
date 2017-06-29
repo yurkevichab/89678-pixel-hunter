@@ -3,9 +3,6 @@ import GreetingView from './greeting-view';
 import App from '../app';
 
 export default class Greeting {
-  constructor() {
-  }
-
   init() {
     this.view = new GreetingView();
     switchDisplay(this.view);

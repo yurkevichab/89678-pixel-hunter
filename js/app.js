@@ -16,7 +16,9 @@ const ControllerId = {
 const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
 
 class App {
-  constructor() {
+  init() {
+    new Intro().init();
+
     gameModel.load(GameAdapter)
       .then((games) => this.setup(games))
       .then(() => this.changeController(this._parseHashFromUrl()))
@@ -31,10 +33,6 @@ class App {
       [ControllerId.STATS]: new Stats()
     };
     window.onhashchange = () => this.changeController(this._parseHashFromUrl());
-  }
-
-  init() {
-    new Intro().init();
 
   }
 

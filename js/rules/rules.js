@@ -4,13 +4,13 @@ import App from '../app';
 
 export default class Rules {
   constructor() {
-    this.view = new RulesView();
   }
 
   init() {
-    switchDisplay(this.view);
+    const view = new RulesView();
+    switchDisplay(view);
 
-    this.view.onChangeDisplay = (userName) => {
+    view.onChangeDisplay = (userName) => {
       App.showGame(userName);
     };
 

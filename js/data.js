@@ -19,6 +19,7 @@ export const POINTS = {
 };
 
 export const initialState = Object.freeze({
+  'userName': ``,
   'game': 0,
   'lives': 3,
   'timer': 30,
@@ -90,138 +91,13 @@ export const GAMES_TYPES = {
   'threeQuestions': `game-3`
 };
 
-export const games = Object.freeze([
-  {
-    'type': GAMES_TYPES.twoQuestions,
-    'description': `Угадайте для каждого изображения фото или рисунок?`,
-    'answers': [
-      {
-        'image': `https://k42.kn3.net/CF42609C8.jpg`,
-        'type': `paint`
-      },
-      {
-        'image': `https://k42.kn3.net/D2F0370D6.jpg`,
-        'type': `photo`
-      }]
-  },
-  {
-    'type': GAMES_TYPES.oneQuestion,
-    'description': `Угадай, фото или рисунок?`,
-    'answers': [
-      {
-        'image': `http://i.imgur.com/1KegWPz.jpg`,
-        'type': `paint`
-      }
-    ]
-  },
-  {
-    'type': GAMES_TYPES.threeQuestions,
-    'description': `Найдите рисунок среди изображений`,
-    'answers': [
-      {
-        'image': `http://i.imgur.com/1KegWPz.jpg`,
-      },
-      {
-        'image': `https://k42.kn3.net/CF42609C8.jpg`,
-      },
-      {
-        'image': `https://k42.kn3.net/D2F0370D6.jpg`,
-        'type': `photo`
-      }
-    ]
-  },
-  {
-    'type': GAMES_TYPES.twoQuestions,
-    'description': `Угадайте для каждого изображения фото или рисунок?`,
-    'answers': [
-      {
-        'image': `https://k42.kn3.net/CF42609C8.jpg`,
-        'type': `paint`
-      },
-      {
-        'image': `https://k42.kn3.net/D2F0370D6.jpg`,
-        'type': `photo`
-      }]
-  },
-  {
-    'type': GAMES_TYPES.oneQuestion,
-    'description': `Угадай, фото или рисунок?`,
-    'answers': [
-      {
-        'image': `http://i.imgur.com/1KegWPz.jpg`,
-        'type': `paint`
-      }
-    ]
-  },
-  {
-    'type': GAMES_TYPES.threeQuestions,
-    'description': `Найдите рисунок среди изображений`,
-    'answers': [
-      {
-        'image': `http://i.imgur.com/1KegWPz.jpg`
-      },
-      {
-        'image': `https://k42.kn3.net/CF42609C8.jpg`
-      },
-      {
-        'image': `https://k42.kn3.net/D2F0370D6.jpg`,
-        'type': `photo`
-      }
-    ]
-  },
-  {
-    'type': GAMES_TYPES.twoQuestions,
-    'description': `Угадайте для каждого изображения фото или рисунок?`,
-    'answers': [
-      {
-        'image': `https://k42.kn3.net/CF42609C8.jpg`,
-        'type': `paint`
-      },
-      {
-        'image': `https://k42.kn3.net/D2F0370D6.jpg`,
-        'type': `photo`
-      }]
-  },
-  {
-    'type': GAMES_TYPES.oneQuestion,
-    'description': `Угадай, фото или рисунок?`,
-    'answers': [
-      {
-        'image': `http://i.imgur.com/1KegWPz.jpg`,
-        'type': `paint`
-      }
-    ]
-  },
-  {
-    'type': GAMES_TYPES.threeQuestions,
-    'description': `Найдите рисунок среди изображений`,
-    'answers': [
-      {
-        'image': `http://i.imgur.com/1KegWPz.jpg`,
-      },
-      {
-        'image': `https://k42.kn3.net/CF42609C8.jpg`,
-      },
-      {
-        'image': `https://k42.kn3.net/D2F0370D6.jpg`,
-        'type': `photo`
-      }
-    ]
-  },
-  {
-    'type': GAMES_TYPES.threeQuestions,
-    'description': `Найдите рисунок среди изображений`,
-    'answers': [
-      {
-        'image': `http://i.imgur.com/1KegWPz.jpg`,
-      },
-      {
-        'image': `https://k42.kn3.net/CF42609C8.jpg`,
-      },
-      {
-        'image': `https://k42.kn3.net/D2F0370D6.jpg`,
-        'type': `photo`
-      }
-    ]
-  }
-]);
+export const QUESTION_TYPE = {
+  TWO_OF_TWO: `two-of-two`,
+  TINDER_LIKE: `tinder-like`,
+  ONE_OF_THREE: `one-of-three`
+};
+
+export const ANSWER_TYPE = {
+  PAINTING: `painting`,
+  PHOTO: `photo`
+};

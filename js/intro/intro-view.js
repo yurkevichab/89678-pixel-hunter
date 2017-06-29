@@ -12,9 +12,4 @@ export default class introView extends AbstractView {
     </div>
     ${footer}`;
   }
-
-  bind() {
-    const introAsterisk = this.element.querySelector(`.intro__asterisk`);
-    introAsterisk.addEventListener(`click`, () => this.onChangeDisplay());
-  }
 }

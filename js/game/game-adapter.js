@@ -1,5 +1,5 @@
 import {DefaultAdapter} from '../model';
-import {QuestionType, AnswerType, MAX_COUNT_LIVES} from '../data';
+import {QuestionType, AnswerType} from '../data';
 
 const getAnswersCountByType = (answers, type) => {
   return answers.filter((answer) => answer.type === type).length;
@@ -36,7 +36,7 @@ export default new class extends DefaultAdapter {
   postProcessStats(state) {
     return JSON.stringify({
       lives: state.lives,
-      stats: [...state.stats, ...new Array(MAX_COUNT_LIVES - state.stats.length).fill(`unknown`)]
+      stats: state.stats
     });
   }
 

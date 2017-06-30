@@ -1,7 +1,6 @@
 export const FAST_ANSWER = 10;
 export const SLOW_ANSWER = 20;
 export const MIN_COUNT_LIVES = 0;
-export const MAX_COUNT_LIVES = 10;
 export const MIN_TIMER_VALUE = 0;
 
 export const Result = {
@@ -9,6 +8,7 @@ export const Result = {
   'slow': `slow`,
   'correct': `correct`,
   'wrong': `wrong`,
+  'unknown': `unknown`
 };
 
 export const Points = {
@@ -51,12 +51,6 @@ export const statInfo = Object.freeze({
     }
   ]
 });
-
-export const GameType = {
-  'twoQuestions': `game-1`,
-  'oneQuestion': `game-2`,
-  'threeQuestions': `game-3`
-};
 
 export const QuestionType = {
   TWO_OF_TWO: `two-of-two`,

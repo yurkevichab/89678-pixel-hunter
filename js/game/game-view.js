@@ -103,24 +103,21 @@ export default class gameTemplate extends AbstractView {
     switch (this.game.type) {
       case QuestionType.TWO_OF_TWO:
         form.addEventListener(`change`, () => {
-          const answer1 = form.querySelector(`input[name="question1"]:checked`);
-          const answer2 = form.querySelector(`input[name="question2"]:checked`);
-          if (answer1) {
-            [...form.querySelectorAll(`input[name="question1"]`)].forEach((input) => {
-              input.setAttribute(`disabled`, `disabled`);
-            });
-          }
-          if (answer2) {
-            [...form.querySelectorAll(`input[name="question2"]`)].forEach((input) => {
-              input.setAttribute(`disabled`, `disabled`);
-            });
-          }
-          if (answer1 && answer2) {
-            const isCorrectAnswer = [answer1, answer2].every((answer, index) => {
+          const inputs = [...form.querySelectorAll(`input`)];
+          const checkedInputs = inputs.filter((input) => input.checked);
+
+          if (checkedInputs.length === this.game.answers.length) {
+            const isCorrectAnswer = checkedInputs.every((answer, index) => {
               return checkAnswer(this.game.answers[index].type, answer.value);
             });
-            this.onAnswerQuestion(isCorrectAnswer);
+            return this.onAnswerQuestion(isCorrectAnswer);
           }
+
+          checkedInputs.forEach((checkedInput) => {
+            [inputs.filter((input) => checkedInput.name)].forEach((input) => {
+              input.disabled = true;
+            });
+          });
         });
         break;
 

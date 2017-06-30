@@ -1,10 +1,16 @@
-import {MAX_COUNT_LIVES} from './data';
+import {Result} from './data';
 
-export default (stats) => {
+const createStatsResult = (stats) => {
+  return stats.reduce((prev, current) => {
+    return prev + ` <li class="stats__result stats__result--${current}"></li>`;
+  }, ``);
+};
+
+export default (stats, questionsLength) => {
   return ` 
     <ul class="stats">
-    ${Array.from(Array(MAX_COUNT_LIVES)).reduce((prev, el, index) => {
-      return prev + ` <li class="stats__result stats__result--${stats[index] || `unknown`}"></li>`;
-    }, ``)} } 
+    ${createStatsResult(stats)}
+    ${createStatsResult(Array(questionsLength - stats.length).fill(Result.unknown))}
     </ul>`;
 };
+

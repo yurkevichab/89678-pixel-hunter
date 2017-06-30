@@ -19,7 +19,7 @@ const OPTIONS = [
   }
 ];
 
-const ADDITION_GAME_DATA = {
+const AdditionGameData = {
   [QuestionType.TWO_OF_TWO]: {
     'formClass': ``,
     'haveOption': true,
@@ -39,7 +39,7 @@ const ADDITION_GAME_DATA = {
   }
 };
 const getAnswer = (type, answer, index) => {
-  const {haveOption, additionClasses} = ADDITION_GAME_DATA[type];
+  const {haveOption, additionClasses} = AdditionGameData[type];
   return `
     <div class="game__option">
       <img src="${answer.image.url}" alt="Option ${index}" width="${answer.image.width}" height="${answer.image.height}">
@@ -79,7 +79,7 @@ export default class gameTemplate extends AbstractView {
   }
 
   get template() {
-    const formClass = ADDITION_GAME_DATA[this.game.type].formClass;
+    const formClass = AdditionGameData[this.game.type].formClass;
     return `
     ${header(this.state)}
     <div class="game">

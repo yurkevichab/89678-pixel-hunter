@@ -1,4 +1,5 @@
 import {Result} from './data';
+import {MAX_COUNT_LIVES} from './data';
 
 const createStatsResult = (stats) => {
   return stats.reduce((prev, current) => {
@@ -6,11 +7,11 @@ const createStatsResult = (stats) => {
   }, ``);
 };
 
-export default (stats, questionsLength) => {
+export default (stats) => {
   return ` 
     <ul class="stats">
     ${createStatsResult(stats)}
-    ${createStatsResult(Array(questionsLength - stats.length).fill(Result.unknown))}
+    ${createStatsResult(Array(MAX_COUNT_LIVES - stats.length).fill(Result.unknown))}
     </ul>`;
 };
 

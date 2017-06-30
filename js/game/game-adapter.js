@@ -1,6 +1,6 @@
 import {DefaultAdapter} from '../model';
 import {QuestionType, AnswerType} from '../data';
-
+import resizeImage from '../data/resizeImage';
 const getAnswersCountByType = (answers, type) => {
   return answers.filter((answer) => answer.type === type).length;
 };
@@ -18,6 +18,24 @@ const cleanWrongAnswerTypes = (answers) => {
   });
 };
 
+const processImage = (answerImage) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.addEventListener(`load`, (e) => {
+      const correctedSizes = resizeImage(
+          {
+            width: answerImage.width,
+            height: answerImage.height
+          },
+          img);
+      img.width = correctedSizes.width;
+      img.height = correctedSizes.height;
+      resolve();
+    });
+    img.src = answerImage.url;
+  });
+};
+
 export default new class extends DefaultAdapter {
 
   preprocessQuestions(data) {
@@ -26,6 +44,16 @@ export default new class extends DefaultAdapter {
         cleanWrongAnswerTypes(game.answers);
       }
     }
+    return data;
+  }
+
+  loadImages(data) {
+    Promise.all(
+        data.map((game) => new Promise((resolvedGame) => {
+          game.map((answer) => new Promise((resolvedAnswer) => {
+            processImage(answer.image);
+          }));
+        })));
     return data;
   }
 

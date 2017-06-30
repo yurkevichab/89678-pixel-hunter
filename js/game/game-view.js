@@ -110,7 +110,7 @@ export default class gameTemplate extends AbstractView {
             const isCorrectAnswer = checkedInputs.every((answer, index) => {
               return checkAnswer(this.game.answers[index].type, answer.value);
             });
-            return this.onAnswerQuestion(isCorrectAnswer);
+            this.onAnswerQuestion(isCorrectAnswer);
           }
 
           checkedInputs.forEach((checkedInput) => {

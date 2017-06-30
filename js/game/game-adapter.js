@@ -18,20 +18,20 @@ const cleanWrongAnswerTypes = (answers) => {
   });
 };
 
-const processImage = (answerImage) => {
+const setImageSize = (img, answerImage, resolve) => {
+  const correctedSizes = resizeImage({
+    width: answerImage.width,
+    height: answerImage.height
+  }, img);
+  answerImage.width = correctedSizes.width;
+  answerImage.height = correctedSizes.height;
+  resolve();
+};
+
+const loadImage = (answerImage) => {
   return new Promise((resolve) => {
     const img = new Image();
-    img.addEventListener(`load`, (e) => {
-      const correctedSizes = resizeImage(
-          {
-            width: answerImage.width,
-            height: answerImage.height
-          },
-          img);
-      img.width = correctedSizes.width;
-      img.height = correctedSizes.height;
-      resolve();
-    });
+    img.addEventListener(`load`, () => setImageSize(img, answerImage, resolve));
     img.src = answerImage.url;
   });
 };
@@ -50,8 +50,8 @@ export default new class extends DefaultAdapter {
   loadImages(data) {
     Promise.all(
         data.map((game) => new Promise((resolvedGame) => {
-          game.map((answer) => new Promise((resolvedAnswer) => {
-            processImage(answer.image);
+          game.answers.map((answer) => new Promise((resolvedAnswer) => {
+            loadImage(answer.image);
           }));
         })));
     return data;

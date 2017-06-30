@@ -98,7 +98,6 @@ export default class gameTemplate extends AbstractView {
     const form = this.element.querySelector(`.game__content`);
     this.timerElement = this.element.querySelector(`.game__timer`);
     const backButton = this.element.querySelector(`.back`);
-    const answerImages = form.querySelectorAll(`.game__option img`);
 
     switch (this.game.type) {
       case QuestionType.TWO_OF_TWO:
@@ -111,6 +110,7 @@ export default class gameTemplate extends AbstractView {
               return checkAnswer(this.game.answers[index].type, answer.value);
             });
             this.onAnswerQuestion(isCorrectAnswer);
+            return;
           }
 
           checkedInputs.forEach((checkedInput) => {
@@ -144,22 +144,6 @@ export default class gameTemplate extends AbstractView {
     }
 
     backButton.addEventListener(`click`, () => this.onBackToGreeting());
-
-    for (let img of answerImages) {
-      img.addEventListener(`load`, (e) => {
-        const parentBlock = img.parentNode;
-        const frame = {
-          width: parentBlock.clientWidth,
-          height: parentBlock.clientHeight
-        };
-        const correctedSizes = resizeImage(frame, {
-          width: img.naturalWidth,
-          height: img.naturalHeight
-        });
-        img.width = correctedSizes.width;
-        img.height = correctedSizes.height;
-      });
-    }
   }
 
   updateTimer(timer) {

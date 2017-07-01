@@ -5,6 +5,7 @@ import gameModel from '../game/game-model';
 
 export default class Stats {
   init({value: username}) {
+    App.showIntro();
     gameModel.getStats(username).then((data) => {
       this.stats = data;
       this.statsInit();

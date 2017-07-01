@@ -1,4 +1,4 @@
-import {MIN_TIMER_VALUE, initialState} from '../data';
+import {MIN_TIMER_VALUE, initialState} from './data';
 
 export const setTimer = (state) => {
   let currentTimer = state.timer;

@@ -5,18 +5,18 @@ export const MIN_TIMER_VALUE = 0;
 export const MAX_COUNT_LIVES = 10;
 
 export const Result = {
-  'fast': `fast`,
-  'slow': `slow`,
-  'correct': `correct`,
-  'wrong': `wrong`,
-  'unknown': `unknown`
+  'FAST': `fast`,
+  'SLOW': `slow`,
+  'CORRECT': `correct`,
+  'WRONG': `wrong`,
+  'UNKNOWN': `unknown`
 };
 
 export const Points = {
-  [Result.correct]: 100,
-  [Result.fast]: 50,
-  [Result.slow]: -50,
-  [Result.wrong]: 0,
+  [Result.CORRECT]: 100,
+  [Result.FAST]: 50,
+  [Result.SLOW]: -50,
+  [Result.WRONG]: 0,
   'heart': 50
 };
 
@@ -33,12 +33,12 @@ export const statInfo = Object.freeze({
     'win': `Победа!`,
     'loss': `Поражение`
   },
-  'ratio': Points[Result.correct],
+  'ratio': Points[Result.CORRECT],
   'bonuses': [
     {
       'title': `Бонус за скорость:`,
-      'type': Result.fast,
-      'ratio': Points[Result.fast]
+      'type': Result.FAST,
+      'ratio': Points[Result.FAST]
     },
     {
       'title': `Бонус за жизни:`,
@@ -47,8 +47,8 @@ export const statInfo = Object.freeze({
     },
     {
       'title': `Штраф за медлительность:`,
-      'type': Result.slow,
-      'ratio': Points[Result.slow]
+      'type': Result.SLOW,
+      'ratio': Points[Result.SLOW]
     }
   ]
 });

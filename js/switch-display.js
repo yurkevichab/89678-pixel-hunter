@@ -1,4 +1,5 @@
 const mainBlock = document.querySelector(`main.central`);
+const CROSSFADE_CLASS = `slide`;
 
 export default (view, isCrossfade = false) => {
   if (!isCrossfade) {
@@ -8,19 +9,20 @@ export default (view, isCrossfade = false) => {
   }
 
   const newContainer = view.element;
-  let introBlock = mainBlock.firstElementChild;
-  newContainer.classList.add(`slide`);
+  const container = mainBlock.firstElementChild;
+  newContainer.classList.add(CROSSFADE_CLASS);
   mainBlock.appendChild(newContainer);
-  introBlock.classList.add(`slide`);
+  container.classList.add(CROSSFADE_CLASS);
 
-  newContainer.style.opacity = 0.2;
+  let opacityValue = 0.5;
+  newContainer.style.opacity = opacityValue;
   const interval = setInterval(()=> {
-    const step = 0.1;
-    const result = step + parseFloat(newContainer.style.opacity);
-    newContainer.style.opacity = result;
-    if (result >= 1) {
+    const step = 0.5;
+    opacityValue = step + opacityValue;
+    newContainer.style.opacity = opacityValue;
+    if (opacityValue >= 5) {
       clearInterval(interval);
-      introBlock.remove();
+      container.remove();
     }
-  }, 500);
+  }, 300);
 };

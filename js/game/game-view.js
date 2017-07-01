@@ -1,9 +1,10 @@
 import AbstractView from '../view';
-import header from '../header/header';
-import footer from '../footer/footer';
-import createStats from '../create-stats';
-import {QuestionType, AnswerType} from '../data';
+import getHeader from '../templates/header';
+import getFooter from '../templates/footer';
+import getGameStats from '../templates/game-stats';
+import {QuestionType, AnswerType} from '../data/data';
 import {checkAnswer} from '../data/answer';
+import addBackButtonClick from '../add-back-button-click';
 
 const OPTIONS = [
   {
@@ -37,6 +38,42 @@ const AdditionGameData = {
     'additionClasses': ``
   }
 };
+
+
+const addFormClickEvent = (element, answers, callback) => {
+  const form = element.querySelector(`.game__content`);
+  form.addEventListener(`click`, (e) => {
+    const images = form.querySelectorAll(`.game__option`);
+    if (e.target.closest(`.game__option`)) {
+      const indexImage = [...images].indexOf(e.target);
+      const isCorrectAnswer = !!answers[indexImage].type;
+      callback(isCorrectAnswer);
+    }
+  });
+};
+
+const addFormChangeEvent = (element, answers, callback) => {
+  const form = element.querySelector(`.game__content`);
+  form.addEventListener(`change`, () => {
+    const inputs = [...form.querySelectorAll(`input`)];
+    const checkedInputs = inputs.filter((input) => input.checked);
+
+    if (checkedInputs.length === answers.length) {
+      const isCorrectAnswer = checkedInputs.every((answer, index) => {
+        return checkAnswer(answers[index].type, answer.value);
+      });
+      callback(isCorrectAnswer);
+      return;
+    }
+
+    checkedInputs.forEach((checkedInput) => {
+      inputs.filter((input) => input.name === checkedInput.name).forEach((input) => {
+        input.disabled = true;
+      });
+    });
+  });
+};
+
 const getAnswer = (type, answer, index) => {
   const {haveOption, additionClasses} = AdditionGameData[type];
   return `
@@ -70,6 +107,12 @@ const getOptions = (additionClasses, index) => {
   }, ``);
 };
 
+const GameTypeHandler = {
+  [QuestionType.TWO_OF_TWO]: addFormChangeEvent,
+  [QuestionType.TINDER_LIKE]: addFormChangeEvent,
+  [QuestionType.ONE_OF_THREE]: addFormClickEvent
+};
+
 export default class gameTemplate extends AbstractView {
   constructor(game, state) {
     super();
@@ -80,69 +123,25 @@ export default class gameTemplate extends AbstractView {
   get template() {
     const formClass = AdditionGameData[this.game.type].formClass;
     return `
-    ${header(this.state)}
+    ${getHeader(this.state)}
     <div class="game">
       <p class="game__task">${this.game.question}</p>
       <form class="game__content ${formClass}">     
         ${getAnswers(this.game)}
       </form>
       <div class="stats">
-        ${createStats(this.state.stats)}
+        ${getGameStats(this.state.stats)}
       </div>
     </div>
-    ${footer}`;
+    ${getFooter}`;
   }
 
   bind() {
-    const form = this.element.querySelector(`.game__content`);
     this.timerElement = this.element.querySelector(`.game__timer`);
-    const backButton = this.element.querySelector(`.back`);
+    GameTypeHandler[this.game.type](this.element, this.game.answers,
+        (isCorrectAnswer) => this.onAnswerQuestion(isCorrectAnswer));
 
-    switch (this.game.type) {
-      case QuestionType.TWO_OF_TWO:
-        form.addEventListener(`change`, () => {
-          const inputs = [...form.querySelectorAll(`input`)];
-          const checkedInputs = inputs.filter((input) => input.checked);
-
-          if (checkedInputs.length === this.game.answers.length) {
-            const isCorrectAnswer = checkedInputs.every((answer, index) => {
-              return checkAnswer(this.game.answers[index].type, answer.value);
-            });
-            this.onAnswerQuestion(isCorrectAnswer);
-            return;
-          }
-
-          checkedInputs.forEach((checkedInput) => {
-            [inputs.filter((input) => checkedInput.name)].forEach((input) => {
-              input.disabled = true;
-            });
-          });
-        });
-        break;
-
-      case QuestionType.TINDER_LIKE:
-        form.addEventListener(`change`, () => {
-          const answer1 = form.querySelector(`input[name="question1"]:checked`);
-          const isCorrectAnswer = [answer1].every((answer, index) => {
-            return checkAnswer(this.game.answers[index].type, answer.value);
-          });
-          this.onAnswerQuestion(isCorrectAnswer);
-        });
-        break;
-
-      case QuestionType.ONE_OF_THREE:
-        form.addEventListener(`click`, (e) => {
-          const images = form.querySelectorAll(`.game__option`);
-          if (e.target.closest(`.game__option`)) {
-            const indexImage = [...images].indexOf(e.target);
-            const isCorrectAnswer = !!this.game.answers[indexImage].type;
-            this.onAnswerQuestion(isCorrectAnswer);
-          }
-        });
-        break;
-    }
-
-    backButton.addEventListener(`click`, () => this.onBackToGreeting());
+    addBackButtonClick(this.element, ()=> this.onBackToGreeting());
   }
 
   updateTimer(timer) {

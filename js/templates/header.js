@@ -1,4 +1,4 @@
-import {initialState} from '../data';
+import {initialState} from '../data/data';
 
 const createHeart = (count, type) => {
   return new Array(count)

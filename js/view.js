@@ -5,12 +5,11 @@ export default class AbstractView {
     throw new Error(`You have to define to template for view`);
   }
 
-  render() {
-    return createElement(this.template);
-  }
-
-  bind() {
-
+  get element() {
+    if (!this._element) {
+      this._getMarkup();
+    }
+    return this._element;
   }
 
   _getMarkup() {
@@ -18,10 +17,11 @@ export default class AbstractView {
     this.bind();
   }
 
-  get element() {
-    if (!this._element) {
-      this._getMarkup();
-    }
-    return this._element;
+  render() {
+    return createElement(this.template);
+  }
+
+  bind() {
+
   }
 }

@@ -1,5 +1,5 @@
 import AbstractView from '../view';
-import footer from '../footer/footer';
+import getFooter from '../templates/footer';
 
 export default class greetingView extends AbstractView {
   get template() {
@@ -23,7 +23,7 @@ export default class greetingView extends AbstractView {
         </span>
       </div>
      </div>
-    ${footer}`;
+    ${getFooter}`;
   }
 
   bind() {

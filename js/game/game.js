@@ -1,4 +1,4 @@
-import {MIN_TIMER_VALUE, Result, initialState} from '../data';
+import {MIN_TIMER_VALUE, Result, initialState} from '../data/data';
 import switchDisplay from '../switch-display';
 import {setTimer, cleanTimer} from '../data/timer';
 import {setStats, getAnswerType} from '../data/answer';
@@ -39,17 +39,25 @@ export default class Game {
     };
   }
 
+  _processWrongResult() {
+    return reduceLives(setStats(this.state, Result.WRONG));
+  }
+
   _startTimer() {
     const timer = setInterval(() => {
       this.state = setTimer(this.state);
       this.view.updateTimer(this.state.timer);
       if (this.state.timer === MIN_TIMER_VALUE) {
         clearInterval(this.timer);
-        let newState = reduceLives(setStats(this.state, Result.wrong));
+        const newState = this._processWrongResult();
         this._nextDisplay(newState);
       }
     }, 1000);
     return timer;
+  }
+  _sendStats(oldState) {
+    const state = cleanTimer(changeGame(oldState, this.games));
+    this.gameInit(state);
   }
 
   _nextDisplay(state) {
@@ -58,20 +66,17 @@ export default class Game {
       gameModel.sendStats(state)
         .then(() => App.showStats(state.userName))
         .catch(window.console.error);
-    } else {
-      state = cleanTimer(changeGame(state, this.games));
-      this._createGameView(state);
-      this.gameInit(state);
+      return;
     }
+    this._sendStats(state);
   }
 
   _addAnswerResult(isCorrectAnswer) {
-    const point = getAnswerType(isCorrectAnswer, this.state.timer);
-    let newState = setStats(this.state, point);
     if (!isCorrectAnswer) {
-      newState = reduceLives(newState);
+      return this._processWrongResult();
     }
-    return newState;
+    const point = getAnswerType(isCorrectAnswer, this.state.timer);
+    return setStats(this.state, point);
   }
 
   _createGameView(state) {

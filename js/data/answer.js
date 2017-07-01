@@ -1,4 +1,4 @@
-import {initialState, FAST_ANSWER, SLOW_ANSWER, Result, MIN_TIMER_VALUE} from '../data';
+import {initialState, FAST_ANSWER, SLOW_ANSWER, Result, MIN_TIMER_VALUE} from './data';
 
 export const checkAnswer = (answer, rightAnswer) => {
   return answer === rightAnswer;
@@ -7,15 +7,15 @@ export const checkAnswer = (answer, rightAnswer) => {
 export const getAnswerType = (isCorrect, timer) => {
   const differenceTime = initialState.timer - timer;
   if (!isCorrect || timer === MIN_TIMER_VALUE) {
-    return Result.wrong;
+    return Result.WRONG;
   }
   if (differenceTime < FAST_ANSWER) {
-    return Result.fast;
+    return Result.FAST;
   }
   if (differenceTime > SLOW_ANSWER) {
-    return Result.slow;
+    return Result.SLOW;
   }
-  return Result.correct;
+  return Result.CORRECT;
 };
 
 export const setStats = (state, point) => {

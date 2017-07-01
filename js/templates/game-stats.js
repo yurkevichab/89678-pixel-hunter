@@ -1,5 +1,5 @@
-import {Result} from './data';
-import {MAX_COUNT_LIVES} from './data';
+import {Result} from '../data/data';
+import {MAX_COUNT_LIVES} from '../data/data';
 
 const createStatsResult = (stats) => {
   return stats.reduce((prev, current) => {

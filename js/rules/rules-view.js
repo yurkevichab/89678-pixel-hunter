@@ -1,11 +1,12 @@
 import AbstractView from '../view';
-import footer from '../footer/footer';
-import header from '../header/header';
+import getFooter from '../templates/footer';
+import getHeader from '../templates/header';
+import addBackButtonClick from '../add-back-button-click';
 
 export default class rulesView extends AbstractView {
   get template() {
     return `
-    ${header()}
+    ${getHeader()}
     <div class="rules">
       <h1 class="rules__title">Правила</h1>
       <p class="rules__description">Угадай 10 раз для каждого изображения фото 
@@ -22,13 +23,12 @@ export default class rulesView extends AbstractView {
       <button class="rules__button  continue" type="submit" disabled>Go!</button>
     </form>
   </div>
-  ${footer}`;
+  ${getFooter}`;
   }
 
   bind() {
     const rulesInput = this.element.querySelector(`.rules__input`);
     const rulesButton = this.element.querySelector(`.rules__button`);
-    const backButton = this.element.querySelector(`.back`);
 
     rulesInput.addEventListener(`input`, (e) => {
       rulesButton.disabled = !e.target.value.trim();
@@ -41,7 +41,7 @@ export default class rulesView extends AbstractView {
       this.onChangeDisplay(username);
     });
 
-    backButton.addEventListener(`click`, () => {
+    addBackButtonClick(this.element, () => {
       this._cleanInput(rulesInput);
       this.onBackToGreeting();
     });

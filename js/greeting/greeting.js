@@ -8,7 +8,7 @@ export default class Greeting {
   }
 
   init() {
-    switchDisplay(this.view);
+    switchDisplay(this.view, true);
 
     this.view.onChangeDisplay = () => {
       App.showRules();

@@ -48,13 +48,12 @@ export default new class extends DefaultAdapter {
   }
 
   loadImages(data) {
-    Promise.all(
-        data.map((game) => new Promise((resolvedGame) => {
-          game.answers.map((answer) => new Promise((resolvedAnswer) => {
-            loadImage(answer.image);
-          }));
-        })));
-    return data;
+    const images = data.reduce((accumulator, game) =>
+      accumulator.concat(game.answers.map((answer) => answer.image)), []);
+    return Promise
+      .all(images.map((image) => loadImage(image)))
+      .then(() => data)
+      .catch(window.console.log.warning);
   }
 
   preprocessStats(data) {

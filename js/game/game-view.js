@@ -4,7 +4,6 @@ import footer from '../footer/footer';
 import createStats from '../create-stats';
 import {QuestionType, AnswerType} from '../data';
 import {checkAnswer} from '../data/answer';
-import resizeImage from '../data/resizeImage';
 
 const OPTIONS = [
   {

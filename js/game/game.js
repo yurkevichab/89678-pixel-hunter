@@ -14,7 +14,7 @@ export default class Game {
     this.games = games;
   }
 
-  init(userName) {
+  init({value: userName}) {
     if (!userName) {
       App.showRules();
     }

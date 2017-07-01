@@ -19,7 +19,7 @@ class App {
     this.showIntro();
     gameModel.getQuestions()
       .then((games) => this.setup(games))
-      .then(() => this.changeController(this._parseHashFromUrl()))
+      .then(() => this.changeController(this._parseHashFromUrl()), true)
       .catch(window.console.error);
   }
 
@@ -57,8 +57,8 @@ class App {
     return btoa(JSON.stringify(data));
   }
 
-  changeController({controller, value}) {
-    this.routes[controller].init(value);
+  changeController({controller, value}, isCrossfade) {
+    this.routes[controller].init({value, isCrossfade});
   }
 
   showGreeting() {

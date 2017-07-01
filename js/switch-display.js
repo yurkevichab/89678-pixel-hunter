@@ -1,17 +1,26 @@
 const mainBlock = document.querySelector(`main.central`);
 
-export default (view, fistTime = false) => {
-  if (fistTime) {
-    const gree = view.element.querySelector(`.greeting`);
-    gree.style.display = `none`;
-    gree.classList.add(`slide`);
-    mainBlock.insertAdjacentHTML(`afterbegin`, view.element.innerHTML);
-    mainBlock.querySelector(`#intro`).classList.add(`slide`);
-    mainBlock.querySelector(`.greeting`).style.display = `block`;
-    mainBlock.querySelector(`.greeting`).style.opacity = `1`;
-
-  } else {
+export default (view, isCrossfade = false) => {
+  if (!isCrossfade) {
     mainBlock.innerHTML = ``;
-    mainBlock.insertAdjacentHTML(`afterbegin`, view.element.innerHTML);
+    mainBlock.appendChild(view.element);
+    return;
   }
+
+  const newContainer = view.element;
+  let introBlock = mainBlock.firstElementChild;
+  newContainer.classList.add(`slide`);
+  mainBlock.appendChild(newContainer);
+  introBlock.classList.add(`slide`);
+
+  newContainer.style.opacity = 0.2;
+  const interval = setInterval(()=> {
+    const step = 0.1;
+    const result = step + parseFloat(newContainer.style.opacity);
+    newContainer.style.opacity = result;
+    if (result >= 1) {
+      clearInterval(interval);
+      introBlock.remove();
+    }
+  }, 500);
 };

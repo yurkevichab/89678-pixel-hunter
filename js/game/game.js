@@ -1,4 +1,4 @@
-import {MIN_TIMER_VALUE, ANSWER_TYPES, initialState} from '../data';
+import {MIN_TIMER_VALUE, Result, initialState} from '../data/data';
 import switchDisplay from '../switch-display';
 import {setTimer, cleanTimer} from '../data/timer';
 import {setStats, getAnswerType} from '../data/answer';
@@ -14,7 +14,7 @@ export default class Game {
     this.games = games;
   }
 
-  init(userName) {
+  init({value: userName}) {
     if (!userName) {
       App.showRules();
     }
@@ -39,39 +39,45 @@ export default class Game {
     };
   }
 
+  _processWrongResult() {
+    return reduceLives(setStats(this.state, Result.WRONG));
+  }
+
   _startTimer() {
     const timer = setInterval(() => {
       this.state = setTimer(this.state);
       this.view.updateTimer(this.state.timer);
       if (this.state.timer === MIN_TIMER_VALUE) {
         clearInterval(this.timer);
-        let newState = reduceLives(setStats(this.state, ANSWER_TYPES.wrong));
+        const newState = this._processWrongResult();
         this._nextDisplay(newState);
       }
     }, 1000);
     return timer;
   }
 
+  _sendStats(state) {
+    App.showIntro();
+    gameModel.sendStats(state)
+      .then(() => App.showStats(state.userName))
+      .catch(window.console.error);
+  }
+
   _nextDisplay(state) {
     if (isLastGame(state.game, this.games) || isLivesEnded(state.lives)) {
-      App.showIntro();
-      gameModel.sendStats(state)
-        .then(() => App.showStats(state.userName))
-        .catch(window.console.error);
-    } else {
-      state = cleanTimer(changeGame(state, this.games));
-      this._createGameView(state);
-      this.gameInit(state);
+      this._sendStats(state);
+      return;
     }
+    state = cleanTimer(changeGame(state, this.games));
+    this.gameInit(state);
   }
 
   _addAnswerResult(isCorrectAnswer) {
-    const point = getAnswerType(isCorrectAnswer, this.state.timer);
-    let newState = setStats(this.state, point);
     if (!isCorrectAnswer) {
-      newState = reduceLives(newState);
+      return this._processWrongResult();
     }
-    return newState;
+    const point = getAnswerType(isCorrectAnswer, this.state.timer);
+    return setStats(this.state, point);
   }
 
   _createGameView(state) {

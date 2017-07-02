@@ -1,5 +1,5 @@
 import AbstractView from '../view';
-import footer from '../footer/footer';
+import getFooter from '../templates/footer';
 
 export default class introView extends AbstractView {
   get template() {
@@ -10,6 +10,6 @@ export default class introView extends AbstractView {
         <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
       </div>
     </div>
-    ${footer}`;
+    ${getFooter}`;
   }
 }

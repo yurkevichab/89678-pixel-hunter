@@ -1,4 +1,4 @@
-import {initialState, MIN_COUNT_LIVES} from '../data';
+import {initialState, MIN_COUNT_LIVES} from './data';
 
 export const setLives = (state, lives) => {
   if (lives > initialState.lives) {

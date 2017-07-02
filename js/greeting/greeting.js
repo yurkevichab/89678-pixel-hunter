@@ -7,8 +7,8 @@ export default class Greeting {
     this.view = new GreetingView();
   }
 
-  init() {
-    switchDisplay(this.view);
+  init({isCrossfade}) {
+    switchDisplay(this.view, isCrossfade);
 
     this.view.onChangeDisplay = () => {
       App.showRules();

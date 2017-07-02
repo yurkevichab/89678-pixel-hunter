@@ -1,45 +1,81 @@
 import AbstractView from '../view';
-import header from '../header/header';
-import footer from '../footer/footer';
-import createStats from '../create-stats';
-import {QUESTION_TYPE, ANSWER_TYPE} from '../data';
+import getHeader from '../templates/header';
+import getFooter from '../templates/footer';
+import getGameStats from '../templates/game-stats';
+import {QuestionType, AnswerType} from '../data/data';
 import {checkAnswer} from '../data/answer';
-import resizeImage from '../data/resizeImage';
+import addBackButtonClick from '../add-back-button-click';
 
 const OPTIONS = [
   {
     'text': `Рисунок`,
     'type': `paint`,
-    'value': ANSWER_TYPE.PAINTING
+    'value': AnswerType.PAINTING
   },
   {
     'text': `Фото`,
     'type': `photo`,
-    'value': ANSWER_TYPE.PHOTO
+    'value': AnswerType.PHOTO
   }
 ];
 
-const ADDITION_GAME_DATA = {
-  [QUESTION_TYPE.TWO_OF_TWO]: {
+const AdditionGameData = {
+  [QuestionType.TWO_OF_TWO]: {
     'formClass': ``,
     'haveOption': true,
     'additionClasses': ``
   },
-  [QUESTION_TYPE.TINDER_LIKE]: {
+  [QuestionType.TINDER_LIKE]: {
     'formClass': `game__content--wide`,
     'haveOption': true,
     'additionClasses': {
       'paint': `game__answer--wide`
     }
   },
-  [QUESTION_TYPE.ONE_OF_THREE]: {
+  [QuestionType.ONE_OF_THREE]: {
     'formClass': `game__content--triple`,
     'haveOption': false,
     'additionClasses': ``
   }
 };
+
+
+const addFormClickEvent = (element, answers, callback) => {
+  const form = element.querySelector(`.game__content`);
+  form.addEventListener(`click`, (e) => {
+    const images = form.querySelectorAll(`.game__option`);
+    if (e.target.closest(`.game__option`)) {
+      const indexImage = [...images].indexOf(e.target);
+      const isCorrectAnswer = !!answers[indexImage].type;
+      callback(isCorrectAnswer);
+    }
+  });
+};
+
+const addFormChangeEvent = (element, answers, callback) => {
+  const form = element.querySelector(`.game__content`);
+  form.addEventListener(`change`, () => {
+    const inputs = [...form.querySelectorAll(`input`)];
+    const checkedInputs = inputs.filter((input) => input.checked);
+
+    if (checkedInputs.length === answers.length) {
+      const isCorrectAnswer = checkedInputs.every((answer, index) => {
+        return checkAnswer(answers[index].type, answer.value);
+      });
+      callback(isCorrectAnswer);
+      return;
+    }
+
+    checkedInputs.forEach((checkedInput) => {
+      inputs.filter((input) => input.name === checkedInput.name).forEach((input) => {
+        input.disabled = true;
+      });
+    });
+  });
+};
+
 const getAnswer = (type, answer, index) => {
-  const {haveOption, additionClasses} = ADDITION_GAME_DATA[type];
+  const {haveOption, additionClasses} = AdditionGameData[type];
   return `
     <div class="game__option">
       <img src="${answer.image.url}" alt="Option ${index}" width="${answer.image.width}" height="${answer.image.height}">
@@ -71,6 +107,12 @@ const getOptions = (additionClasses, index) => {
   }, ``);
 };
 
+const GameTypeHandler = {
+  [QuestionType.TWO_OF_TWO]: addFormChangeEvent,
+  [QuestionType.TINDER_LIKE]: addFormChangeEvent,
+  [QuestionType.ONE_OF_THREE]: addFormClickEvent
+};
+
 export default class gameTemplate extends AbstractView {
   constructor(game, state) {
     super();
@@ -79,80 +121,27 @@ export default class gameTemplate extends AbstractView {
   }
 
   get template() {
-    const formClass = ADDITION_GAME_DATA[this.game.type].formClass;
+    const formClass = AdditionGameData[this.game.type].formClass;
     return `
-    ${header(this.state)}
+    ${getHeader(this.state)}
     <div class="game">
       <p class="game__task">${this.game.question}</p>
       <form class="game__content ${formClass}">     
         ${getAnswers(this.game)}
       </form>
       <div class="stats">
-        ${createStats(this.state.stats)}
+        ${getGameStats(this.state.stats)}
       </div>
     </div>
-    ${footer}`;
+    ${getFooter}`;
   }
 
   bind() {
-    const form = this.element.querySelector(`.game__content`);
     this.timerElement = this.element.querySelector(`.game__timer`);
-    const backButton = this.element.querySelector(`.back`);
-    const answerImages = form.querySelectorAll(`.game__option img`);
+    GameTypeHandler[this.game.type](this.element, this.game.answers,
+        (isCorrectAnswer) => this.onAnswerQuestion(isCorrectAnswer));
 
-    switch (this.game.type) {
-      case QUESTION_TYPE.TWO_OF_TWO:
-        form.addEventListener(`change`, () => {
-          const answer1 = form.querySelector(`input[name="question1"]:checked`);
-          const answer2 = form.querySelector(`input[name="question2"]:checked`);
-          if (answer1 && answer2) {
-            const isCorrectAnswer = [answer1, answer2].every((answer, index) => {
-              return checkAnswer(this.game.answers[index].type, answer.value);
-            });
-            this.onAnswerQuestion(isCorrectAnswer);
-          }
-        });
-        break;
-
-      case QUESTION_TYPE.TINDER_LIKE:
-        form.addEventListener(`change`, () => {
-          const answer1 = form.querySelector(`input[name="question1"]:checked`);
-          const isCorrectAnswer = [answer1].every((answer, index) => {
-            return checkAnswer(this.game.answers[index].type, answer.value);
-          });
-          this.onAnswerQuestion(isCorrectAnswer);
-        });
-        break;
-
-      case QUESTION_TYPE.ONE_OF_THREE:
-        form.addEventListener(`click`, (e) => {
-          const images = form.querySelectorAll(`.game__option`);
-          if (e.target.closest(`.game__option`)) {
-            const indexImage = [...images].indexOf(e.target);
-            const isCorrectAnswer = !!this.game.answers[indexImage].type;
-            this.onAnswerQuestion(isCorrectAnswer);
-          }
-        });
-        break;
-    }
-
-    backButton.addEventListener(`click`, () => this.onBackToGreeting());
-
-    for (let img of answerImages) {
-      img.addEventListener(`load`, (e) => {
-        const parentBlock = img.parentNode;
-        const frame = {
-          width: parentBlock.clientWidth,
-          height: parentBlock.clientHeight
-        };
-        const correctedSizes = resizeImage(frame, {
-          width: img.naturalWidth,
-          height: img.naturalHeight
-        });
-        img.width = correctedSizes.width;
-        img.height = correctedSizes.height;
-      });
-    }
+    addBackButtonClick(this.element, ()=> this.onBackToGreeting());
   }
 
   updateTimer(timer) {

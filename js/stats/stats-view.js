@@ -1,10 +1,11 @@
 import AbstractView from '../view';
-import footer from '../footer/footer';
-import header from '../header/header';
+import getFooter from '../templates/footer';
+import getHeader from '../templates/header';
 import {isLivesEnded} from '../data/lives';
-import {statInfo, ANSWER_TYPES, POINTS} from '../data';
+import {statInfo, AnswerType, Points} from '../data/data';
 import {getTotalPoints, getRightPoints, getPointCount} from '../data/points';
-import createStats from '../create-stats';
+import getGameStats from '../templates/game-stats';
+import addBackButtonClick from '../add-back-button-click';
 
 const createBonus = (bonusCount, {title, type}) => {
   return `
@@ -12,24 +13,22 @@ const createBonus = (bonusCount, {title, type}) => {
       <td></td>
       <td class="result__extra">${title}</td>
       <td class="result__extra">${bonusCount}&nbsp;<span class="stats__result stats__result--${type}"></span></td>
-      <td class="result__points">×&nbsp;${POINTS[type]}</td>
-      <td class="result__total">${bonusCount * POINTS[type]}</td>
+      <td class="result__points">×&nbsp;${Points[type]}</td>
+      <td class="result__total">${bonusCount * Points[type]}</td>
     </tr>`;
 };
 
 const countPoints = ({lives, stats}) => {
-  const result = new Map();
-  result.set(`heart`, lives);
-  for (let type of Object.keys(ANSWER_TYPES)) {
-    result.set(type, getPointCount(stats, type));
-  }
-
+  const result = Object.keys(AnswerType).reduce((accumulator, type) => {
+    accumulator[type] = getPointCount(stats, type);
+    return accumulator;
+  }, {heart: lives});
   return result;
 };
 
 const createBonuses = (points) => {
   return statInfo.bonuses.reduce((content, bonus) => {
-    const bonusCount = points.get(bonus.type);
+    const bonusCount = points[bonus.type];
     const html = bonusCount ? createBonus(bonusCount, bonus) : ``;
     return content + html;
   }, ``);
@@ -40,7 +39,7 @@ const createStatsResult = (stats, isNotFail) => {
     <td class="result__total"></td>
     <td class="result__total  result__total--final">fail</td>`;
   const statsResultHtml = `
-    <td class="result__points">×&nbsp;${POINTS[ANSWER_TYPES.correct]}</td>
+    <td class="result__points">×&nbsp;${Points[AnswerType.correct]}</td>
     <td class="result__total">${getRightPoints(stats)}</td>`;
 
   return isNotFail ? statsResultHtml : failResult;
@@ -54,7 +53,7 @@ const createTableResult = (game, index) => {
       <tr>
         <td class="result__number">${index}.</td>
         <td colspan="2">
-          ${createStats(game.stats)}
+          ${getGameStats(game.stats)}
         </td>
         ${createStatsResult(game.stats, isNotFail)}
       </tr>
@@ -73,21 +72,17 @@ export default class rulesView extends AbstractView {
 
   get template() {
     return `
-    ${header()}
+    ${getHeader()}
     <div class="result">
       <h1>${isLivesEnded(this.stats[0].lives) ? statInfo.title.loss : statInfo.title.win}</h1>
       ${this.stats.reduce((content, game, index) => {
         return content + createTableResult(game, index + 1);
       }, ``)}
     </div>
-    ${footer}`;
+    ${getFooter}`;
   }
 
   bind() {
-    const backButton = this.element.querySelector(`.back`);
-
-    backButton.addEventListener(`click`, () => {
-      this.onBackToGreeting();
-    });
+    addBackButtonClick(this.element, ()=> this.onBackToGreeting());
   }
 }

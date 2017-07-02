@@ -9,7 +9,8 @@ export default new class {
     const questionsPath = `${this.serverUrl}/questions`;
     return fetch(questionsPath)
       .then(GameAdapter.parseJSON)
-      .then(GameAdapter.preprocessQuestions);
+      .then(GameAdapter.preprocessQuestions)
+      .then(GameAdapter.loadImages);
   }
 
   getStats(userName) {

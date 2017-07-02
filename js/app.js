@@ -19,7 +19,7 @@ class App {
     this.showIntro();
     gameModel.getQuestions()
       .then((games) => this.setup(games))
-      .then(() => this.changeController(this._parseHashFromUrl()))
+      .then(() => this.changeController(this._parseHashFromUrl(), true))
       .catch(window.console.error);
   }
 
@@ -31,7 +31,6 @@ class App {
       [ControllerId.STATS]: new Stats()
     };
     window.onhashchange = () => this.changeController(this._parseHashFromUrl());
-
   }
 
   showIntro() {
@@ -48,17 +47,17 @@ class App {
   }
 
   _encodeData(data) {
-    const encode64 = atob(data);
-    return encode64 ? JSON.parse(encode64) : null;
+    const encode64 = encodeURI(data);
+    return encode64 ? encode64 : null;
 
   }
 
   _decodeData(data) {
-    return btoa(JSON.stringify(data));
+    return decodeURI(data);
   }
 
-  changeController({controller, value}) {
-    this.routes[controller].init(value);
+  changeController({controller, value}, isCrossfade) {
+    this.routes[controller].init({value, isCrossfade});
   }
 
   showGreeting() {

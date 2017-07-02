@@ -1,20 +1,20 @@
 import assert from 'assert';
-import {getPointByLives, getPointsByAnswerType, getTotalPoints, getRightPoints, getPointCount} from './points';
+import {getPointByLives, getPointsByAnswerType, getTotalPoints, getRightPoints, getStatsCount} from './points';
 
 describe(`Bonus points calculation`, () => {
-  it(`should get right points for lives`, () => {
+  it(`should return right points for lives`, () => {
     const state = {'lives': 2};
     const verifiedPoints = getPointByLives(state.lives);
     assert.equal(100, verifiedPoints);
   });
 
-  it(`should get right points with fast bonus`, () => {
+  it(`should return right points with fast bonus`, () => {
     const state = {'stats': [`fast`, `slow`, `fast`]};
     const verifiedPoints = getPointsByAnswerType(`fast`, state.stats);
     assert.equal(100, verifiedPoints);
   });
 
-  it(`should get right total points`, () => {
+  it(`should return right total points`, () => {
     const state = {'stats': [`fast`, `slow`, `fast`, `wrong`, `correct`], 'lives': 3};
     const verifiedTotalPoints = getTotalPoints(state);
     assert.equal(600, verifiedTotalPoints);
@@ -28,7 +28,7 @@ describe(`Bonus points calculation`, () => {
 
   it(`should return right count of answer type in stats`, () => {
     const state = {'stats': [`fast`, `slow`, `fast`, `wrong`, `correct`]};
-    const verifiedCountTypeAnswer = getPointCount(state.stats, `fast`);
+    const verifiedCountTypeAnswer = getStatsCount(state.stats, `fast`);
     assert.equal(2, verifiedCountTypeAnswer);
   });
 });

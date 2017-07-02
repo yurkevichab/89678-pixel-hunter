@@ -11,7 +11,6 @@ const ControllerId = {
   GAME: `game`,
   STATS: `stat`,
 };
-
 const getControllerIdFromHash = (hash) => hash.replace(`#`, ``);
 
 class App {
@@ -57,6 +56,9 @@ class App {
   }
 
   changeController({controller, value}, isCrossfade) {
+    if (!controller) {
+      return;
+    }
     this.routes[controller].init({value, isCrossfade});
   }
 
@@ -76,6 +78,7 @@ class App {
     location.hash = `${ControllerId.STATS}=${this._decodeData(username)}`;
   }
 }
+
 const app = new App();
 
 export default app;

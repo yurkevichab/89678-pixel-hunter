@@ -9,11 +9,7 @@ export default class Rules {
 
   init() {
     switchDisplay(this.view);
-
-    this.view .onChangeDisplay = (userName) => {
-      App.showGame(userName);
-    };
-
+    this.view .onChangeDisplay = (userName) => App.showGame(userName);
     this.view.onBackToGreeting = () => App.showGreeting();
   }
 }

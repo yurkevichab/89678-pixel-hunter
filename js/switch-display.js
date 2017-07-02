@@ -7,13 +7,11 @@ export default (view, isCrossfade = false) => {
     mainBlock.appendChild(view.element);
     return;
   }
-
   const newContainer = view.element;
   const container = mainBlock.firstElementChild;
   newContainer.classList.add(CROSSFADE_CLASS);
   mainBlock.appendChild(newContainer);
   container.classList.add(CROSSFADE_CLASS);
-
   let opacityValue = 0.5;
   newContainer.style.opacity = opacityValue;
   const interval = setInterval(()=> {

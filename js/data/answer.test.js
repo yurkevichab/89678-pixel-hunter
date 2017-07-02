@@ -38,7 +38,7 @@ describe(`Answers`, () => {
     assert.equal(verifiedPoint, `correct`);
   });
 
-  it(`check add correct point to stats`, () => {
+  it(`should add correct point to stats`, () => {
     const state = {stats: []};
     const lastAddAnswerType = setStats(state, `correct`).stats.pop();
     assert.equal(lastAddAnswerType, `correct`);

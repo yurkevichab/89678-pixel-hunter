@@ -2,8 +2,8 @@ import AbstractView from '../view';
 import getFooter from '../templates/footer';
 import getHeader from '../templates/header';
 import {isLivesEnded} from '../data/lives';
-import {statInfo, AnswerType, Points} from '../data/data';
-import {getTotalPoints, getRightPoints, getPointCount} from '../data/points';
+import {statInfo, Points, Result, MIN_COUNT_LIVES} from '../data/data';
+import {getTotalPoints, getRightPoints, getStatsCount} from '../data/points';
 import getGameStats from '../templates/game-stats';
 import addBackButtonClick from '../add-back-button-click';
 
@@ -19,10 +19,10 @@ const createBonus = (bonusCount, {title, type}) => {
 };
 
 const countPoints = ({lives, stats}) => {
-  const result = Object.keys(AnswerType).reduce((accumulator, type) => {
-    accumulator[type] = getPointCount(stats, type);
+  const result = Object.values(Result).reduce((accumulator, type) => {
+    accumulator[type] = getStatsCount(stats, type);
     return accumulator;
-  }, {heart: lives});
+  }, {LIVES: lives});
   return result;
 };
 
@@ -39,17 +39,16 @@ const createStatsResult = (stats, isNotFail) => {
     <td class="result__total"></td>
     <td class="result__total  result__total--final">fail</td>`;
   const statsResultHtml = `
-    <td class="result__points">×&nbsp;${Points[AnswerType.correct]}</td>
+    <td class="result__points">×&nbsp;${Points[Result.CORRECT]}</td>
     <td class="result__total">${getRightPoints(stats)}</td>`;
-
   return isNotFail ? statsResultHtml : failResult;
 };
 
 const createTableResult = (game, index) => {
   const points = countPoints(game);
-  const isNotFail = game.lives !== 0;
+  const isNotFail = game.lives !== MIN_COUNT_LIVES;
   return ` 
-    <table class="result__table">
+    <table class="result__table"> 
       <tr>
         <td class="result__number">${index}.</td>
         <td colspan="2">
@@ -72,17 +71,17 @@ export default class rulesView extends AbstractView {
 
   get template() {
     return `
-    ${getHeader()}
-    <div class="result">
-      <h1>${isLivesEnded(this.stats[0].lives) ? statInfo.title.loss : statInfo.title.win}</h1>
-      ${this.stats.reduce((content, game, index) => {
-        return content + createTableResult(game, index + 1);
-      }, ``)}
-    </div>
-    ${getFooter}`;
+      ${getHeader()}
+      <div class="result">
+        <h1>${isLivesEnded(this.stats[0].lives) ? statInfo.title.loss : statInfo.title.win}</h1>
+        ${this.stats.reduce((content, game, index) => {
+          return content + createTableResult(game, index + 1);
+        }, ``)}
+      </div>
+      ${getFooter}`;
   }
 
   bind() {
-    addBackButtonClick(this.element, ()=> this.onBackToGreeting());
+    addBackButtonClick(this.element, () => this.onBackToGreeting());
   }
 }

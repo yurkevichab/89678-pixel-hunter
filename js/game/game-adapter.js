@@ -68,7 +68,7 @@ const loadImage = (answerImage) => {
   return new Promise((resolve) => {
     const img = new Image();
     img.addEventListener(`load`, () => setImageSize(img, answerImage, resolve));
-    img.addEventListener(`error`, () => resolve());
+    img.addEventListener(`error`, resolve);
     img.src = answerImage.url;
   });
 };

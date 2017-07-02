@@ -19,10 +19,10 @@ const createBonus = (bonusCount, {title, type}) => {
 };
 
 const countPoints = ({lives, stats}) => {
-  let result = {heart: lives};
-  Object.keys(AnswerType).forEach((type) => {
-    result = {type: getPointCount(stats, type)};
-  });
+  const result = Object.keys(AnswerType).reduce((accumulator, type) => {
+    accumulator[type] = getPointCount(stats, type);
+    return accumulator;
+  }, {heart: lives});
   return result;
 };
 

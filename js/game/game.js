@@ -55,20 +55,21 @@ export default class Game {
     }, 1000);
     return timer;
   }
-  _sendStats(oldState) {
-    const state = cleanTimer(changeGame(oldState, this.games));
-    this.gameInit(state);
+
+  _sendStats(state) {
+    App.showIntro();
+    gameModel.sendStats(state)
+      .then(() => App.showStats(state.userName))
+      .catch(window.console.error);
   }
 
   _nextDisplay(state) {
     if (isLastGame(state.game, this.games) || isLivesEnded(state.lives)) {
-      App.showIntro();
-      gameModel.sendStats(state)
-        .then(() => App.showStats(state.userName))
-        .catch(window.console.error);
+      this._sendStats(state);
       return;
     }
-    this._sendStats(state);
+    state = cleanTimer(changeGame(state, this.games));
+    this.gameInit(state);
   }
 
   _addAnswerResult(isCorrectAnswer) {

@@ -1,6 +1,5 @@
 export const changeGame = (state, games) => {
-  let game = state.game;
-  game++;
+  const game = state.game + 1;
   if (game > games.length) {
     throw new RangeError(`Number of games can not be more than ${games.length}`);
   }

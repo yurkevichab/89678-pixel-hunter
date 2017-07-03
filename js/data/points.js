@@ -1,13 +1,11 @@
 import {Points, Result} from './data';
 
 export const getPointsByAnswerType = (type, stats) => {
-  const countStatType = stats.filter((stat) => stat === type).length;
+  const countStatType = getStatsCount(stats, type);
   return countStatType * Points[type];
 };
 
-export const getPointByLives = (lives) => {
-  return lives * Points.heart;
-};
+export const getPointByLives = (lives) => lives * Points.LIVES;
 
 export const getRightPoints = (stats) => {
   return stats.filter((stat) => stat !== Result.WRONG).length * Points[Result.CORRECT];
@@ -21,6 +19,6 @@ export const getTotalPoints = ({lives, stats}) => {
   return sumFastAswerPoints + sumSlowAswerPoints + sumLivesPoints + sumRightPoints;
 };
 
-export const getPointCount = (stats, type) => stats.filter((s) => {
-  return s === type;
-}).length;
+export const getStatsCount = (stats, type) => {
+  return stats.filter((stat) => stat === type).length;
+};

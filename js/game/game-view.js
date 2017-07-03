@@ -42,10 +42,10 @@ const AdditionGameData = {
 
 const addFormClickEvent = (element, answers, callback) => {
   const form = element.querySelector(`.game__content`);
-  form.addEventListener(`click`, (e) => {
-    const images = form.querySelectorAll(`.game__option`);
-    if (e.target.closest(`.game__option`)) {
-      const indexImage = [...images].indexOf(e.target);
+  form.addEventListener(`click`, (event) => {
+    const options = form.querySelectorAll(`.game__option`);
+    if (event.target.closest(`.game__option`)) {
+      const indexImage = [...options].findIndex((option) => option === event.target || option.contains(event.target));
       const isCorrectAnswer = !!answers[indexImage].type;
       callback(isCorrectAnswer);
     }
@@ -67,9 +67,9 @@ const addFormChangeEvent = (element, answers, callback) => {
     }
 
     checkedInputs.forEach((checkedInput) => {
-      inputs.filter((input) => input.name === checkedInput.name).forEach((input) => {
-        input.disabled = true;
-      });
+      inputs
+        .filter((input) => input.name === checkedInput.name)
+        .forEach((input) => (input.disabled = true));
     });
   });
 };
@@ -123,31 +123,31 @@ export default class gameTemplate extends AbstractView {
   get template() {
     const formClass = AdditionGameData[this.game.type].formClass;
     return `
-    ${getHeader(this.state)}
-    <div class="game">
-      <p class="game__task">${this.game.question}</p>
-      <form class="game__content ${formClass}">     
-        ${getAnswers(this.game)}
-      </form>
-      <div class="stats">
-        ${getGameStats(this.state.stats)}
+      ${getHeader(this.state)}
+      <div class="game">
+       <p class="game__task">${this.game.question}</p>
+        <form class="game__content ${formClass}">     
+          ${getAnswers(this.game)}
+        </form>
+       <div class="stats">
+         ${getGameStats(this.state.stats)}
+       </div>
       </div>
-    </div>
-    ${getFooter}`;
+      ${getFooter}`;
   }
 
   bind() {
     this.timerElement = this.element.querySelector(`.game__timer`);
     GameTypeHandler[this.game.type](this.element, this.game.answers,
         (isCorrectAnswer) => this.onAnswerQuestion(isCorrectAnswer));
-
-    addBackButtonClick(this.element, ()=> this.onBackToGreeting());
+    addBackButtonClick(this.element, () => this.onBackToGreeting());
   }
 
-  updateTimer(timer) {
-    if (timer === 5) {
+  updateTimer(time) {
+    const BLINK_TIME = 5;
+    if (time === BLINK_TIME) {
       this.timerElement.classList.add(`blink`);
     }
-    this.timerElement.innerHTML = timer;
+    this.timerElement.innerHTML = time;
   }
 }

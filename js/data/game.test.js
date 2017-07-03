@@ -3,7 +3,7 @@ import {changeGame} from './game';
 
 describe(`Game`, () => {
   describe(`Changing the game number`, () => {
-    it(`should check changes game`, () => {
+    it(`should change game`, () => {
       const state = {'game': 5};
       const games = [{}, {}, {}, {}, {}, {}, {}];
       const verifiedQuestion = changeGame(state, games).game;

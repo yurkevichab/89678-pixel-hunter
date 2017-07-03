@@ -1,8 +1,8 @@
 export const FAST_ANSWER = 10;
 export const SLOW_ANSWER = 20;
 export const MIN_COUNT_LIVES = 0;
-export const MIN_TIMER_VALUE = 0;
 export const MAX_COUNT_LIVES = 10;
+export const MIN_TIMER_VALUE = 0;
 
 export const Result = {
   'FAST': `fast`,
@@ -17,7 +17,7 @@ export const Points = {
   [Result.FAST]: 50,
   [Result.SLOW]: -50,
   [Result.WRONG]: 0,
-  'heart': 50
+  'LIVES': 50
 };
 
 export const initialState = Object.freeze({

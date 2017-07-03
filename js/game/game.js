@@ -68,16 +68,16 @@ export default class Game {
       this._sendStats(state);
       return;
     }
-    state = cleanTimer(changeGame(state, this.games));
-    this.gameInit(state);
+    const newState = cleanTimer(changeGame(state, this.games));
+    this.gameInit(newState);
   }
 
   _addAnswerResult(isCorrectAnswer) {
     if (!isCorrectAnswer) {
       return this._processWrongResult();
     }
-    const point = getAnswerType(isCorrectAnswer, this.state.timer);
-    return setStats(this.state, point);
+    const answerType = getAnswerType(isCorrectAnswer, this.state.timer);
+    return setStats(this.state, answerType);
   }
 
   _createGameView(state) {

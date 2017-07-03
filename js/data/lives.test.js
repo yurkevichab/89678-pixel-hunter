@@ -1,5 +1,5 @@
-import {setLives, isLivesEnded} from './lives';
 import assert from 'assert';
+import {setLives, isLivesEnded} from './lives';
 
 describe(`Changing the lives`, () => {
   it(` should correct change lives value`, () => {

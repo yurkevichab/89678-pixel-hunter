@@ -1,10 +1,9 @@
 import {QuestionType, AnswerType} from '../data/data';
 import resizeImage from '../data/resizeImage';
-import {getStatsCount} from '../data/points';
 
 const getRightAnswerType = (answers) => {
   return Object.values(AnswerType)
-    .find((type) => getStatsCount(answers, type) === 1);
+    .find((type) => answers.filter((answer) => answer.type === type).length === 1);
 };
 
 const cleanWrongAnswerTypes = (answers) => {

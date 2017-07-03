@@ -56,7 +56,7 @@ class App {
   }
 
   changeController({controller, value}, isCrossfade) {
-    if (!controller) {
+    if (!this.routes[controller]) {
       return;
     }
     this.routes[controller].init({value, isCrossfade});

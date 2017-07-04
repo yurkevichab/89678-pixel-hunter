@@ -18,7 +18,7 @@ const animateOpacity = (view) => {
       container.remove();
     }
   }, 300);
-}
+};
 
 export default (view, isCrossfade = false) => {
   if (!isCrossfade) {

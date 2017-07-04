@@ -19,10 +19,10 @@ export default class Game {
       App.showRules();
     }
     const state = setUserName(initialState, userName);
-    this.gameInit(state);
+    this._gameInit(state);
   }
 
-  gameInit(state) {
+  _gameInit(state) {
     this.timer = this._startTimer();
     this._createGameView(state);
     switchDisplay(this.view);
@@ -69,7 +69,7 @@ export default class Game {
       return;
     }
     const newState = cleanTimer(changeGame(state, this.games));
-    this.gameInit(newState);
+    this._gameInit(newState);
   }
 
   _addAnswerResult(isCorrectAnswer) {

@@ -1,7 +1,7 @@
 const mainBlock = document.querySelector(`main.central`);
 const CROSSFADE_CLASS = `slide`;
 
-function animateOpacity(view) {
+const animateOpacity = (view) => {
   const newContainer = view.element;
   const container = mainBlock.firstElementChild;
   newContainer.classList.add(CROSSFADE_CLASS);

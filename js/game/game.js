@@ -69,7 +69,7 @@ export default class Game {
       return;
     }
     const newState = cleanTimer(changeGame(state, this.games));
-    this.gameInit(newState);
+    this._gameInit(newState);
   }
 
   _addAnswerResult(isCorrectAnswer) {

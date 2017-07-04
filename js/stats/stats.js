@@ -8,11 +8,11 @@ export default class Stats {
     App.showIntro();
     gameModel.getStats(username).then((data) => {
       this.stats = data;
-      this.statsInit();
+      this._statsInit();
     }).catch(window.console.error);
   }
 
-  statsInit() {
+  _statsInit() {
     this.view = new StatsView(this.stats);
     switchDisplay(this.view);
     this.view.onBackToGreeting = () => App.showGreeting();
